@@ -74,11 +74,15 @@ cp .env.example .env         # then fill in as stages require
 Verify:
 
 ```bash
-make test        # pytest
-make lint        # ruff
-make typecheck   # mypy --strict on src/
-make check       # all three
+uv run python scripts/tasks.py check    # lint + typecheck + test
+uv run python scripts/tasks.py test     # pytest
+uv run python scripts/tasks.py lint     # ruff
+uv run python scripts/tasks.py          # list all targets
 ```
+
+`scripts/tasks.py` is the canonical, verified entry point. Makefile targets mirror
+`scripts/tasks.py`; verified via the latter on this environment — GNU `make` was unavailable
+to test directly.
 
 ---
 

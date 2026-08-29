@@ -80,10 +80,41 @@ Two real bugs were found by these tests and fixed, not worked around:
     and by skipping non-absolute paths entirely.
 
 IN PROGRESS:
-- (none)
+- S2 — Dataset acquisition. MEASUREMENT PHASE ONLY. Nothing has been downloaded.
+  Real sizes obtained from authoritative sources (Zenodo API, HF repo listing):
+
+  reBEN / BigEarthNet v2.0 — Zenodo record 10891137, licence CDLA-Permissive-1.0
+    BigEarthNet-S2.tar.zst                    63,251,710,377 B   63.25 GB
+    BigEarthNet-S1.tar.zst                    54,439,153,171 B   54.44 GB
+    Reference_Maps.tar.zst                       282,391,301 B  282.39 MB
+    metadata.parquet                               3,616,349 B    3.62 MB
+    metadata_for_patches_with_snow_cloud...          710,162 B    0.71 MB
+    TOTAL                                    117,977,581,360 B  117.98 GB compressed
+
+  BigEarthNet.txt — HF BIFOLD-BigEarthNetv2-0/BigEarthNet.txt, CDLA-Permissive-1.0, NOT gated
+    BigEarthNet.txt.parquet                                       467 MB
+    (repo total ~504 MB; annotations only, no imagery)
+    Matches the architecture's stated ~467 MB figure exactly.
+
+  KEY FINDING — everything through GATE 1 needs no imagery at all.
+    S8 Experiment O1 feeds GROUND-TRUTH CORINE reference maps into M2, not predictions.
+    S3 forensics needs the annotation parquet. S4 taxonomy needs metadata + CORINE nomenclature.
+    S7 M2 needs reference maps. So S3-S8, including GATE 1, need only:
+        Reference_Maps 282.39 MB + metadata 4.33 MB + BigEarthNet.txt 467 MB = ~754 MB
+    The 117.69 GB of imagery is first required at S11/S12 (M1 smoke test and training) —
+    exactly where the deferred cloud GPU+disk decision already applies.
+
+  BLOCKER FOR IMAGERY SUBSETTING (reported, not worked around):
+    Zenodo serves reBEN imagery as MONOLITHIC .tar.zst archives with no per-patch HTTP access.
+    A stratified subset of the IMAGERY therefore cannot be selectively downloaded — it would
+    require pulling all 117.69 GB first. Reference maps CAN be subset, because tar supports
+    selective extraction and zstd supports streaming.
+    The HF API returned HTTP 401 unauthenticated for every reBEN mirror probed, so a
+    shard-accessible mirror could not be confirmed without an HF token.
 
 NOT STARTED:
-- S2 onward. No dataset downloaded, no model trained, no metric measured.
+- S2 download execution (awaiting approval of the subset plan below).
+- S3 onward. No model trained, no metric measured.
 
 KNOWN ISSUES:
 - MAKEFILE TARGETS ARE NOT YET VERIFIED. The Makefile is written with the required lint/
@@ -123,11 +154,21 @@ until the corresponding measurement exists.
 OPEN GATES / DECISIONS AWAITING HUMAN:
 - None blocking S2. S1 is complete with all tests green.
 
-  Two environment decisions are needed before dataset work begins (S2/S3):
-    1. Storage. 5.5 GB free cannot hold reBEN. External drive, different partition, or a
-       reduced working subset?
-    2. Compute. No GPU is visible. Confirm what hardware will run M1 training at S13, or
-       schedule the Architecture C fallback decision.
+STANDING ITEM — COMPUTE + FULL-CORPUS STORAGE (decided 2026-08-30, deferred to before S12)
+  GPU compute for M1/M6/M7 training (S12+) — not yet secured, decision deferred to before S12,
+  likely resolved via rented cloud GPU instance rather than local hardware.
+
+  Full-corpus storage is merged into this same decision. We do NOT provision storage for the
+  full 549,488-patch reBEN corpus now; it is to be solved together with the GPU via a rented
+  cloud GPU+disk instance rather than local expansion, and likewise deferred to before S12.
+
+  Consequences accepted:
+    * S2–S11 proceed CPU-only, on a stratified geographic dev subset sized to local disk.
+    * Per STAGE_PROMPTS.md S2, all HEADLINE results must eventually come from the full split,
+      never from the dev subset. The subset is for iteration only.
+    * Do NOT re-raise either half of this as a Gate Report before S12 unless something changes
+      (e.g. the dev subset proves too small to fit local disk, or a gate measurement is found
+      to depend on full-corpus scale).
 
   Carried forward as ASSUMPTION — REQUIRES VALIDATION (IMPLEMENTATION_MAP §10.2), each with
   an owning stage, none blocking now:
