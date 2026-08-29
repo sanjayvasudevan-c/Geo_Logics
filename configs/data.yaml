@@ -1,0 +1,17 @@
+# Dataset roots and split policy.
+raw_dir: data/raw
+interim_dir: data/interim
+processed_dir: data/processed
+
+# reBEN patch geometry. BHARAT-EO must match this exactly (IMPLEMENTATION_MAP §4).
+patch_size: 120
+gsd_metres: 10.0
+
+# CLAUDE.md §1: geographic block CV, k=5. Never a random split — adjacent 1.2 km patches
+# are spatially autocorrelated and a random split inflates validation mIoU.
+split_strategy: geographic_block
+cv_folds: 5
+block_by: country
+
+# CLAUDE.md §7: the benchmark split is sealed behind this environment variable.
+benchmark_split_guard_env: ALLOW_BENCHMARK_EVAL

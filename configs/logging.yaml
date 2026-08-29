@@ -1,0 +1,4 @@
+# Structured JSON logging. The redaction filter is not optional.
+level: INFO
+json_output: true
+redact_external_paths: true

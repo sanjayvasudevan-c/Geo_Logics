@@ -1,0 +1,5 @@
+# Project identity and reproducibility (CLAUDE.md §8).
+name: satquery
+stage: S1
+seed: 1337
+deterministic: true

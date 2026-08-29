@@ -1,0 +1,17 @@
+# M1 — multi-sensor LULC segmenter. The map every symbolic answer is computed from.
+architecture: dual_encoder_unet
+encoder: convnextv2_tiny
+fusion: conv1x1_se_gate
+num_classes: 44
+
+# CLAUDE.md §1: from scratch. 229k labelled patches is a data-rich regime; ImageNet init
+# is an ablation, not the default.
+pretrained: false
+
+# CLAUDE.md §1: L_CE + 0.5*L_Lovasz + 0.3*L_hier + 0.2*L_scale
+loss_ce_weight: 1.0
+loss_lovasz_weight: 0.5
+loss_hierarchy_weight: 0.3
+loss_scale_weight: 0.2
+
+tta_transforms: 8   # 4 rotations x 2 flips; also feeds M9's strongest confidence feature

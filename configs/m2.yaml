@@ -1,0 +1,23 @@
+# M2 — symbolic geometry engine. Deterministic logic; FITTED parameters.
+implementation: scipy_skimage
+
+# These four are RECOVERED from ground-truth maps at S8 and re-fitted on predicted maps at
+# S17. They are null here deliberately: a guessed default would silently produce a wrong
+# count with a clean-looking trace (IMPLEMENTATION_MAP §5.3 failure #5). Geometry calls must
+# raise GeometryError while these are unset rather than assume a plausible value.
+connectivity: null
+min_mapping_unit_px: null
+opening_kernel_px: null
+adjacency_dilation_px: null
+
+# VERIFIED from the benchmark's generator; needs no fitting.
+area_rounding_m2: 1000
+
+# Caption coverage tiers (VERIFIED): primary >25%, secondary 5-25%, marginal <5%.
+tier_primary_min: 0.25
+tier_secondary_min: 0.05
+
+# Referring-expression instance filters (VERIFIED): 1-50% of image area AND >=40% bbox fill.
+referring_area_min: 0.01
+referring_area_max: 0.50
+referring_bbox_fill_min: 0.40

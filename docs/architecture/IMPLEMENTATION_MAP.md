@@ -11,7 +11,7 @@
 | `docs/architecture/SatQuery_Architecture (1) (1).pdf` — 28 pp., 133 numbered points. **This is Architecture B** and already incorporates the review's corrections (its §2.1 is "The Biggest Correction: 19 Classes vs. 44 Classes"). | Read in full. Cited as **[PDF §n]** |
 | `docs/architecture/SatQuery_Architecture_Review_v2 (2).md` — 1,622 lines. The critical review of the *previous* architecture (Architecture A, `SatQuery_AI_Architecture.pdf`) that produced Architecture B. Holds the detailed per-model specifications the PDF summarises. | Read in full. Cited as **[REV §n]** |
 | `CLAUDE.md` — standing project rules. | Read in full. Cited as **[CM §n]** |
-| `STAGE_PROMPTS.md` — S0–S26 execution breakdown, Appendix B (S-number ↔ 8-week reconciliation), Stage 9 intent enum. | **NOT PRESENT IN THE REPOSITORY.** Its S-numbers, stage anchors and the provisional intent enum used below were supplied directly at the S0 gate. See §10.2 A2. |
+| `STAGE_PROMPTS.md` — S0–S26 execution breakdown, Appendix A (reusable mid-stage prompts), Appendix B (S-number ↔ 8-week reconciliation). | **Present and read** (committed at S1, 1,558 lines). Every S-anchor used below is verified against it. See §10.2 A2. |
 | SIH26167 problem statement. | **NOT SUPPLIED.** See §10.2 A1. |
 
 ### Evidence labels
@@ -747,10 +747,22 @@ Likelihood and impact are my assessment (DERIVED) unless the documents rank them
 **ASSUMPTION — REQUIRES VALIDATION:** the external problem-statement document (SIH26167) was not supplied and is out of scope for this project. Both architecture documents reference "the five mandatory capabilities" / "the five mandatory clauses" ([REV §7.2], [REV §7.4], [PDF §113]) without ever enumerating them. **"Mandatory capabilities" is therefore taken to mean the deliverables the architecture document names explicitly**, defined in §11.0. If the problem statement is later supplied and its list differs, §11.0 and §9.7 must be revised.
 *Not blocking. Owner: human, if and when the problem statement becomes available.*
 
-**A2 — S0–S26 stage numbering, and the absence of `STAGE_PROMPTS.md`.**
+**A2 — S0–S26 stage numbering. CLOSED at S1.**
 **RESOLVED at the S0 gate:** S0–S26 is our own execution breakdown, defined in `STAGE_PROMPTS.md`. It is not the architecture document's numbering — the PDF has only an 8-week plan. The two reconcile via `STAGE_PROMPTS.md` Appendix B and [CM §11]. No edit is required to `CLAUDE.md` or to either architecture document.
-**ASSUMPTION — REQUIRES VALIDATION:** `STAGE_PROMPTS.md` **is not present in this repository**. The S-numbers, the stage anchors (S3 forensics, S8 GATE 1, S9 intent enum, S13 GATE 2, S16 GATE 3 / A1, S17 M6, S23 GATE 4) and the provisional intent enum in §4.1 were supplied directly at the S0 gate and are used on that basis. The full S0–S26 list and Appendix B have not been read and are not reproduced here. **Recommend committing `STAGE_PROMPTS.md` to the repository**, since it is now a cited authority for the execution plan that a person cloning the repo cannot read.
-*Not blocking. Owner: human.*
+**CLOSED at S1:** `STAGE_PROMPTS.md` was committed to the repository and read in full (1,558 lines). Every anchor used at the S0 gate is confirmed correct against it: S3 benchmark forensics, S7 M2 geometry engine, S8 GATE 1 (oracle + blind baselines), S9 Q1/M10 intent, S13 GATE 2 (transfer factor), S16 GATE 3 (A1 falsification), S17 M6/CDVQA, S23 GATE 4 (BHARAT-EO). Appendix B's verified week mapping:
+
+| Week | Stages | Deliverable |
+|---|---|---|
+| 1 | S0–S4 | `ANSWER_GRAMMAR.md`, taxonomy, data pipeline, licence audit |
+| 2 | S5–S8 | **Oracle accuracy + oracle BLEU (GATE 1)** |
+| 3 | S9–S13 | **Transfer factor (GATE 2)** |
+| 4 | S14–S16 | **Falsification test (GATE 3)**, M3/M4/M5 |
+| 5 | S17–S18 | CDVQA accuracy, ECE, risk–coverage |
+| 6 | S19–S23 | Europe and **India results (GATE 4)** side by side |
+| 7 | S24–S25 | Ablations, bootstrap CIs, McNemar, error analysis, PDF report |
+| 8 | S26 | Freeze, rehearse, finalise limitations and presentation |
+
+*Closed. No further action.*
 
 **A3 — M6 input-format mismatch. Deliberately unresolved.**
 **ASSUMPTION — REQUIRES VALIDATION:** M6's live-inference input (Sentinel-1/2 GeoTIFF pairs) versus its SECOND/CDVQA training data (aerial optical, RGB 512×512, 0.5–3 m GSD, Chinese cities) is **not bridged in the architecture document**. **Deferred to Stage S17**, to be resolved from **direct inspection of the actual downloaded SECOND/CDVQA files** — not from general dataset literature. **No bridging strategy is chosen now.** Tracked as a High/High integration risk in §9.5.
@@ -877,7 +889,7 @@ Recorded in advance so the late stages can check them, per [REV §6.12]:
 ### 11.7 Open items carried forward
 
 - [ ] §10.2 **A1** — if the SIH26167 problem statement becomes available, reconcile §11.0 against its actual capability list.
-- [ ] §10.2 **A2** — `STAGE_PROMPTS.md` committed to the repository.
+- [x] §10.2 **A2** — CLOSED at S1: `STAGE_PROMPTS.md` committed and read; all S-anchors verified.
 - [ ] §10.2 **A3** — M6's input-format bridge resolved at S17 from direct inspection of the downloaded SECOND/CDVQA files.
 - [ ] §10.2 **A5** — the provisional intent enum replaced by the S3-confirmed vocabulary; R1's registry and M10's label set regenerated.
 - [ ] §10.2 **A6–A10** closed, each with a recorded answer.

@@ -23,9 +23,9 @@ env/
 .ipynb_checkpoints/
 
 # --- Data & weights (never commit large/raw assets) ---
-data/raw/
-data/interim/
-data/processed/
+data/raw/*
+data/interim/*
+data/processed/*
 *.tif
 *.tiff
 *.npy
@@ -56,4 +56,22 @@ Thumbs.db
 htmlcov/
 
 # --- Benchmark quarantine (see CLAUDE.md §7) ---
-data/benchmark_eval/
+data/benchmark_eval/*
+
+# --- Stage S1 additions -------------------------------------------------------------
+# Environments. NOTE: uv.lock is deliberately NOT ignored — the pinned lockfile is what
+# makes `make reproduce` and CLAUDE.md §8 reproducibility real. It must be committed.
+.venv/
+
+# Model checkpoints and weights
+models/*
+
+# Per-run artifacts (regenerable; the registry that writes them is code)
+reports/runs/*
+
+# Tooling caches
+.ruff_cache/
+.mypy_cache/
+
+# Keep the directory skeleton on a fresh clone, even inside ignored trees.
+!**/.gitkeep

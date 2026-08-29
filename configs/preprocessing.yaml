@@ -1,0 +1,24 @@
+# P1 — sensor normalisation (pipeline stage 2).
+# CLAUDE.md §1: S1 (2 ch) + S2 (10 ch) = 12 channels. The schema rejects any other total.
+s1_bands: [VV, VH]
+s2_bands: [B02, B03, B04, B05, B06, B07, B08, B8A, B11, B12]
+
+s1_to_db: true                  # SAR backscatter is log-distributed
+resample_20m_to_10m: bilinear
+discard_60m_bands: true
+
+# Statistics come from the training split only, frozen and versioned.
+# Per-image or per-batch normalisation leaks and breaks at single-image inference.
+normalisation: train_split_zscore
+
+# Without this the model reads a zeroed band as "very low reflectance" rather than
+# "not measured" — two different physical statements (IMPLEMENTATION_MAP §1.2 / PDF §10).
+band_presence_mask: true
+
+# NDVI/NDWI/NDBI are an ablation, not a default. Empty until measured.
+spectral_indices: []
+
+# CLAUDE.md §1: mixup and cutmix fabricate region boundaries and change connected-component
+# counts, destroying the topology the entire symbolic path depends on. Frozen to false.
+use_mixup: false
+use_cutmix: false

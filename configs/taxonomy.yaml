@@ -1,0 +1,20 @@
+# CORINE hierarchy. CLAUDE.md §1: Level-3, 44 classes.
+# The 19-class scheme is reBEN's IMAGE-LEVEL multi-label vocabulary and is NOT the
+# segmentation target — it is an auxiliary head only.
+primary: corine_l3
+num_classes: 44
+aggregation_table: configs/taxonomy/corine_hierarchy.yaml
+
+auxiliary_heads: [corine_l3_19, coarse_7]
+ignore_index: 255
+
+# The only level at which cross-taxonomy comparison is valid (CORINE-44 vs WorldCover-11).
+# All Indian numbers are reported here and nowhere else.
+coarse_7_classes:
+  - built_up
+  - cropland
+  - tree_cover
+  - grassland_shrub
+  - water
+  - bare_sparse
+  - wetland
