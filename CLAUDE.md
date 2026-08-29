@@ -209,6 +209,12 @@ magic numbers, notebook-only implementations, unnecessary dependencies.
 
 Notebooks are for exploration only. Production logic lives in `src/`.
 
+**Disk cleanup — never blanket-delete a temp root.** Do not sweep `%TEMP%`, `$TMPDIR` or `/tmp`
+wholesale. Scope every cleanup pass to explicitly named cache directories (uv, pip, and the
+like), and always exclude `%TEMP%\claude\*`, which holds the harness's own task state — deleting
+it destroys in-flight command output. Cleanup runs through `scripts/cleanup.py`, which enforces
+both rules; ad-hoc `Remove-Item`/`rm -rf` against a temp root is not permitted.
+
 ---
 
 ## 10. PROJECT STATUS FILE

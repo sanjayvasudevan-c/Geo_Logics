@@ -21,17 +21,20 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 TASKS: dict[str, tuple[tuple[str, ...], ...]] = {
     "setup": (("uv", "sync", "--extra", "dev"),),
-    "lint": (("uv", "run", "ruff", "check", "src", "tests"),),
+    "lint": (("uv", "run", "ruff", "check", "src", "tests", "scripts"),),
     "typecheck": (("uv", "run", "mypy"),),
     "test": (("uv", "run", "pytest"),),
     "test-unit": (("uv", "run", "pytest", "-m", "unit"),),
     "test-integration": (("uv", "run", "pytest", "-m", "integration"),),
     "coverage": (("uv", "run", "pytest", "--cov", "--cov-report=term-missing"),),
     "check": (
-        ("uv", "run", "ruff", "check", "src", "tests"),
+        ("uv", "run", "ruff", "check", "src", "tests", "scripts"),
         ("uv", "run", "mypy"),
         ("uv", "run", "pytest"),
     ),
+    # Scoped to named caches only. CLAUDE.md §9 forbids sweeping a temp root, and
+    # scripts/cleanup.py refuses to. Dry run by default; pass --apply to delete.
+    "cleanup": (("uv", "run", "python", "scripts/cleanup.py"),),
 }
 
 DESCRIPTIONS = {

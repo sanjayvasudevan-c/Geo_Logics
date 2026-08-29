@@ -1,0 +1,60 @@
+# reBEN / BigEarthNet v2.0 file manifest.
+#
+# Source: Zenodo record 10891137. Licence: CDLA-Permissive-1.0.
+# Sizes and MD5 checksums were read from the Zenodo API on 2026-08-30 and are the
+# integrity contract for the download script — a fetched file whose digest does not
+# match is deleted, not used.
+#
+# CLAUDE.md §8: these belong in configs, not in src/.
+
+record_id: "10891137"
+licence: cdla-permissive-1.0
+base_url: "https://zenodo.org/api/records/10891137/files"
+
+files:
+  # --- Needed for S3-S8 (through GATE 1). Total ~754 MB with the annotation parquet. ---
+  metadata:
+    key: metadata.parquet
+    size_bytes: 3616349
+    md5: 55687065e77b6d0b0f1ff604a6e7b49c
+    tier: core
+    purpose: >
+      Per-patch country, acquisition date, geolocation, S2 tile id and split assignment.
+      Drives stratification and geographic blocking; also M5's supervision.
+
+  metadata_snow_cloud:
+    key: metadata_for_patches_with_snow_cloud_or_shadow.parquet
+    size_bytes: 710162
+    md5: fe31856f4986d446c9468b59d6387c91
+    tier: core
+    purpose: >
+      Patches filtered out of the 464,044 by cloud/snow/shadow screening. Needed to
+      reproduce the same filtering the annotation set used.
+
+  reference_maps:
+    key: Reference_Maps.tar.zst
+    size_bytes: 282391301
+    md5: 95d85a222fa983faddcac51a19f28917
+    tier: core
+    purpose: >
+      Pixel-level CORINE Level-3 (44-class) reference maps. This is M1's supervision AND
+      the input to the S8 oracle experiment, which feeds GROUND-TRUTH maps into M2.
+      GATE 1 is reachable with this file and no imagery at all.
+
+  # --- Imagery. 117.69 GB. NOT fetched locally. -------------------------------------
+  # Deferred to the cloud GPU+disk instance per the standing decision in PROJECT_STATUS.md.
+  # Zenodo serves these as monolithic archives with no confirmed per-patch shard access,
+  # so a selective imagery download is NOT available: plan for a full-archive pull.
+  s1_imagery:
+    key: BigEarthNet-S1.tar.zst
+    size_bytes: 54439153171
+    md5: a55eaa2cdf6a917e296bd6601ec1e348
+    tier: deferred
+    purpose: "Sentinel-1 VV/VH patches. Required from S11/S12 (M1 smoke test and training)."
+
+  s2_imagery:
+    key: BigEarthNet-S2.tar.zst
+    size_bytes: 63251710377
+    md5: 2245ed2d1a93f6ce637d839bc856396e
+    tier: deferred
+    purpose: "Sentinel-2 10-band patches. Required from S11/S12."

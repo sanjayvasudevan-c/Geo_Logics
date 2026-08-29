@@ -1,0 +1,31 @@
+# BigEarthNet.txt annotation manifest.
+#
+# Source: Hugging Face, BIFOLD-BigEarthNetv2-0/BigEarthNet.txt. Licence: CDLA-Permissive-1.0.
+# Not gated — no token required.
+#
+# This is the ANSWER GRAMMAR: captions, binary VQA, MCQ and referring-expression annotations
+# generated from reBEN's pixel-level reference maps. It is the scoring target and the
+# supervision for M3/M4/M7/M8, and it is what S3 (benchmark forensics) mines.
+#
+# Size and digest read from the HF resolve endpoint on 2026-08-30. HF publishes the LFS
+# sha256 in its X-Linked-ETag header, so the algorithm here is sha256, not md5.
+# Pinned to an exact commit so a later upstream edit cannot silently change what we fetch.
+
+repo: BIFOLD-BigEarthNetv2-0/BigEarthNet.txt
+licence: cdla-permissive-1.0
+gated: false
+revision: 72d865f2146f0a85b720f7f3ca1cdbaeafc3d316
+base_url: "https://huggingface.co/datasets/BIFOLD-BigEarthNetv2-0/BigEarthNet.txt/resolve/72d865f2146f0a85b720f7f3ca1cdbaeafc3d316"
+
+files:
+  annotations:
+    key: BigEarthNet.txt.parquet
+    size_bytes: 466819745
+    checksum: d3b97f999456016bb13c2a8e94b8f47825654f07a0394a6b266a38b750ca1554
+    algorithm: sha256
+    tier: core
+    purpose: >
+      ~9.6M text annotations over 464,044 S1/S2 pairs: captions, binary VQA, MCQ,
+      referring LULC detection and referring point detection. Contains the quarantined
+      benchmark split (1,082 pairs / 15,029 annotations), which must not be read without
+      ALLOW_BENCHMARK_EVAL=1 (CLAUDE.md §7).
