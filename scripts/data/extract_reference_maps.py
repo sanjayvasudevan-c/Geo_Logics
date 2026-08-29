@@ -39,6 +39,7 @@ from satquery.utils.paths import project_root
 ARCHIVE = "data/raw/reben/Reference_Maps.tar.zst"
 OUT_DIR = "data/interim/reben/reference_maps"
 MANIFEST = "data/interim/reben/reference_maps_manifest.json"
+PROGRESS = "data/interim/reben/reference_maps_progress.json"
 
 #: Tile id embedded in every patch id, e.g. ..._T33UUP_26_57.
 _TILE = re.compile(r"_(T\d{2}[A-Z]{3})_")
@@ -86,9 +87,34 @@ def main(argv: list[str]) -> int:
     started = time.monotonic()
 
     count = 0
+    written = 0
+    skipped = 0
     logical = 0
     per_tile: collections.Counter[str] = collections.Counter()
     no_tile: list[str] = []
+
+    def checkpoint() -> None:
+        """Write progress so an interrupted run leaves legible state.
+
+        The manifest is only written on clean completion; without this, a killed run leaves a
+        directory of files and no record of how far it got. Learned the hard way: the first
+        extraction pass was killed at 38% with no manifest.
+        """
+        (root / PROGRESS).write_text(
+            json.dumps(
+                {
+                    "complete": False,
+                    "seen": count,
+                    "written": written,
+                    "skipped_existing": skipped,
+                    "shards": len(per_tile),
+                    "elapsed_seconds": round(time.monotonic() - started, 1),
+                },
+                indent=2,
+                sort_keys=True,
+            ),
+            encoding="utf-8",
+        )
 
     dctx = zstandard.ZstdDecompressor()
     with (
@@ -99,11 +125,6 @@ def main(argv: list[str]) -> int:
         for member in tar:
             if not member.isfile() or not member.name.endswith(".tif"):
                 continue
-            handle = tar.extractfile(member)
-            if handle is None:
-                continue
-            data = handle.read()
-
             pid = _patch_id(member.name)
             match = _TILE.search(pid)
             tile = match.group(1) if match else "UNKNOWN"
@@ -111,16 +132,36 @@ def main(argv: list[str]) -> int:
                 no_tile.append(pid)
 
             shard = out / tile
-            shard.mkdir(exist_ok=True)
-            (shard / f"{pid}.tif").write_bytes(data)
+            target = shard / f"{pid}.tif"
 
-            logical += len(data)
-            per_tile[tile] += 1
-            count += 1
+            # Resumability: a map already on disk is not rewritten. The tar still has to be
+            # streamed past it (zstd is not seekable), but the write — the expensive part on a
+            # near-full NTFS volume — is skipped.
+            if target.is_file() and target.stat().st_size > 0:
+                logical += target.stat().st_size
+                per_tile[tile] += 1
+                count += 1
+                skipped += 1
+            else:
+                handle = tar.extractfile(member)
+                if handle is None:
+                    continue
+                data = handle.read()
+                shard.mkdir(exist_ok=True)
+                target.write_bytes(data)
+                logical += len(data)
+                per_tile[tile] += 1
+                count += 1
+                written += 1
 
             if count % 25000 == 0:
                 rate = count / (time.monotonic() - started)
-                print(f"  {count:,} maps  ({rate:,.0f}/s)", flush=True)
+                print(
+                    f"  {count:,} seen ({written:,} written, {skipped:,} skipped)  "
+                    f"{rate:,.0f}/s",
+                    flush=True,
+                )
+                checkpoint()
             if args.limit and count >= args.limit:
                 break
 
@@ -137,6 +178,8 @@ def main(argv: list[str]) -> int:
             "3/30,000); a ~20,000-patch subset would starve them to ~2 patches each."
         ),
         "count": count,
+        "written_this_run": written,
+        "skipped_existing": skipped,
         "logical_bytes": logical,
         "allocated_bytes": allocated,
         "bytes_per_map_logical": round(logical / count, 1) if count else 0,
@@ -146,17 +189,33 @@ def main(argv: list[str]) -> int:
         "shards": len(per_tile),
         "patches_per_shard": dict(sorted(per_tile.items())),
         "patch_ids_without_tile": no_tile,
+        "complete": not args.limit,
         "limit_applied": args.limit or None,
+        "resumable": True,
     }
     manifest_path.parent.mkdir(parents=True, exist_ok=True)
-    manifest_path.write_text(json.dumps(manifest, indent=2, sort_keys=True), encoding="utf-8")
+    if args.limit:
+        # A truncated trial run must not write the completion manifest — that would make the
+        # next full run think extraction was already finished and refuse to continue.
+        (root / PROGRESS).write_text(
+            json.dumps(manifest, indent=2, sort_keys=True), encoding="utf-8"
+        )
+        print(f"partial run ({count:,} maps) — progress written, manifest NOT written")
+    else:
+        manifest_path.write_text(json.dumps(manifest, indent=2, sort_keys=True), encoding="utf-8")
+        (root / PROGRESS).unlink(missing_ok=True)
 
     print()
     print(f"extracted : {count:,} maps into {len(per_tile)} tile shards")
     print(f"logical   : {logical / 1e9:.2f} GB")
     print(f"allocated : {allocated / 1e9:.2f} GB")
     print(f"elapsed   : {elapsed / 60:.1f} min")
-    print(f"manifest  : {manifest_path}")
+    if args.limit:
+        print(f"progress  : {root / PROGRESS}  (partial run — no completion manifest)")
+    else:
+        print(f"manifest  : {manifest_path}")
+    if skipped:
+        print(f"note      : {skipped:,} maps already existed and were not rewritten")
     if no_tile:
         print(f"WARNING: {len(no_tile)} patch ids had no parsable tile id, e.g. {no_tile[:3]}")
     return 0
