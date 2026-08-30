@@ -235,6 +235,17 @@ S5 — V1 INPUT VALIDATION + SENSOR PREPROCESSING COMPLETE. 72 new tests, 317 to
     src/satquery/preprocessing/norm_stats.py + scripts/data/compute_norm_stats.py
       — training-split-only statistics with split_hash and n_samples recorded.
 
+  *** S12 IS BLOCKED ON REAL NORMALISATION STATISTICS — NAMED BLOCKER, NOT A NOTE ***
+    S11 may proceed: building M1 and smoke-testing it against synthetic/placeholder
+    normalisation is legitimate, because a smoke test checks that the graph runs and the loss
+    descends, not that the numbers mean anything.
+    S12 MUST NOT PROCEED. Real training against placeholder statistics silently miscalibrates
+    every input the model ever sees, and the damage is invisible — the loss still descends.
+    DO NOT ASSUME S11's SYNTHETIC-DATA PASS MEANS S12 IS UNBLOCKED. It does not.
+    To unblock S12: obtain imagery (the 117.69 GB deferred tier), then run
+      uv run python scripts/data/compute_norm_stats.py --imagery-root <dir>
+    and confirm configs/norm_stats.yaml exists with split: train and a recorded split_hash.
+
   *** NOT YET VERIFIED — REAL NORMALISATION STATISTICS DO NOT EXIST ***
     configs/norm_stats.yaml has NOT been generated. compute_norm_stats.py requires imagery,
     which is the 117.69 GB deferred tier (standing decision, before S12). The script REFUSES

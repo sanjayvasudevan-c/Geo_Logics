@@ -39,8 +39,10 @@ from satquery.preprocessing.bands import (
 __all__ = [
     "DB_FLOOR_POWER",
     "DbConversion",
+    "PreprocessedInput",
     "band_presence_mask",
     "linear_to_db",
+    "preprocess",
     "resample_to_10m",
     "spectral_index",
     "stack_channels",
@@ -271,3 +273,68 @@ def stack_channels(
 
     assert out.shape[0] == N_CHANNELS == N_OPTICAL + len(S1_BANDS)
     return out
+
+
+@dataclass(frozen=True)
+class PreprocessedInput:
+    """The complete model input: the 12-channel tensor and its band-presence mask.
+
+    These two are returned **together, from one declaration of what was measured**, because
+    they are only meaningful as a pair. A tensor whose B11 channel is zeroed and a mask that
+    claims B11 was present describe contradictory worlds, and nothing downstream could detect
+    the disagreement — the model would simply learn from a lie.
+
+    Building them through separate calls made that drift possible. :func:`preprocess` closes it:
+    presence is *derived* from the same information that fills the tensor, so the two cannot
+    disagree by construction.
+
+    Attributes:
+        tensor: Float32 array of shape ``(12, H, W)`` in :data:`CHANNEL_ORDER`.
+        band_presence: Float32 array of length 10. ``1.0`` measured, ``0.0`` not measured.
+        sar_floored: Non-positive SAR pixels floored during dB conversion, per polarisation.
+            Surfaced so a caller calibrating on real Sentinel-1 notices miscalibrated products.
+    """
+
+    tensor: FloatArray
+    band_presence: npt.NDArray[np.float32]
+    sar_floored: dict[str, int]
+
+    @property
+    def dropped_bands(self) -> tuple[str, ...]:
+        """Optical bands marked not-measured."""
+        return tuple(b for b, p in zip(S2_BANDS, self.band_presence, strict=True) if p == 0.0)
+
+
+def preprocess(
+    sar: dict[str, npt.NDArray[Any]],
+    optical: dict[str, npt.NDArray[Any]],
+    target_shape: tuple[int, int],
+    *,
+    dropped: set[str] | frozenset[str] | None = None,
+    sar_floored: dict[str, int] | None = None,
+) -> PreprocessedInput:
+    """Assemble the model input, deriving the presence mask from the same source as the tensor.
+
+    A band counts as measured when it is supplied in ``optical`` **and** not named in
+    ``dropped``. Unmeasured bands are zero-filled in the tensor and marked ``0.0`` in the mask,
+    in one step, so the two can never disagree.
+
+    Args:
+        sar: VV/VH arrays, already dB-converted and standardised.
+        optical: Sentinel-2 arrays, already standardised. Omit a band to mark it unmeasured.
+        target_shape: ``(height, width)`` of the 10 m output grid.
+        dropped: Bands present in ``optical`` but to be treated as unmeasured — the band-dropout
+            augmentation path, where the array exists but must not be claimed as measured.
+        sar_floored: Floored-pixel counts from :func:`linear_to_db`, carried through for the trace.
+
+    Returns:
+        A :class:`PreprocessedInput` whose tensor and mask are guaranteed consistent.
+    """
+    drop = set(dropped or ())
+    usable = {b: a for b, a in optical.items() if b not in drop}
+    presence = {b: (b in usable) for b in S2_BANDS}
+    return PreprocessedInput(
+        tensor=stack_channels(sar, usable, target_shape),
+        band_presence=band_presence_mask(presence),
+        sar_floored=dict(sar_floored or {}),
+    )

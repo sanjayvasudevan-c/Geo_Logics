@@ -1,5 +1,9 @@
 """Taxonomy layer: nomenclature integrity, aggregation, penalty matrix, synonyms.
 
+All class maps in this module are SYNTHETIC (CLAUDE.md §7): small hand-built arrays of CORINE
+codes with known pixel counts, so aggregation is checked against arithmetic rather than against
+plausibility. No real reBEN reference maps are read here.
+
 The load-bearing test here is `test_adjacent_subclasses_aggregate_to_one_component`: it is the
 aggregation-before-geometry guarantee, and IMPLEMENTATION_MAP §5.3 ranks getting it wrong as
 the second most damaging silent failure in the system.

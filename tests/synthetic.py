@@ -1,4 +1,4 @@
-"""SYNTHETIC GeoTIFF fixtures for V1 and preprocessing tests.
+"""SYNTHETIC GeoTIFF factory for V1 and preprocessing tests.
 
 SYNTHETIC per CLAUDE.md §7: generated data, permitted only for unit, pipeline, stress and
 edge-case tests. No real reBEN imagery exists locally — it is the 117.69 GB deferred tier — so

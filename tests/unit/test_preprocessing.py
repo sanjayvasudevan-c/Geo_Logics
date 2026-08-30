@@ -29,8 +29,10 @@ from satquery.preprocessing.bands import (
 from satquery.preprocessing.norm_stats import BandStats, NormStats, load_norm_stats
 from satquery.preprocessing.sensors import (
     DB_FLOOR_POWER,
+    PreprocessedInput,
     band_presence_mask,
     linear_to_db,
+    preprocess,
     resample_to_10m,
     spectral_index,
     stack_channels,
@@ -188,14 +190,67 @@ class TestBandPresenceMask:
             band_presence_mask({"B01": False})
         assert e.value.context["check"] == "band_presence_names"
 
-    def test_dropped_band_distinguishable_from_dark_band(self) -> None:
-        """The whole point: zeros alone cannot say 'not measured'."""
-        dark = np.zeros((4, 4), dtype=np.float32)
-        stacked = stack_channels({}, {"B11": dark}, (4, 4))
-        present = band_presence_mask({"B11": True})
-        dropped = band_presence_mask({"B11": False})
-        assert np.array_equal(stacked[band_index("B11")], dark)
-        assert present[S2_BANDS.index("B11")] != dropped[S2_BANDS.index("B11")]
+    def test_dropped_and_dark_are_INDISTINGUISHABLE_in_the_tensor(self) -> None:
+        """The actual claim, asserted on the tensor a forward pass receives.
+
+        Scenario A: B11 was measured and the surface is genuinely dark (all zeros).
+        Scenario B: B11 was never measured, so its channel is zero-filled.
+
+        The two 12-channel tensors must be BYTE-IDENTICAL — that is precisely why the mask has
+        to exist. If this assertion ever fails, some other signal is leaking the distinction
+        and the mask is not load-bearing.
+        """
+        h, w = 8, 8
+        others = {b: np.full((h, w), 0.7, dtype=np.float32) for b in S2_BANDS if b != "B11"}
+        sar = {b: np.full((h, w), 0.3, dtype=np.float32) for b in S1_BANDS}
+
+        measured_but_dark = preprocess(
+            sar, {**others, "B11": np.zeros((h, w), dtype=np.float32)}, (h, w)
+        )
+        never_measured = preprocess(sar, others, (h, w))
+
+        assert np.array_equal(measured_but_dark.tensor, never_measured.tensor), (
+            "tensors must be identical; if they differ the mask is not the only carrier"
+        )
+        assert measured_but_dark.tensor.shape == (12, h, w)
+
+        # ...and ONLY the mask recovers the difference.
+        i = S2_BANDS.index("B11")
+        assert measured_but_dark.band_presence[i] == 1.0
+        assert never_measured.band_presence[i] == 0.0
+        assert never_measured.dropped_bands == ("B11",)
+        assert measured_but_dark.dropped_bands == ()
+
+    def test_mask_cannot_disagree_with_the_tensor(self) -> None:
+        """Presence is DERIVED from what filled the tensor, so drift is impossible.
+
+        Explicitly dropping a band whose array was supplied must zero the channel AND clear the
+        mask bit together — the band-dropout augmentation path.
+        """
+        h, w = 4, 4
+        optical = {b: np.full((h, w), 5.0, dtype=np.float32) for b in S2_BANDS}
+        out = preprocess({}, optical, (h, w), dropped={"B11", "B12"})
+
+        for band in ("B11", "B12"):
+            assert np.all(out.tensor[band_index(band)] == 0.0), f"{band} channel not zeroed"
+            assert out.band_presence[S2_BANDS.index(band)] == 0.0, f"{band} mask not cleared"
+        for band in ("B02", "B08"):
+            assert np.all(out.tensor[band_index(band)] == 5.0)
+            assert out.band_presence[S2_BANDS.index(band)] == 1.0
+        assert set(out.dropped_bands) == {"B11", "B12"}
+
+    def test_mask_travels_with_the_tensor_as_one_object(self) -> None:
+        """They are returned together; there is no call path that yields one without the other."""
+        out = preprocess({}, {b: np.zeros((4, 4), dtype=np.float32) for b in S2_BANDS}, (4, 4))
+        assert isinstance(out, PreprocessedInput)
+        assert out.tensor.shape[0] == N_CHANNELS
+        assert out.band_presence.shape == (N_OPTICAL,)
+
+    def test_sar_floored_counts_are_carried_through(self) -> None:
+        """A miscalibrated product must stay visible at the model boundary, not vanish."""
+        db = linear_to_db(np.array([[0.0, 1.0, 0.0]]))
+        out = preprocess({}, {}, (4, 4), sar_floored={"VV": db.floored})
+        assert out.sar_floored["VV"] == 2
 
 
 class TestStackChannels:
