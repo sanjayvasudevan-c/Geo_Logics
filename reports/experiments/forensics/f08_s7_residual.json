@@ -1,0 +1,25 @@
+{
+  "binary_area_forms": {
+    "at_least": 11028,
+    "at_most": 4319,
+    "between_range": 19047,
+    "more_than": 28426,
+    "other": 24022
+  },
+  "binary_count_forms": {
+    "at_least_n": 25487,
+    "at_most_n": 17320,
+    "exactly_n": 22315,
+    "more_than_n": 8546,
+    "other": 10077,
+    "presence_like": 3097
+  },
+  "mcq_area_adjacent_endpoints": {
+    "gapped": 41458,
+    "touching": 88805
+  },
+  "mcq_area_option_forms": {
+    "range": 173684
+  },
+  "rows": 866449
+}

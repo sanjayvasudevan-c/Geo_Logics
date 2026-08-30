@@ -1,0 +1,160 @@
+{
+  "columns": {
+    "ID": {
+      "cardinality": 273890,
+      "cardinality_capped": true,
+      "examples": [
+        "1966",
+        "1967",
+        "1968"
+      ],
+      "null_pct": 0.0,
+      "nulls": 0
+    },
+    "category": {
+      "cardinality": 11,
+      "cardinality_capped": false,
+      "examples": [
+        "adjacency",
+        "adjacency",
+        "area"
+      ],
+      "null_pct": 0.0,
+      "nulls": 0
+    },
+    "climate_zone": {
+      "cardinality": 10,
+      "cardinality_capped": false,
+      "examples": [
+        "Cold, no dry season, warm summer",
+        "Cold, no dry season, warm summer",
+        "Cold, no dry season, warm summer"
+      ],
+      "null_pct": 0.0,
+      "nulls": 0
+    },
+    "country": {
+      "cardinality": 10,
+      "cardinality_capped": false,
+      "examples": [
+        "Austria",
+        "Austria",
+        "Austria"
+      ],
+      "null_pct": 0.0,
+      "nulls": 0
+    },
+    "input": {
+      "cardinality": 220840,
+      "cardinality_capped": true,
+      "char_len": {
+        "max": 507,
+        "min": 29,
+        "p50": 93,
+        "p95": 223
+      },
+      "examples": [
+        "Is any broad-leaved forest and pastures side by side in this image?",
+        "Does the image show any arable land bordering inland waters?",
+        "Do broad-leaved forests cover more than 20% of the image?"
+      ],
+      "null_pct": 0.0,
+      "nulls": 0
+    },
+    "latitude": {
+      "cardinality": 162433,
+      "cardinality_capped": false,
+      "examples": [
+        "47.98273012795091",
+        "47.98273012795091",
+        "47.98273012795091"
+      ],
+      "null_pct": 0.0,
+      "nulls": 0
+    },
+    "longitude": {
+      "cardinality": 168299,
+      "cardinality_capped": false,
+      "examples": [
+        "12.858443091371182",
+        "12.858443091371182",
+        "12.858443091371182"
+      ],
+      "null_pct": 0.0,
+      "nulls": 0
+    },
+    "output": {
+      "cardinality": 200795,
+      "cardinality_capped": true,
+      "char_len": {
+        "max": 2265,
+        "min": 1,
+        "p50": 2,
+        "p95": 21
+      },
+      "examples": [
+        "yes",
+        "no",
+        "yes"
+      ],
+      "null_pct": 0.0,
+      "nulls": 0
+    },
+    "patch_id": {
+      "cardinality": 201691,
+      "cardinality_capped": true,
+      "examples": [
+        "S2A_MSIL2A_20170613T101031_N9999_R022_T33UUP_33_69",
+        "S2A_MSIL2A_20170613T101031_N9999_R022_T33UUP_33_69",
+        "S2A_MSIL2A_20170613T101031_N9999_R022_T33UUP_33_69"
+      ],
+      "null_pct": 0.0,
+      "nulls": 0
+    },
+    "s1_name": {
+      "cardinality": 201691,
+      "cardinality_capped": true,
+      "examples": [
+        "S1B_IW_GRDH_1SDV_20170612T165809_33UUP_33_69",
+        "S1B_IW_GRDH_1SDV_20170612T165809_33UUP_33_69",
+        "S1B_IW_GRDH_1SDV_20170612T165809_33UUP_33_69"
+      ],
+      "null_pct": 0.0,
+      "nulls": 0
+    },
+    "season": {
+      "cardinality": 4,
+      "cardinality_capped": false,
+      "examples": [
+        "Summer",
+        "Summer",
+        "Summer"
+      ],
+      "null_pct": 0.0,
+      "nulls": 0
+    },
+    "split": {
+      "cardinality": 2,
+      "cardinality_capped": false,
+      "examples": [
+        "validation",
+        "validation",
+        "validation"
+      ],
+      "null_pct": 0.0,
+      "nulls": 0
+    },
+    "type": {
+      "cardinality": 4,
+      "cardinality_capped": false,
+      "examples": [
+        "binary",
+        "binary",
+        "binary"
+      ],
+      "null_pct": 0.0,
+      "nulls": 0
+    }
+  },
+  "rows_train_val": 7128971
+}

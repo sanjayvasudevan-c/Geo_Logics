@@ -1,0 +1,14 @@
+{
+  "agreement": {
+    "climate zone": 35562,
+    "country": 35561,
+    "season": 35561
+  },
+  "rows": 695015,
+  "totals": {
+    "climate zone": 35562,
+    "country": 35561,
+    "season": 35561,
+    "season_in_question_text": 35562
+  }
+}

@@ -1,0 +1,82 @@
+{
+  "clc_l1_hits": {
+    "wetlands": 43462
+  },
+  "clc_l2_only_hits": {
+    "forests": 81528
+  },
+  "clc_l3_not_in_19_hits": {
+    "beaches": 17258,
+    "dunes": 17258,
+    "natural grasslands": 7578,
+    "sands": 17258,
+    "sclerophyllous vegetation": 40659,
+    "sparsely vegetated areas": 33276
+  },
+  "mcq_presence_options": {
+    "agro-forestry areas": 18542,
+    "arable land": 16062,
+    "beaches dunes sands": 6581,
+    "broad-leaved forest": 17945,
+    "coastal wetlands": 7103,
+    "complex cultivation patterns": 18226,
+    "coniferous forest": 15210,
+    "industrial or commercial units": 8001,
+    "inland waters": 15749,
+    "inland wetlands": 6912,
+    "land principally occupied by agriculture with significant areas of natural vegetation": 18414,
+    "marine waters": 16088,
+    "mixed forest": 14858,
+    "moors heathland and sclerophyllous vegetation": 11328,
+    "natural grassland and sparsely vegetated areas": 11891,
+    "pastures": 14096,
+    "permanent crops": 13325,
+    "transitional woodland shrub": 10233,
+    "urban fabric": 7584
+  },
+  "options_outside_19": [],
+  "reben19": [
+    "Agro-forestry areas",
+    "Arable land",
+    "Beaches, dunes, sands",
+    "Broad-leaved forest",
+    "Coastal wetlands",
+    "Complex cultivation patterns",
+    "Coniferous forest",
+    "Industrial or commercial units",
+    "Inland waters",
+    "Inland wetlands",
+    "Land principally occupied by agriculture, with significant areas of natural vegetation",
+    "Marine waters",
+    "Mixed forest",
+    "Moors, heathland and sclerophyllous vegetation",
+    "Natural grassland and sparsely vegetated areas",
+    "Pastures",
+    "Permanent crops",
+    "Transitional woodland, shrub",
+    "Urban fabric"
+  ],
+  "rows_scanned": 1227849,
+  "unit_hits_all_questions": {
+    "percent_sign": 95482,
+    "square_metres": 47930,
+    "thousand_m2": 30326
+  },
+  "unit_hits_area_questions": {
+    "binary|area": {
+      "percent_sign": 58253,
+      "square_metres": 29330,
+      "thousand_m2": 17928
+    },
+    "mcq|area": {
+      "percent_sign": 37229,
+      "square_metres": 18600,
+      "thousand_m2": 12398
+    }
+  },
+  "unit_hits_caption_answers": {
+    "percent_sign": 20136,
+    "square_metres": 42036,
+    "thousand_m2": 41987
+  }
+}

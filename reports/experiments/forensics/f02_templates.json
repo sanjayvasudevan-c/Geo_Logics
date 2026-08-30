@@ -1,0 +1,1072 @@
+{
+  "binary|adjacency": {
+    "distinct_answers": 2,
+    "distinct_skeletons": 4869,
+    "rows": 93693,
+    "top_answers": [
+      {
+        "answer": "no",
+        "n": 53717,
+        "pct": 57.333
+      },
+      {
+        "answer": "yes",
+        "n": 39976,
+        "pct": 42.667
+      }
+    ],
+    "top_skeletons": [
+      {
+        "pct": 0.28,
+        "text": "Is any inland water and marine waters neighbouring each other in the image?"
+      },
+      {
+        "pct": 0.28,
+        "text": "Does any inland water come into contact with marine waters in the image?"
+      },
+      {
+        "pct": 0.28,
+        "text": "Would you identify any inland water as lying adjacent to marine waters?"
+      },
+      {
+        "pct": 0.27,
+        "text": "Is there any inland water and marine waters positioned next to each other in the scene?"
+      },
+      {
+        "pct": 0.27,
+        "text": "Are there touching boundaries between any inland water and marine waters?"
+      },
+      {
+        "pct": 0.27,
+        "text": "Is any inland water adjacent to the border of marine waters?"
+      },
+      {
+        "pct": 0.27,
+        "text": "Is any inland water positioned right next to marine waters?"
+      },
+      {
+        "pct": 0.27,
+        "text": "Does the image show any inland water bordering marine waters?"
+      }
+    ]
+  },
+  "binary|area": {
+    "distinct_answers": 2,
+    "distinct_skeletons": 3225,
+    "rows": 107434,
+    "top_answers": [
+      {
+        "answer": "yes",
+        "n": 53717,
+        "pct": 50.0
+      },
+      {
+        "answer": "no",
+        "n": 53717,
+        "pct": 50.0
+      }
+    ],
+    "top_skeletons": [
+      {
+        "pct": 0.7,
+        "text": "Do arable lands cover at least <N>% of the image?"
+      },
+      {
+        "pct": 0.56,
+        "text": "Do coniferous forests cover at least <N>% of the image?"
+      },
+      {
+        "pct": 0.56,
+        "text": "Do mixed forests cover at least <N>% of the image?"
+      },
+      {
+        "pct": 0.46,
+        "text": "Do marine waters cover less than the whole image?"
+      },
+      {
+        "pct": 0.46,
+        "text": "Does the image show other classes besides marine waters?"
+      },
+      {
+        "pct": 0.45,
+        "text": "Is there some part of the image not covered by marine waters?"
+      },
+      {
+        "pct": 0.45,
+        "text": "Does the image contain classes other than marine waters?"
+      },
+      {
+        "pct": 0.44,
+        "text": "Is there anything except marine waters in the image?"
+      }
+    ]
+  },
+  "binary|count": {
+    "distinct_answers": 2,
+    "distinct_skeletons": 1008,
+    "rows": 107434,
+    "top_answers": [
+      {
+        "answer": "no",
+        "n": 53717,
+        "pct": 50.0
+      },
+      {
+        "answer": "yes",
+        "n": 53717,
+        "pct": 50.0
+      }
+    ],
+    "top_skeletons": [
+      {
+        "pct": 0.45,
+        "text": "Would you say the image includes at least one connected region of arable lands?"
+      },
+      {
+        "pct": 0.44,
+        "text": "Are arable lands separated across one or more continuous areas in the image?"
+      },
+      {
+        "pct": 0.43,
+        "text": "Are fewer than three continuous areas of arable lands visible here?"
+      },
+      {
+        "pct": 0.43,
+        "text": "Would you confirm that the image has at least one continuous region of arable lands?"
+      },
+      {
+        "pct": 0.43,
+        "text": "Are there at most two continuous regions of arable lands present in this image?"
+      },
+      {
+        "pct": 0.43,
+        "text": "Is there only a single continuous region of arable lands visible in the image?"
+      },
+      {
+        "pct": 0.43,
+        "text": "Would you say that there are less than four connected regions of arable lands here?"
+      },
+      {
+        "pct": 0.43,
+        "text": "Does the image illustrate fewer than three connected regions of arable lands?"
+      }
+    ]
+  },
+  "binary|presence": {
+    "distinct_answers": 2,
+    "distinct_skeletons": 380,
+    "rows": 107434,
+    "top_answers": [
+      {
+        "answer": "yes",
+        "n": 53717,
+        "pct": 50.0
+      },
+      {
+        "answer": "no",
+        "n": 53717,
+        "pct": 50.0
+      }
+    ],
+    "top_skeletons": [
+      {
+        "pct": 0.52,
+        "text": "Are there regions of arable land in the satellite image?"
+      },
+      {
+        "pct": 0.51,
+        "text": "Would you classify part of this image as arable land?"
+      },
+      {
+        "pct": 0.51,
+        "text": "Does this satellite image include inland waters?"
+      },
+      {
+        "pct": 0.51,
+        "text": "Can you detect any marine waters in the image?"
+      },
+      {
+        "pct": 0.51,
+        "text": "Does the image show inland waters?"
+      },
+      {
+        "pct": 0.5,
+        "text": "Does the image depict arable land?"
+      },
+      {
+        "pct": 0.5,
+        "text": "Does the image capture arable land?"
+      },
+      {
+        "pct": 0.5,
+        "text": "Do parts of the image correspond to marine waters?"
+      }
+    ]
+  },
+  "bounding box|point": {
+    "distinct_answers": 56491,
+    "distinct_skeletons": 19,
+    "rows": 112960,
+    "top_answers": [
+      {
+        "answer": "[0.0 0.0, 1.0 1.0]",
+        "n": 879,
+        "pct": 0.778
+      },
+      {
+        "answer": "[0.4 0.0, 1.0 1.0]",
+        "n": 120,
+        "pct": 0.106
+      },
+      {
+        "answer": "[0.0 0.0, 1.0 0.6]",
+        "n": 114,
+        "pct": 0.101
+      },
+      {
+        "answer": "[0.0 0.4, 1.0 1.0]",
+        "n": 113,
+        "pct": 0.1
+      },
+      {
+        "answer": "[0.0 0.0, 0.6 1.0]",
+        "n": 111,
+        "pct": 0.098
+      },
+      {
+        "answer": "[0.0 0.0, 1.0 0.56]",
+        "n": 108,
+        "pct": 0.096
+      },
+      {
+        "answer": "[0.0 0.3, 1.0 1.0]",
+        "n": 105,
+        "pct": 0.093
+      },
+      {
+        "answer": "[0.0 0.0, 0.5 1.0]",
+        "n": 104,
+        "pct": 0.092
+      },
+      {
+        "answer": "[0.35 0.0, 1.0 1.0]",
+        "n": 103,
+        "pct": 0.091
+      },
+      {
+        "answer": "[0.0 0.0, 0.7 1.0]",
+        "n": 102,
+        "pct": 0.09
+      },
+      {
+        "answer": "[0.5 0.0, 1.0 1.0]",
+        "n": 100,
+        "pct": 0.089
+      },
+      {
+        "answer": "[0.0 0.0, 0.65 1.0]",
+        "n": 97,
+        "pct": 0.086
+      },
+      {
+        "answer": "[0.45 0.0, 1.0 1.0]",
+        "n": 95,
+        "pct": 0.084
+      },
+      {
+        "answer": "[0.25 0.0, 1.0 1.0]",
+        "n": 95,
+        "pct": 0.084
+      },
+      {
+        "answer": "[0.0 0.55, 1.0 1.0]",
+        "n": 94,
+        "pct": 0.083
+      },
+      {
+        "answer": "[0.3 0.0, 1.0 1.0]",
+        "n": 94,
+        "pct": 0.083
+      },
+      {
+        "answer": "[0.0 0.0, 0.56 1.0]",
+        "n": 94,
+        "pct": 0.083
+      },
+      {
+        "answer": "[0.0 0.45, 1.0 1.0]",
+        "n": 91,
+        "pct": 0.081
+      },
+      {
+        "answer": "[0.0 0.0, 0.8 1.0]",
+        "n": 88,
+        "pct": 0.078
+      },
+      {
+        "answer": "[0.0 0.0, 1.0 0.65]",
+        "n": 88,
+        "pct": 0.078
+      },
+      {
+        "answer": "[0.0 0.5, 1.0 1.0]",
+        "n": 86,
+        "pct": 0.076
+      },
+      {
+        "answer": "[0.0 0.0, 0.75 1.0]",
+        "n": 84,
+        "pct": 0.074
+      },
+      {
+        "answer": "[0.0 0.35, 1.0 1.0]",
+        "n": 84,
+        "pct": 0.074
+      },
+      {
+        "answer": "[0.0 0.0, 1.0 0.5]",
+        "n": 78,
+        "pct": 0.069
+      },
+      {
+        "answer": "[0.0 0.0, 1.0 0.75]",
+        "n": 77,
+        "pct": 0.068
+      }
+    ],
+    "top_skeletons": [
+      {
+        "pct": 5.45,
+        "text": "Generate a bounding box enclosing the land cover class instance positioned at <point>(<N> <N>)</point> in the image."
+      },
+      {
+        "pct": 5.4,
+        "text": "Provide a bounding box for the land cover class instance at <point>(<N> <N>)</point> in the satellite image."
+      },
+      {
+        "pct": 5.33,
+        "text": "Generate a bounding box for the land cover class instance found at <point>(<N> <N>)</point> in the satellite image."
+      },
+      {
+        "pct": 5.3,
+        "text": "Output a bounding box enclosing the land cover class instance positioned at <point>(<N> <N>)</point> in the image."
+      },
+      {
+        "pct": 5.29,
+        "text": "Create a bounding box around the land cover class instance found at <point>(<N> <N>)</point> in the satellite image."
+      },
+      {
+        "pct": 5.29,
+        "text": "Provide a bounding box enclosing the land cover class instance located at <point>(<N> <N>)</point> in the image."
+      },
+      {
+        "pct": 5.28,
+        "text": "Create a bounding box enclosing the land cover class instance located at <point>(<N> <N>)</point> in the image."
+      },
+      {
+        "pct": 5.28,
+        "text": "Output a bounding box surrounding the land cover class instance positioned at <point>(<N> <N>)</point> in the image."
+      }
+    ]
+  },
+  "bounding box|reference": {
+    "distinct_answers": 52635,
+    "distinct_skeletons": 743,
+    "rows": 105525,
+    "top_answers": [
+      {
+        "answer": "[0.4 0.0, 1.0 1.0]",
+        "n": 135,
+        "pct": 0.128
+      },
+      {
+        "answer": "[0.0 0.0, 1.0 0.6]",
+        "n": 129,
+        "pct": 0.122
+      },
+      {
+        "answer": "[0.0 0.0, 0.6 1.0]",
+        "n": 126,
+        "pct": 0.119
+      },
+      {
+        "answer": "[0.0 0.4, 1.0 1.0]",
+        "n": 123,
+        "pct": 0.117
+      },
+      {
+        "answer": "[0.35 0.0, 1.0 1.0]",
+        "n": 119,
+        "pct": 0.113
+      },
+      {
+        "answer": "[0.0 0.0, 0.7 1.0]",
+        "n": 119,
+        "pct": 0.113
+      },
+      {
+        "answer": "[0.0 0.3, 1.0 1.0]",
+        "n": 118,
+        "pct": 0.112
+      },
+      {
+        "answer": "[0.0 0.0, 1.0 0.56]",
+        "n": 115,
+        "pct": 0.109
+      },
+      {
+        "answer": "[0.0 0.0, 0.5 1.0]",
+        "n": 111,
+        "pct": 0.105
+      },
+      {
+        "answer": "[0.45 0.0, 1.0 1.0]",
+        "n": 110,
+        "pct": 0.104
+      },
+      {
+        "answer": "[0.3 0.0, 1.0 1.0]",
+        "n": 109,
+        "pct": 0.103
+      },
+      {
+        "answer": "[0.0 0.0, 1.0 0.65]",
+        "n": 108,
+        "pct": 0.102
+      },
+      {
+        "answer": "[0.25 0.0, 1.0 1.0]",
+        "n": 108,
+        "pct": 0.102
+      },
+      {
+        "answer": "[0.0 0.0, 0.65 1.0]",
+        "n": 106,
+        "pct": 0.1
+      },
+      {
+        "answer": "[0.0 0.55, 1.0 1.0]",
+        "n": 106,
+        "pct": 0.1
+      },
+      {
+        "answer": "[0.5 0.0, 1.0 1.0]",
+        "n": 104,
+        "pct": 0.099
+      },
+      {
+        "answer": "[0.0 0.0, 0.56 1.0]",
+        "n": 103,
+        "pct": 0.098
+      },
+      {
+        "answer": "[0.0 0.45, 1.0 1.0]",
+        "n": 101,
+        "pct": 0.096
+      },
+      {
+        "answer": "[0.0 0.0, 0.75 1.0]",
+        "n": 99,
+        "pct": 0.094
+      },
+      {
+        "answer": "[0.0 0.0, 0.8 1.0]",
+        "n": 99,
+        "pct": 0.094
+      },
+      {
+        "answer": "[0.0 0.35, 1.0 1.0]",
+        "n": 98,
+        "pct": 0.093
+      },
+      {
+        "answer": "[0.0 0.0, 1.0 0.7]",
+        "n": 95,
+        "pct": 0.09
+      },
+      {
+        "answer": "[0.0 0.0, 1.0 0.75]",
+        "n": 91,
+        "pct": 0.086
+      },
+      {
+        "answer": "[0.0 0.0, 1.0 0.5]",
+        "n": 91,
+        "pct": 0.086
+      },
+      {
+        "answer": "[0.0 0.5, 1.0 1.0]",
+        "n": 88,
+        "pct": 0.083
+      }
+    ],
+    "top_skeletons": [
+      {
+        "pct": 0.53,
+        "text": "Where can a continuous area of <ref>transitional woodlands or shrubs</ref> be found?"
+      },
+      {
+        "pct": 0.52,
+        "text": "Locate a continuous area of <ref>transitional woodlands or shrubs</ref>."
+      },
+      {
+        "pct": 0.52,
+        "text": "Show a continuous region of <ref>transitional woodlands or shrubs</ref> in the scene."
+      },
+      {
+        "pct": 0.52,
+        "text": "Where is a connected region of <ref>transitional woodlands or shrubs</ref> located?"
+      },
+      {
+        "pct": 0.51,
+        "text": "Can you identify a contiguous region of <ref>transitional woodlands or shrubs</ref> in this scene?"
+      },
+      {
+        "pct": 0.5,
+        "text": "Indicate the position of a continuous region of <ref>transitional woodlands or shrubs</ref>."
+      },
+      {
+        "pct": 0.5,
+        "text": "Locate a patch of <ref>transitional woodlands or shrubs</ref> present in the image."
+      },
+      {
+        "pct": 0.49,
+        "text": "Where can a continuous area of <ref>arable land</ref> be found?"
+      }
+    ]
+  },
+  "captioning|None": {
+    "distinct_answers": 1,
+    "distinct_skeletons": 32,
+    "rows": 53717,
+    "top_answers": [
+      {
+        "answer": "<LONG>",
+        "n": 53717,
+        "pct": 100.0
+      }
+    ],
+    "top_skeletons": [
+      {
+        "pct": 3.25,
+        "text": "Describe the satellite scene, including the region, time of year, and land cover classes."
+      },
+      {
+        "pct": 3.25,
+        "text": "Describe the content of the satellite image, including where and when it was captured and the landscape composition."
+      },
+      {
+        "pct": 3.24,
+        "text": "Provide a detailed summary of the scene, including the location and distribution of different land cover types."
+      },
+      {
+        "pct": 3.21,
+        "text": "Provide a description of this satellite image, including its geographic location, season, and land cover types."
+      },
+      {
+        "pct": 3.2,
+        "text": "Explain what can be seen in this satellite image, specifying where and when it was captured."
+      },
+      {
+        "pct": 3.19,
+        "text": "Explain the features in the image, highlighting the geographic context, season, and land cover classes."
+      },
+      {
+        "pct": 3.17,
+        "text": "Give a comprehensive overview of the image, specifying the location, climate, and landscape features."
+      },
+      {
+        "pct": 3.17,
+        "text": "Explain the observed land cover and spatial patterns, including the location and climate context."
+      }
+    ]
+  },
+  "mcq|adjacency": {
+    "distinct_answers": 4,
+    "distinct_skeletons": 39973,
+    "rows": 39976,
+    "top_answers": [
+      {
+        "answer": "d",
+        "n": 10050,
+        "pct": 25.14
+      },
+      {
+        "answer": "c",
+        "n": 10039,
+        "pct": 25.113
+      },
+      {
+        "answer": "a",
+        "n": 10024,
+        "pct": 25.075
+      },
+      {
+        "answer": "b",
+        "n": 9863,
+        "pct": 24.672
+      }
+    ],
+    "top_skeletons": [
+      {
+        "pct": 0.01,
+        "text": "Which classes are in contact in this scene? a) Complex cultivation patterns and Marine waters, b) Coniferous forest and Inland waters, c) Inland waters and Mixed forest, d) Coniferous forest and Marine waters"
+      },
+      {
+        "pct": 0.01,
+        "text": "Which land cover classes are adjacent? a) Broad-leaved forest and Inland waters, b) Inland waters and Mixed forest, c) Coniferous forest and Mixed forest, d) Agro-forestry areas and Land principally occupied by agriculture, with significant areas of natural vegetation"
+      },
+      {
+        "pct": 0.01,
+        "text": "Select the pair that borders each other: a) Arable land and Complex cultivation patterns, b) Agro-forestry areas and Pastures, c) Agro-forestry areas and Coniferous forest, d) Agro-forestry areas and Arable land"
+      },
+      {
+        "pct": 0.0,
+        "text": "From the options below, pick the touching pair: a) Complex cultivation patterns and Pastures, b) Land principally occupied by agriculture, with significant areas of natural vegetation and Urban fabric, c) Inland waters and Mixed forest, d) Broad-leaved forest and Pastures"
+      },
+      {
+        "pct": 0.0,
+        "text": "Select the pair that borders each other: a) Mixed forest and Permanent crops, b) Inland waters and Mixed forest, c) Arable land and Pastures, d) Agro-forestry areas and Coastal wetlands"
+      },
+      {
+        "pct": 0.0,
+        "text": "Which classes share a boundary? a) Broad-leaved forest and Transitional woodland, shrub, b) Broad-leaved forest and Complex cultivation patterns, c) Industrial or commercial units and Inland waters, d) Land principally occupied by agriculture, with significant areas of natural vegetation and Pastures"
+      },
+      {
+        "pct": 0.0,
+        "text": "Which classes are in contact in this scene? a) Agro-forestry areas and Complex cultivation patterns, b) Beaches, dunes, sands and Permanent crops, c) Inland waters and Transitional woodland, shrub, d) Broad-leaved forest and Inland waters"
+      },
+      {
+        "pct": 0.0,
+        "text": "Which classes are directly connected? a) Agro-forestry areas and Pastures, b) Inland waters and Mixed forest, c) Inland waters and Pastures, d) Coniferous forest and Transitional woodland, shrub"
+      }
+    ]
+  },
+  "mcq|area": {
+    "distinct_answers": 4,
+    "distinct_skeletons": 2209,
+    "rows": 53717,
+    "top_answers": [
+      {
+        "answer": "b",
+        "n": 13561,
+        "pct": 25.245
+      },
+      {
+        "answer": "a",
+        "n": 13450,
+        "pct": 25.039
+      },
+      {
+        "answer": "d",
+        "n": 13367,
+        "pct": 24.884
+      },
+      {
+        "answer": "c",
+        "n": 13339,
+        "pct": 24.832
+      }
+    ],
+    "top_skeletons": [
+      {
+        "pct": 0.45,
+        "text": "How large are the arable lands in this image? a) <N> to <N>%, b) <N> to <N>%, c) <N> to <N>%, d) <N> to <N>%"
+      },
+      {
+        "pct": 0.44,
+        "text": "Estimate the coverage of arable lands: a) <N> to <N>%, b) <N> to <N>%, c) <N> to <N>%, d) <N> to <N>%"
+      },
+      {
+        "pct": 0.43,
+        "text": "Which range best describes the coverage of arable lands? a) <N> to <N>%, b) <N> to <N>%, c) <N> to <N>%, d) <N> to <N>%"
+      },
+      {
+        "pct": 0.43,
+        "text": "Choose the correct coverage of arable lands: a) <N> to <N>%, b) <N> to <N>%, c) <N> to <N>%, d) <N> to <N>%"
+      },
+      {
+        "pct": 0.42,
+        "text": "How much of the scene do arable lands cover? a) <N> to <N>%, b) <N> to <N>%, c) <N> to <N>%, d) <N> to <N>%"
+      },
+      {
+        "pct": 0.42,
+        "text": "Select the area covered by arable lands: a) <N> to <N>%, b) <N> to <N>%, c) <N> to <N>%, d) <N> to <N>%"
+      },
+      {
+        "pct": 0.41,
+        "text": "What is the approximate area of arable lands? a) <N> to <N>%, b) <N> to <N>%, c) <N> to <N>%, d) <N> to <N>%"
+      },
+      {
+        "pct": 0.41,
+        "text": "Which range corresponds to the area covered by arable lands? a) <N> to <N>%, b) <N> to <N>%, c) <N> to <N>%, d) <N> to <N>%"
+      }
+    ]
+  },
+  "mcq|climate zone": {
+    "distinct_answers": 4,
+    "distinct_skeletons": 45700,
+    "rows": 53717,
+    "top_answers": [
+      {
+        "answer": "d",
+        "n": 13584,
+        "pct": 25.288
+      },
+      {
+        "answer": "a",
+        "n": 13468,
+        "pct": 25.072
+      },
+      {
+        "answer": "c",
+        "n": 13376,
+        "pct": 24.901
+      },
+      {
+        "answer": "b",
+        "n": 13289,
+        "pct": 24.739
+      }
+    ],
+    "top_skeletons": [
+      {
+        "pct": 0.01,
+        "text": "Which of the following options corresponds to the climate zone shown in the satellite image? a) Temperate, no dry season, warm summer, b) Temperate, no dry season, hot summer, c) Cold, dry summer, warm summer, d) Cold, no dry season, warm summer"
+      },
+      {
+        "pct": 0.01,
+        "text": "Choose one of the following options that represents the climate zone depicted in the satellite image: a) Arid, steppe, cold, b) Temperate, no dry season, warm summer, c) Polar, tundra, d) Cold, no dry season, warm summer"
+      },
+      {
+        "pct": 0.01,
+        "text": "Choose one of the following options that represents the climate zone depicted in the satellite image: a) Cold, no dry season, warm summer, b) Cold, no dry season, hot summer, c) Temperate, no dry season, warm summer, d) Cold, no dry season, cold summer"
+      },
+      {
+        "pct": 0.01,
+        "text": "From the options below, select the climate zone shown in the image: a) Temperate, no dry season, warm summer, b) Cold, no dry season, warm summer, c) Cold, no dry season, hot summer, d) Cold, dry summer, warm summer"
+      },
+      {
+        "pct": 0.01,
+        "text": "Which of the following climate zones does this image represent? a) Temperate, dry summer, hot summer, b) Temperate, no dry season, hot summer, c) Temperate, no dry season, warm summer, d) Temperate, no dry season, cold summer"
+      },
+      {
+        "pct": 0.01,
+        "text": "From the following options, choose the climate zone shown in the image: a) Temperate, no dry season, warm summer, b) Temperate, dry summer, warm summer, c) Temperate, dry summer, hot summer, d) Temperate, no dry season, hot summer"
+      },
+      {
+        "pct": 0.01,
+        "text": "Which of the following climate zones is captured in the image? a) Temperate, no dry season, warm summer, b) Temperate, dry summer, hot summer, c) Cold, no dry season, warm summer, d) Temperate, no dry season, hot summer"
+      },
+      {
+        "pct": 0.01,
+        "text": "Which of the following options corresponds to the climate zone shown in the satellite image? a) Temperate, no dry season, hot summer, b) Temperate, no dry season, cold summer, c) Cold, no dry season, hot summer, d) Temperate, dry summer, hot summer"
+      }
+    ]
+  },
+  "mcq|count": {
+    "distinct_answers": 4,
+    "distinct_skeletons": 3120,
+    "rows": 53717,
+    "top_answers": [
+      {
+        "answer": "b",
+        "n": 13486,
+        "pct": 25.106
+      },
+      {
+        "answer": "d",
+        "n": 13466,
+        "pct": 25.068
+      },
+      {
+        "answer": "a",
+        "n": 13406,
+        "pct": 24.957
+      },
+      {
+        "answer": "c",
+        "n": 13359,
+        "pct": 24.869
+      }
+    ],
+    "top_skeletons": [
+      {
+        "pct": 0.28,
+        "text": "Select the number of regions of arable land: a) <N> b) <N> c) <N> d) <N>"
+      },
+      {
+        "pct": 0.28,
+        "text": "Count the number of regions covered by arable land in the image: a) <N> b) <N> c) <N> d) <N>"
+      },
+      {
+        "pct": 0.27,
+        "text": "Select the number of areas covered by arable land: a) <N> b) <N> c) <N> d) <N>"
+      },
+      {
+        "pct": 0.26,
+        "text": "How many continuous areas are covered by arable land? a) <N> b) <N> c) <N> d) <N>"
+      },
+      {
+        "pct": 0.26,
+        "text": "Count the distinct regions of arable land: a) <N> b) <N> c) <N> d) <N>"
+      },
+      {
+        "pct": 0.26,
+        "text": "How many distinct regions of arable land can be observed? a) <N> b) <N> c) <N> d) <N>"
+      },
+      {
+        "pct": 0.26,
+        "text": "How many patches of arable land can be observed? a) <N> b) <N> c) <N> d) <N>"
+      },
+      {
+        "pct": 0.26,
+        "text": "Identify how many patches of arable land exist: a) <N> b) <N> c) <N> d) <N>"
+      }
+    ]
+  },
+  "mcq|country": {
+    "distinct_answers": 4,
+    "distinct_skeletons": 42218,
+    "rows": 53717,
+    "top_answers": [
+      {
+        "answer": "b",
+        "n": 13546,
+        "pct": 25.217
+      },
+      {
+        "answer": "c",
+        "n": 13462,
+        "pct": 25.061
+      },
+      {
+        "answer": "d",
+        "n": 13371,
+        "pct": 24.892
+      },
+      {
+        "answer": "a",
+        "n": 13338,
+        "pct": 24.83
+      }
+    ],
+    "top_skeletons": [
+      {
+        "pct": 0.01,
+        "text": "Which of these countries is represented in the satellite image? a) Finland, b) Luxembourg, c) Portugal, d) Lithuania"
+      },
+      {
+        "pct": 0.01,
+        "text": "Choose the country depicted in the image: a) Luxembourg, b) Portugal, c) Austria, d) Finland"
+      },
+      {
+        "pct": 0.01,
+        "text": "Identify the country depicted in the satellite image: a) Lithuania, b) Serbia, c) Finland, d) Ireland"
+      },
+      {
+        "pct": 0.01,
+        "text": "Which of these countries is represented in the satellite image? a) Switzerland, b) Austria, c) Finland, d) Belgium"
+      },
+      {
+        "pct": 0.01,
+        "text": "Identify the country shown in the image: a) Switzerland, b) Austria, c) Portugal, d) Ireland"
+      },
+      {
+        "pct": 0.01,
+        "text": "Which country is depicted in this image? a) Portugal, b) Luxembourg, c) Finland, d) Austria"
+      },
+      {
+        "pct": 0.01,
+        "text": "Identify the country captured in the satellite image: a) Switzerland, b) Austria, c) Kosovo, d) Ireland"
+      },
+      {
+        "pct": 0.01,
+        "text": "Choose one of the following options that represents the country depicted in the satellite image: a) Serbia, b) Kosovo, c) Austria, d) Finland"
+      }
+    ]
+  },
+  "mcq|presence": {
+    "distinct_answers": 4,
+    "distinct_skeletons": 50282,
+    "rows": 53717,
+    "top_answers": [
+      {
+        "answer": "a",
+        "n": 13661,
+        "pct": 25.431
+      },
+      {
+        "answer": "b",
+        "n": 13360,
+        "pct": 24.871
+      },
+      {
+        "answer": "c",
+        "n": 13354,
+        "pct": 24.86
+      },
+      {
+        "answer": "d",
+        "n": 13342,
+        "pct": 24.838
+      }
+    ],
+    "top_skeletons": [
+      {
+        "pct": 0.01,
+        "text": "Identify the land cover class present in the image: a) Broad-leaved forest, b) Mixed forest, c) Coniferous forest, d) Natural grassland and sparsely vegetated areas"
+      },
+      {
+        "pct": 0.01,
+        "text": "From the options below, identify the land cover type in the image: a) Coniferous forest, b) Broad-leaved forest, c) Mixed forest, d) Permanent crops"
+      },
+      {
+        "pct": 0.01,
+        "text": "Which of these classes is visible in the image? a) Land principally occupied by agriculture, with significant areas of natural vegetation, b) Broad-leaved forest, c) Mixed forest, d) Coniferous forest"
+      },
+      {
+        "pct": 0.01,
+        "text": "Which land cover class appears in this satellite image? a) Land principally occupied by agriculture, with significant areas of natural vegetation, b) Complex cultivation patterns, c) Marine waters, d) Agro-forestry areas"
+      },
+      {
+        "pct": 0.01,
+        "text": "From these options, which class can be observed in the image? a) Complex cultivation patterns, b) Beaches, dunes, sands, c) Agro-forestry areas, d) Land principally occupied by agriculture, with significant areas of natural vegetation"
+      },
+      {
+        "pct": 0.01,
+        "text": "From the following, identify the class that appears in the image: a) Beaches, dunes, sands, b) Coniferous forest, c) Broad-leaved forest, d) Mixed forest"
+      },
+      {
+        "pct": 0.01,
+        "text": "Choose the land cover class present in the image: a) Agro-forestry areas, b) Land principally occupied by agriculture, with significant areas of natural vegetation, c) Complex cultivation patterns, d) Natural grassland and sparsely vegetated areas"
+      },
+      {
+        "pct": 0.01,
+        "text": "From the options below, pick the land cover class visible in the image: a) Mixed forest, b) Broad-leaved forest, c) Coniferous forest, d) Beaches, dunes, sands"
+      }
+    ]
+  },
+  "mcq|relative pos": {
+    "distinct_answers": 4,
+    "distinct_skeletons": 9747,
+    "rows": 9777,
+    "top_answers": [
+      {
+        "answer": "d",
+        "n": 2477,
+        "pct": 25.335
+      },
+      {
+        "answer": "c",
+        "n": 2436,
+        "pct": 24.916
+      },
+      {
+        "answer": "b",
+        "n": 2436,
+        "pct": 24.916
+      },
+      {
+        "answer": "a",
+        "n": 2428,
+        "pct": 24.834
+      }
+    ],
+    "top_skeletons": [
+      {
+        "pct": 0.02,
+        "text": "What directional relationship exists between the land principally occupied by agriculture with significant areas of natural vegetation and the mixed forest? a) to the top, b) to the bottom-right, c) to the left, d) to the bottom"
+      },
+      {
+        "pct": 0.02,
+        "text": "Considering the land principally occupied by agriculture with significant areas of natural vegetation as a reference, where do the complex cultivation patterns appear? a) to the bottom-right, b) to the left, c) to the top, d) to the top-right"
+      },
+      {
+        "pct": 0.02,
+        "text": "Where does the mixed forest lie relative to the transitional woodlands or shrubs in the image? a) to the left, b) to the bottom-right, c) to the top, d) to the right"
+      },
+      {
+        "pct": 0.02,
+        "text": "Relative to the marine waters, where does the coniferous forest appear in the scene? a) to the bottom, b) to the right, c) to the left, d) to the top-left"
+      },
+      {
+        "pct": 0.02,
+        "text": "Which option best represents the spatial relation of the arable land relative to the coniferous forest? a) to the bottom, b) to the top-right, c) to the right, d) to the left"
+      },
+      {
+        "pct": 0.02,
+        "text": "What is the relative position of the arable land to the land principally occupied by agriculture with significant areas of natural vegetation? a) to the right, b) to the left, c) to the top, d) to the bottom-right"
+      },
+      {
+        "pct": 0.02,
+        "text": "In relation to the urban fabric, where is the broad-leaved forest located in the image? a) to the top-right, b) to the top, c) to the bottom-right, d) to the left"
+      },
+      {
+        "pct": 0.02,
+        "text": "Considering the coniferous forest as a reference, where does the arable land appear? a) to the bottom, b) to the bottom-right, c) to the top, d) to the right"
+      }
+    ]
+  },
+  "mcq|season": {
+    "distinct_answers": 4,
+    "distinct_skeletons": 2275,
+    "rows": 53717,
+    "top_answers": [
+      {
+        "answer": "a",
+        "n": 13585,
+        "pct": 25.29
+      },
+      {
+        "answer": "d",
+        "n": 13523,
+        "pct": 25.175
+      },
+      {
+        "answer": "c",
+        "n": 13452,
+        "pct": 25.042
+      },
+      {
+        "answer": "b",
+        "n": 13157,
+        "pct": 24.493
+      }
+    ],
+    "top_skeletons": [
+      {
+        "pct": 0.39,
+        "text": "Which season is shown in the satellite image? a) Summer, b) Winter, c) Spring, d) Autumn"
+      },
+      {
+        "pct": 0.35,
+        "text": "Which season is shown in the satellite image? a) Summer, b) Autumn, c) Spring, d) Winter"
+      },
+      {
+        "pct": 0.34,
+        "text": "Which season is shown in the satellite image? a) Spring, b) Winter, c) Summer, d) Autumn"
+      },
+      {
+        "pct": 0.34,
+        "text": "Which season is shown in the satellite image? a) Winter, b) Autumn, c) Summer, d) Spring"
+      },
+      {
+        "pct": 0.34,
+        "text": "Which season is shown in the satellite image? a) Spring, b) Summer, c) Autumn, d) Winter"
+      },
+      {
+        "pct": 0.33,
+        "text": "Which season is shown in the satellite image? a) Summer, b) Autumn, c) Winter, d) Spring"
+      },
+      {
+        "pct": 0.33,
+        "text": "Which season is shown in the satellite image? a) Summer, b) Spring, c) Autumn, d) Winter"
+      },
+      {
+        "pct": 0.33,
+        "text": "Which season is shown in the satellite image? a) Winter, b) Autumn, c) Spring, d) Summer"
+      }
+    ]
+  }
+}

@@ -1,0 +1,87 @@
+{
+  "binary_count_phrasings": {
+    "at least four": 5956,
+    "at least one": 8791,
+    "at least three": 4050,
+    "at least two": 4473,
+    "at most two": 2741,
+    "exactly four": 5732,
+    "exactly one": 5146,
+    "exactly three": 8097,
+    "exactly two": 12927,
+    "fewer than four": 2876,
+    "fewer than three": 5652,
+    "fewer than two": 5166,
+    "more than a": 2159,
+    "more than one": 4724,
+    "more than three": 3797,
+    "more than two": 4092
+  },
+  "comparators": {
+    "binary|area": {
+      "at_least": 19988,
+      "at_most": 12229,
+      "more_than": 52808,
+      "none/equality": 54128
+    },
+    "binary|count": {
+      "at_least": 36317,
+      "at_most": 24820,
+      "exactly": 31902,
+      "more_than": 18704,
+      "none/equality": 14959
+    },
+    "mcq|area": {
+      "none/equality": 62037
+    },
+    "mcq|count": {
+      "more_than": 30808,
+      "none/equality": 31229
+    }
+  },
+  "m2": {
+    "gap_median": 144000.0,
+    "gap_min": 144000.0,
+    "max": 1440000.0,
+    "median": 864000.0,
+    "min": 0.0,
+    "n": 114091,
+    "nunique": 11,
+    "pct_divisible": {
+      "10": 100.0,
+      "100": 100.0,
+      "1000": 100.0,
+      "10000": 26.904
+    }
+  },
+  "percent": {
+    "max": 100.0,
+    "min": 0.0,
+    "n": 227749,
+    "nunique": 11,
+    "values": [
+      0.0,
+      10.0,
+      20.0,
+      30.0,
+      40.0,
+      50.0,
+      60.0,
+      70.0,
+      80.0,
+      90.0,
+      100.0
+    ]
+  },
+  "rows_scanned": 1227849,
+  "unit_counts_by_task": {
+    "binary|area": {
+      "m2": 39691,
+      "pct": 78833
+    },
+    "mcq|area": {
+      "m2": 74400,
+      "pct": 148916
+    }
+  }
+}

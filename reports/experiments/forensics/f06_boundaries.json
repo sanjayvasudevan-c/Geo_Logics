@@ -1,0 +1,240 @@
+{
+  "adjacency_words": {
+    "abut": 3048,
+    "adjacent": 21885,
+    "border": 20321,
+    "contact": 10949,
+    "meet": 3136,
+    "neighbour": 3073,
+    "next to": 15495,
+    "side by side": 3027,
+    "touch": 35042
+  },
+  "answer_priors": {
+    "binary|adjacency": {
+      "no": 62038,
+      "yes": 46634
+    },
+    "binary|area": {
+      "no": 62038,
+      "yes": 62038
+    },
+    "binary|count": {
+      "no": 62038,
+      "yes": 62038
+    },
+    "binary|presence": {
+      "no": 62038,
+      "yes": 62038
+    },
+    "bounding box|point": {
+      "[0.0 0.0, 0.4 1.0]": 85,
+      "[0.0 0.0, 0.45 1.0]": 92,
+      "[0.0 0.0, 0.5 1.0]": 126,
+      "[0.0 0.0, 0.56 1.0]": 113,
+      "[0.0 0.0, 0.6 1.0]": 122,
+      "[0.0 0.0, 0.65 1.0]": 111,
+      "[0.0 0.0, 0.7 1.0]": 120,
+      "[0.0 0.0, 0.75 1.0]": 97,
+      "[0.0 0.0, 0.8 1.0]": 102,
+      "[0.0 0.0, 1.0 0.45]": 89,
+      "[0.0 0.0, 1.0 0.56]": 126,
+      "[0.0 0.0, 1.0 0.5]": 92,
+      "[0.0 0.0, 1.0 0.65]": 98,
+      "[0.0 0.0, 1.0 0.6]": 140,
+      "[0.0 0.0, 1.0 0.75]": 93,
+      "[0.0 0.0, 1.0 0.7]": 85,
+      "[0.0 0.0, 1.0 1.0]": 1029,
+      "[0.0 0.3, 1.0 1.0]": 124,
+      "[0.0 0.35, 1.0 1.0]": 94,
+      "[0.0 0.4, 1.0 1.0]": 131,
+      "[0.0 0.45, 1.0 1.0]": 111,
+      "[0.0 0.5, 1.0 1.0]": 111,
+      "[0.0 0.55, 1.0 1.0]": 117,
+      "[0.2 0.0, 1.0 1.0]": 85,
+      "[0.25 0.0, 1.0 1.0]": 107,
+      "[0.3 0.0, 1.0 1.0]": 110,
+      "[0.35 0.0, 1.0 1.0]": 122,
+      "[0.4 0.0, 1.0 1.0]": 137,
+      "[0.45 0.0, 1.0 1.0]": 109,
+      "[0.5 0.0, 1.0 1.0]": 116
+    },
+    "bounding box|reference": {
+      "[0.0 0.0, 0.45 1.0]": 104,
+      "[0.0 0.0, 0.5 1.0]": 134,
+      "[0.0 0.0, 0.56 1.0]": 124,
+      "[0.0 0.0, 0.6 1.0]": 138,
+      "[0.0 0.0, 0.65 1.0]": 121,
+      "[0.0 0.0, 0.7 1.0]": 138,
+      "[0.0 0.0, 0.75 1.0]": 116,
+      "[0.0 0.0, 0.8 1.0]": 115,
+      "[0.0 0.0, 1.0 0.45]": 100,
+      "[0.0 0.0, 1.0 0.56]": 136,
+      "[0.0 0.0, 1.0 0.5]": 106,
+      "[0.0 0.0, 1.0 0.65]": 120,
+      "[0.0 0.0, 1.0 0.6]": 157,
+      "[0.0 0.0, 1.0 0.75]": 109,
+      "[0.0 0.0, 1.0 0.7]": 104,
+      "[0.0 0.0, 1.0 0.8]": 94,
+      "[0.0 0.15, 1.0 1.0]": 93,
+      "[0.0 0.25, 1.0 1.0]": 96,
+      "[0.0 0.3, 1.0 1.0]": 138,
+      "[0.0 0.35, 1.0 1.0]": 110,
+      "[0.0 0.4, 1.0 1.0]": 145,
+      "[0.0 0.45, 1.0 1.0]": 122,
+      "[0.0 0.5, 1.0 1.0]": 114,
+      "[0.0 0.55, 1.0 1.0]": 135,
+      "[0.25 0.0, 1.0 1.0]": 122,
+      "[0.3 0.0, 1.0 1.0]": 125,
+      "[0.35 0.0, 1.0 1.0]": 141,
+      "[0.4 0.0, 1.0 1.0]": 152,
+      "[0.45 0.0, 1.0 1.0]": 125,
+      "[0.5 0.0, 1.0 1.0]": 121
+    },
+    "captioning|None": {
+      "<LONG>": 62037
+    },
+    "mcq|adjacency": {
+      "a": 11759,
+      "b": 11511,
+      "c": 11721,
+      "d": 11642
+    },
+    "mcq|area": {
+      "a": 15495,
+      "b": 15640,
+      "c": 15408,
+      "d": 15494
+    },
+    "mcq|climate zone": {
+      "a": 15527,
+      "b": 15340,
+      "c": 15479,
+      "d": 15691
+    },
+    "mcq|count": {
+      "a": 15489,
+      "b": 15634,
+      "c": 15439,
+      "d": 15475
+    },
+    "mcq|country": {
+      "a": 15373,
+      "b": 15654,
+      "c": 15568,
+      "d": 15442
+    },
+    "mcq|presence": {
+      "a": 15675,
+      "b": 15461,
+      "c": 15486,
+      "d": 15415
+    },
+    "mcq|relative pos": {
+      "a": 2922,
+      "b": 2928,
+      "c": 2905,
+      "d": 2963
+    },
+    "mcq|season": {
+      "a": 15717,
+      "b": 15269,
+      "c": 15496,
+      "d": 15555
+    }
+  },
+  "binary_near_miss_deltas": {
+    "area": {
+      "0.0": 1246,
+      "10.0": 2756,
+      "20.0": 2829,
+      "30.0": 2593,
+      "40.0": 2350,
+      "50.0": 2116,
+      "60.0": 1842,
+      "70.0": 1489,
+      "80.0": 1189,
+      "90.0": 726,
+      "100.0": 176
+    }
+  },
+  "equality_examples": {
+    "area": [
+      "Would you say that arable lands occupy between 0 square meters and 144000 square meters of the image?",
+      "Do pastures occupy between 1296000 square meters and 1440000 square meters of the image?",
+      "Would you say that urban fabrics occupy between 864000 sqm and 1152000 sqm of the image?",
+      "Would you say that broad-leaved forests occupy between 30% and 90% of the image?",
+      "Is the area of broad-leaved forests smaller than 30%?",
+      "Is the area of pastures greater than 144000 m2 but smaller than 288000 m2?",
+      "Would you say that complex cultivation patterns take up between 0% and 30% of the image?",
+      "Would you classify broad-leaved forests as taking up between 10% and 20% of the image?",
+      "Is the surface of mixed forests not greater than 20%?",
+      "Is the total area of urban fabrics between 50% and 60%?"
+    ],
+    "count": [
+      "Can you confirm that there are exactly four connected patches of arable lands in this image?",
+      "Does this image include exactly three connected zones of arable lands?",
+      "Are complex cultivation patterns present in multiple distinct continuous areas within the image?",
+      "Does the image show four or more connected patches of complex cultivation patterns?",
+      "Is there only a single continuous region of pastures visible in the image?",
+      "Do broad-leaved forests occupy two or less continuous areas in the image?",
+      "Can exactly two contiguous patches of broad-leaved forests be observed here?",
+      "Are complex cultivation patterns present in multiple distinct continuous areas within the image?",
+      "Do pastures appear in a maximum of one continuous area within the image?",
+      "Can you confirm that the image has exactly three contiguous areas of broad-leaved forests?"
+    ]
+  },
+  "mcq_area_option_gaps": {
+    "10.0": 34046,
+    "20.0": 32682,
+    "30.0": 24322,
+    "40.0": 16417,
+    "50.0": 3553,
+    "60.0": 610,
+    "70.0": 57,
+    "144000.0": 22559,
+    "288000.0": 21903,
+    "432000.0": 16107,
+    "576000.0": 11026,
+    "720000.0": 2436,
+    "864000.0": 359,
+    "1008000.0": 34
+  },
+  "mcq_area_range_widths": {
+    "10.0": 69566,
+    "20.0": 39060,
+    "30.0": 24271,
+    "40.0": 16019,
+    "144000.0": 46476,
+    "288000.0": 25917,
+    "432000.0": 16010,
+    "576000.0": 10829
+  },
+  "mcq_count_option_gaps": {
+    "1.0": 99328,
+    "2.0": 39557,
+    "3.0": 14075,
+    "4.0": 2336,
+    "5.0": 3,
+    "6.0": 1,
+    "10.0": 2,
+    "12.0": 1
+  },
+  "referring_qualifiers": {
+    "<none>": 66586,
+    "largest connected patch": 2430,
+    "largest connected region": 4838,
+    "largest contiguous area": 7246,
+    "largest continuous area": 7313,
+    "largest continuous region": 4812,
+    "largest patch": 7360,
+    "smallest connected region": 3244,
+    "smallest contiguous area": 4810,
+    "smallest contiguous region": 1545,
+    "smallest continuous area": 3262,
+    "smallest continuous patch": 1531,
+    "smallest continuous region": 1564,
+    "smallest patch": 6543
+  },
+  "rows": 1227849
+}

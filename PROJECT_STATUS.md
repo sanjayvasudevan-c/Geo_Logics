@@ -1,4 +1,4 @@
-LAST UPDATED: 2026-08-30 — Stage S2 Dataset Acquisition (non-imagery tier complete)
+LAST UPDATED: 2026-08-30 — Stage S3 Benchmark Forensics — HALTED, 4 GATE REPORTS OPEN
 
 Stage numbering: S0–S26 (our own execution breakdown, per STAGE_PROMPTS.md). This is not the
 architecture PDF's numbering — the PDF has only an 8-week plan. The two reconcile via
@@ -225,7 +225,69 @@ BEST CURRENT METRICS: none — no gate has been reached. Per CLAUDE.md §11, no 
 until the corresponding measurement exists.
 
 OPEN GATES / DECISIONS AWAITING HUMAN:
-- None blocking S2. S1 is complete with all tests green.
+
+*** S3 IS HALTED — 4 GATE REPORTS OPEN. See reports/experiments/GATE_REPORT_S3.md ***
+  All four contradict named architectural decisions. Root cause: the architecture's
+  answer-grammar assumptions were generalised from the CAPTIONING pipeline described in
+  arXiv:2603.29630 §3.1; the VQA/MCQ annotations do not follow it.
+
+  GR-1  Questions use the 19-CLASS VOCABULARY, not CORINE L3.
+        Evidence: 19/19 mcq/presence options inside the 19-class set, 0 outside (1,227,849
+        rows). No CLC L1 name appears; every apparent L2/L3 hit is a substring of a 19-class
+        name. CLAUDE.md §1 calls the 19-class scheme "image-level multi-label only, NOT the
+        segmentation target".  Recommendation: keep M1 at L3-44, make the S4 aggregation
+        table target L3->19, promote the 19-class head onto the query path.
+        Affects: M1 head, M2 aggregation, S4.
+
+  GR-2  Area is DECILE-QUANTISED (11 bins, 144,000 m2 granularity), not continuous rounded
+        to 1,000 m2. configs/m2.yaml area_rounding_m2=1000 is 144x too fine.
+        Evidence: m2 n=114,091 with 11 distinct values, gap min=median=mode=144,000;
+        percent n=227,749 with 11 distinct values 0,10,...,100. 1,440,000 m2 = whole patch.
+        S7 IMPACT (asked explicitly): the area ROUNDING sweep becomes moot, but a NEW
+        fittable parameter replaces it — the decile BOUNDARY convention, because 68.2% of
+        adjacent MCQ area ranges share an endpoint. connectivity / MMU / opening kernel /
+        adjacency dilation sweeps are ENTIRELY UNAFFECTED and remain S7's highest value.
+        Affects: M2, S7.
+
+  GR-3  M4 distance metric — full CLAUDE.md §6 change-control block in the gate report.
+        MCQ distractor spacing is ADDITIVE on an 11-point decile grid, contradicting M4's
+        specified LOG scale for area. Options are 100% ranges (173,684/173,684), never
+        point values. Proposed: range-containment test + decile-index fallback; count
+        stays integer difference. Softmax/T retained so M9's interface is unchanged.
+        DECISION: WAITING FOR APPROVAL.
+
+  GR-4  M3 structure — full CLAUDE.md §6 change-control block in the gate report.
+        Binary questions are DETERMINISTIC threshold/range comparisons, contradicting
+        REV F3's VERIFIED claim that NO answers are near-misses needing a learned boundary.
+        Evidence: >=72.3% of binary area and >=88.4% of binary count questions are explicit
+        comparators; measured |stated-true| for NO answers is near-uniform (p25=20,
+        median=40, p75=60 pts), not a concentrated near-miss band.
+        Proposed: two-path M3 — deterministic comparator path for the parseable majority,
+        retain the specified LightGBM/logistic head for the residual.
+        RISK FLAGGED HONESTLY: 27.7% of area and 11.6% of count forms were unmatched by the
+        comparator regex, so the deterministic share is a LOWER BOUND; a parser misparse
+        silently flips an answer with no model to absorb it.
+        DECISION: WAITING FOR APPROVAL.
+
+  NOT blocked by these gates: S7's connectivity, MMU, opening-kernel and adjacency-dilation
+  sweeps are unaffected by all four findings.
+  Blocked: S4 (aggregation target), configs/m2.yaml area params, M4 metric, M3 structure.
+
+S3 FINDINGS THAT ARE NOT GATES:
+  * M5 IS NOT DISCARDABLE. country/season/climate_zone are 100.00% identical to the correct
+    MCQ answer (35,561/35,561; 35,561/35,561; 35,562/35,562) — they are LABELS, not inputs.
+    Using them to answer the metadata MCQs is circular leakage. INCONCLUSIVE whether the
+    eval harness supplies them as input at inference; needs the harness spec.
+  * ANSWER PRIORS: binary presence/area/count balanced 50.0/50.0; all 8 MCQ sub-tasks within
+    0.7 pts of 25%. ONE EXCEPTION: binary/adjacency is 57.1% no / 42.9% yes — so answering
+    "no" to every adjacency question scores 57.1%, ABOVE the 55.86% a reported-2T-parameter
+    model achieves. Must be reported at S8 and S16; it reframes the headline comparison.
+  * Referring qualifiers: exactly {largest, smallest} x 8 surface phrasings; ~55% of
+    referring expressions carry no qualifier.
+  * Adjacency dilation convention: INCONCLUSIVE from phrasing (9 synonyms, no numeric
+    qualifier). Only the S7 sweep can recover it — unchanged from plan.
+
+- S1/S2 have no open gates.
 
 STANDING ITEM — COMPUTE + FULL-CORPUS STORAGE (decided 2026-08-30, deferred to before S12)
   GPU compute for M1/M6/M7 training (S12+) — not yet secured, decision deferred to before S12,

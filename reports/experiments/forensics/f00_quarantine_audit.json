@@ -1,0 +1,21 @@
+{
+  "bench_rows_observed": false,
+  "distinct_splits_observed": [
+    "train",
+    "validation"
+  ],
+  "explicit_bench_request_refused": true,
+  "full_pass_rows_train_val": 7128971,
+  "s2_bench_columns_never_read": [
+    "input",
+    "output"
+  ],
+  "s2_bench_columns_read": [
+    "split",
+    "type",
+    "category",
+    "patch_id"
+  ],
+  "static_offenders": [],
+  "verdict": "PASS"
+}

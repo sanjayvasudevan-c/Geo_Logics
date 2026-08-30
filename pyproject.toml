@@ -50,6 +50,7 @@ dev = [
     "ruff==0.8.4",
     "mypy==1.13.0",
     "types-PyYAML==6.0.12.20240917",
+    "pandas-stubs==2.2.3.241126",
 ]
 
 [tool.hatch.build.targets.wheel]
@@ -125,6 +126,11 @@ ignore = [
 # reach into private helpers of the module under test. Production logic still lives in src/,
 # where T20 remains enforced.
 "scripts/**" = ["T20"]
+# One-off forensic analysis scripts. Their reusable core — the quarantine-enforcing
+# loader — lives in src/satquery/evaluation/forensics.py and is held to full standards.
+# These are dense exploratory queries whose value is the JSON they emit; compact
+# statement style and long literal regexes are appropriate there.
+"scripts/forensics/**" = ["T20", "E501", "E701", "E702", "B007", "E741"]
 
 # ----------------------------------------------------------------------------------
 # mypy
@@ -137,5 +143,5 @@ warn_unreachable = true
 show_error_codes = true
 
 [[tool.mypy.overrides]]
-module = ["rasterio.*", "skimage.*", "lightgbm.*", "structlog.*", "sklearn.*"]
+module = ["rasterio.*", "skimage.*", "lightgbm.*", "structlog.*", "sklearn.*", "pyarrow.*"]
 ignore_missing_imports = true
