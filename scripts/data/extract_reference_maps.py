@@ -34,6 +34,7 @@ from pathlib import Path
 
 import zstandard
 
+from satquery.utils.keepawake import keep_awake
 from satquery.utils.paths import project_root
 
 ARCHIVE = "data/raw/reben/Reference_Maps.tar.zst"
@@ -118,10 +119,13 @@ def main(argv: list[str]) -> int:
 
     dctx = zstandard.ZstdDecompressor()
     with (
+        keep_awake("extracting reBEN reference maps") as awake,
         archive.open("rb") as fh,
         dctx.stream_reader(fh) as reader,
         tarfile.open(fileobj=reader, mode="r|") as tar,
     ):
+        # The first pass died at 38% because the machine slept after 10 idle minutes.
+        print(f"sleep prevention: {'active' if awake else 'UNAVAILABLE — run may be interrupted'}")
         for member in tar:
             if not member.isfile() or not member.name.endswith(".tif"):
                 continue
