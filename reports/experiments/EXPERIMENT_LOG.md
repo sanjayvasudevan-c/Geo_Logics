@@ -80,3 +80,66 @@ executed and shown.
 Effect (measured): `uv run python scripts/tasks.py check` runs ruff, mypy and pytest in
 sequence — all three pass. The `Makefile` remains the canonical target list and is unmodified
 in intent; it is expected to work wherever `make` is installed, but that is untested.
+
+---
+
+## 2026-08-30 — Reference-map archive is exhaustive: 549,488 maps, not 480,038
+
+Stage: S2
+
+Change: None to the architecture. A correction to a planning figure.
+
+Reason: Storage was projected from `metadata.parquet`, which lists 480,038 patches (reBEN
+after snow/cloud/shadow screening). `Reference_Maps.tar.zst` in fact contains a map for **all
+549,488** reBEN patches, including the 69,450 screened out — 14.5% more than projected.
+
+Effect (measured): extraction produced 549,488 maps across 54 tile shards, 533,265,639 B
+logical, `complete: true`, 0 patch ids without a parsable tile. Anyone sizing storage from
+`metadata.parquet` will under-count by the same 14.5%.
+
+---
+
+## 2026-08-30 — Corrected per-map storage cost: ~4,621 B allocated, not 3,670 B
+
+Stage: S2
+
+Change: None to the architecture. A corrected reference figure.
+
+Reason: The initial 3,670 B/map came from a probe extracting 5,000 maps into a **flat**
+directory. The production layout shards by Sentinel-2 tile, which adds per-directory metadata
+and MFT growth the flat probe did not capture.
+
+Effect (measured): the final extraction pass wrote 139,488 maps for 644,595,712 B of
+free-space delta = **4,621 B/map allocated**, against 970.5 B/map logical — a ~4.76x slack
+factor on NTFS 4 KiB clusters. Full store ~2.54 GB on disk. The flat probe under-projected by
+~25%. Measure in the target layout, not a flat one.
+
+Also fixed a real bug this exposed: on a **resumed** run the manifest divided that run's
+free-space delta by the TOTAL map count, silently under-reporting per-map cost. Fields renamed
+to `allocated_bytes_this_run`, `bytes_per_map_allocated_this_run`,
+`estimated_total_allocated_bytes`.
+
+---
+
+## 2026-08-30 — Long-running jobs need explicit sleep prevention on this machine
+
+Stage: S2
+
+Change: Added `src/satquery/utils/keepawake.py` and wired it into the extraction script.
+
+Reason: The reference-map extraction was killed twice. Windows System event log identified the
+first cause precisely: Modern Standby. The active power scheme sleeps after 600 s on AC and
+300 s on battery, and a background job produces no user input, so any run longer than that
+window dies. The second kill had a different cause — the task ended when the assistant turn
+ended — which is why the fix alone was not sufficient and the run was finally completed as
+foreground chunks under the 595 s tool cap.
+
+Effect (measured): A/B evidence. Control (no keep_awake): killed by Modern Standby, log shows
+"exiting Modern Standby" 06:50:09. Treatment (keep_awake active): a continuous 616.9 s pass —
+past the 600 s AC threshold — completed with zero standby events across the whole 06:50-07:32
+window. Same workload and I/O; the only difference was the power request.
+
+A settings change was deliberately NOT made: `SetThreadExecutionState` is process-scoped and
+releases on exit, whereas editing the user's power scheme is persistent and easy to leave
+behind. Residual uncertainty: `powercfg /requests` needs elevation, so registration was never
+observed directly — the evidence is behavioural.

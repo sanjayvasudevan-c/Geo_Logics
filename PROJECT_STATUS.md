@@ -1,4 +1,4 @@
-LAST UPDATED: 2026-08-30 — Stage S1 Layer 0: Project Foundation
+LAST UPDATED: 2026-08-30 — Stage S2 Dataset Acquisition (non-imagery tier complete)
 
 Stage numbering: S0–S26 (our own execution breakdown, per STAGE_PROMPTS.md). This is not the
 architecture PDF's numbering — the PDF has only an 8-week plan. The two reconcile via
@@ -40,7 +40,7 @@ COMPLETED:
    8. Secrets — .env.example only; python-dotenv pinned; .gitignore covers .env, data/, models/,
       checkpoints, .venv/. uv.lock is deliberately TRACKED (it is what makes reproduction real).
       Verified by git check-ignore.
-   9. Testing — pytest with markers unit/integration/slow/gpu/benchmark, --strict-markers,
+   9. Testing — pytest with markers unit/integration/model/slow/gpu/benchmark, --strict-markers,
       coverage config. Marker selection verified (162 unit / 9 integration).
   10. CI-style checks — ruff (lint), mypy --strict (typecheck), pytest. All three pass.
   11. README.md — what the project is, why the design, setup, layout, non-negotiables, stage map.
@@ -51,24 +51,28 @@ COMPLETED:
     * inference/assembler.py — AnswerAssembler, per the S0 gate naming decision (§10.2 A4).
       Raises NotImplementedError; verified it does not return a dummy value.
 
-TESTS PASSED:      171/171
+TESTS PASSED:      188/188 (+1 skipped non-Windows, +1 slow deselected)
 TESTS FAILED:      none
 COVERAGE:          92% (484 statements, 35 uncovered). Uncovered lines are branches genuinely
                    unreachable in this environment: CUDA paths, the torch-missing fallback,
                    and git-unavailable paths.
 
-Real pytest output (final run, 2026-08-30):
+Real pytest output (final run, 2026-08-30, Stage S2):
     platform win32 -- Python 3.12.13, pytest-8.3.4, pluggy-1.6.0
-    collected 171 items
-    tests\integration\test_run_registry.py .........            [  5%]
-    tests\unit\test_benchmark_guard.py ............             [ 12%]
-    tests\unit\test_config.py ....................              [ 23%]
-    tests\unit\test_environment.py ..............               [ 32%]
-    tests\unit\test_exceptions.py ...(61)...                    [ 67%]
-    tests\unit\test_hashing.py ...........                      [ 74%]
-    tests\unit\test_logging_redaction.py ...............(31)    [ 92%]
-    tests\unit\test_seed.py .............                       [100%]
-    ============================ 171 passed in 19.07s ============================
+    collected 190 items / 1 deselected / 189 selected
+    tests/integration/test_run_registry.py .........            [  4%]
+    tests/unit/test_benchmark_guard.py ............             [ 11%]
+    tests/unit/test_cleanup_guardrail.py ...........            [ 16%]
+    tests/unit/test_config.py ....................              [ 27%]
+    tests/unit/test_environment.py ..............               [ 34%]
+    tests/unit/test_exceptions.py ...(61)...                    [ 67%]
+    tests/unit/test_hashing.py ...........                      [ 73%]
+    tests/unit/test_keepawake.py ......s                        [ 76%]
+    tests/unit/test_logging_redaction.py ...............(31)    [ 93%]
+    tests/unit/test_seed.py .............                       [100%]
+    ========== 188 passed, 1 skipped, 1 deselected in 7.49s ==========
+  The 1 deselected is the opt-in slow keepawake duration test; the 1 skipped is a
+  non-Windows-only assertion. Coverage figure below predates S2 and is not re-measured.
 
 Two real bugs were found by these tests and fixed, not worked around:
   - The redaction path regex stopped at whitespace, so the project root
@@ -79,8 +83,77 @@ Two real bugs were found by these tests and fixed, not worked around:
     alternative and was redacted. Fixed by requiring start-of-string or preceding whitespace,
     and by skipping non-absolute paths entirely.
 
+SLEEP PREVENTION — VERIFICATION STATUS (asked for explicitly; recorded so S12 can rely on it)
+  MECHANISM: src/satquery/utils/keepawake.py — SetThreadExecutionState with
+  ES_CONTINUOUS | ES_SYSTEM_REQUIRED, process-scoped, released on exit including on crash.
+  No change was made to the user's power scheme.
+
+  STATUS: **VERIFIED IN PRODUCTION CONDITIONS, WITH AN A/B CONTROL.** This is stronger than
+  "the API returned success" and stronger than a synthetic hold test.
+
+    Machine is on AC mains (Win32_Battery BatteryStatus=2), so the idle-sleep threshold is
+    600 s. Verified from the same Windows System event log used to diagnose the original kill.
+
+    CONTROL (no keepawake): extraction run killed by Modern Standby. Event log shows
+      "The system is exiting Modern Standby" 06:50:09 and "Wake from sleep detected" 06:50:13.
+    TREATMENT (keepawake active): a single continuous extraction pass of 616.9 s — PAST the
+      600 s threshold — completed successfully. Across the whole 06:50 to 07:32 window
+      (~42 min) the System log records ZERO events of id 42/107/506/507.
+
+    Same workload, same disk I/O, same absence of user input. The only difference was the
+    power request. Disk activity alone does not explain it: the control run was doing identical
+    continuous I/O and still slept.
+
+  RESIDUAL UNCERTAINTY (stated rather than glossed): `powercfg /requests` requires an elevated
+  prompt and is unavailable here, so Windows' registration of the request was never observed
+  directly. The evidence is behavioural, not introspective.
+
+  RE-VERIFICATION ON NEW HARDWARE: tests/model/test_keepawake_duration.py holds the request for
+  660 s and asserts no standby event fires. Marked `slow` and DESELECTED by default (pytest
+  addopts carries -m 'not slow'). Run it explicitly before S12 on whatever machine trains M1:
+      uv run pytest -m slow
+  It has NOT been run on this machine — the production A/B above supersedes it here.
+
 IN PROGRESS:
-- S2 — Dataset acquisition. MEASUREMENT PHASE ONLY. Nothing has been downloaded.
+- S2 — Dataset acquisition. ACQUISITION COMPLETE for the non-imagery tier; card written.
+  Remaining S2 items: dataset cards for SECOND/CDVQA/VRSBench/RSVQA (not yet acquired),
+  and closing the eight NOT YET VERIFIED licences in docs/datasets/LICENCE_AUDIT.md.
+
+  ACQUIRED AND VERIFIED:
+    reBEN core, 287 MB, all md5-verified against the Zenodo manifest
+      metadata.parquet 3,616,349 B / snow-cloud parquet 710,162 B
+      Reference_Maps.tar.zst 282,391,301 B
+    BigEarthNet.txt 466,819,745 B, sha256-verified, pinned to revision 72d865f2
+    Imagery (117.69 GB) NOT fetched — fetch_reben.py refuses it as tier=deferred.
+
+  EXTRACTED (docs/datasets/reBEN_dev_subset.md):
+    549,488 reference maps, 54 tile shards, 533,265,639 B logical, complete=true,
+    0 patch ids without a parsable tile.
+
+  *** COUNT CORRECTION — the archive is exhaustive, and my projection was wrong. ***
+    I planned against metadata.parquet's 480,038 patches. The archive actually holds a
+    reference map for ALL 549,488 reBEN patches, including the 69,450 screened out for
+    snow/cloud/shadow. That is 14.5% more than projected. Anyone sizing storage from
+    metadata.parquet will under-count by the same margin.
+
+  *** CORRECTED PER-MAP STORAGE FIGURES (use these for S12 re-projection) ***
+    logical                    970.5 B/map   (exact, from the manifest)
+    ALLOCATED                ~4,621 B/map    (measured on the final 139,488-map pass)
+    slack factor              ~4.76x         (small files on NTFS 4 KiB clusters)
+    total store, on disk      ~2.54 GB
+    The earlier 3,670 B/map came from a FLAT-directory probe and under-projected the store
+    by ~25%: the sharded layout adds per-directory metadata and MFT growth a flat probe
+    does not capture. Measure in the target layout, not a flat one.
+
+  MANIFEST BUG FOUND AND FIXED: on a resumed run the free-space delta covers only the maps
+    written that pass, but it was being divided by the TOTAL count, under-reporting per-map
+    cost. Fields renamed to allocated_bytes_this_run / bytes_per_map_allocated_this_run /
+    estimated_total_allocated_bytes.
+
+  DISK: 2.89 GB free. Total S2 footprint ~3.3 GB against the ~2.0 GB originally budgeted —
+    the overage was disclosed and approved before the resume, and is explained by the 549,488
+    vs 480,038 count correction plus the sharded-layout slack above.
+
   Real sizes obtained from authoritative sources (Zenodo API, HF repo listing):
 
   reBEN / BigEarthNet v2.0 — Zenodo record 10891137, licence CDLA-Permissive-1.0
@@ -113,8 +186,8 @@ IN PROGRESS:
     shard-accessible mirror could not be confirmed without an HF token.
 
 NOT STARTED:
-- S2 download execution (awaiting approval of the subset plan below).
 - S3 onward. No model trained, no metric measured.
+- Imagery acquisition (117.69 GB) — deferred to the cloud instance before S12.
 
 KNOWN ISSUES:
 - MAKEFILE TARGETS ARE NOT YET VERIFIED. The Makefile is written with the required lint/

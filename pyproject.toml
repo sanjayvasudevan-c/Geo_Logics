@@ -62,13 +62,17 @@ packages = ["src/satquery"]
 testpaths = ["tests"]
 pythonpath = ["src"]
 markers = [
+    "model: model-level validation; may be slow or hardware-specific",
     "unit: fast, isolated, no I/O and no network",
     "integration: crosses a component boundary",
     "slow: takes more than a few seconds",
     "gpu: requires a CUDA device",
     "benchmark: touches the quarantined benchmark split (CLAUDE.md §7)",
 ]
-addopts = "-ra --strict-markers --strict-config"
+# `slow` is excluded by default: it holds sleep prevention past the machine's idle-sleep
+# threshold (11 min) and is a hardware validation, not a unit test. Run it explicitly with
+# `-m slow` when qualifying a new machine — see tests/model/test_keepawake_duration.py.
+addopts = "-ra --strict-markers --strict-config -m 'not slow'"
 filterwarnings = ["error::DeprecationWarning:satquery.*"]
 
 # ----------------------------------------------------------------------------------

@@ -185,9 +185,17 @@ def main(argv: list[str]) -> int:
         "written_this_run": written,
         "skipped_existing": skipped,
         "logical_bytes": logical,
-        "allocated_bytes": allocated,
+        # On a RESUMED run the free-space delta covers only the maps written this pass, so it
+        # must not be divided by the total count — that silently under-reports the per-map cost.
+        # Both figures are therefore scoped to this run and named to say so.
+        "allocated_bytes_this_run": allocated,
         "bytes_per_map_logical": round(logical / count, 1) if count else 0,
-        "bytes_per_map_allocated": round(allocated / count, 1) if count else 0,
+        "bytes_per_map_allocated_this_run": (
+            round(allocated / written, 1) if written else None
+        ),
+        "estimated_total_allocated_bytes": (
+            round(allocated / written * count) if written else None
+        ),
         "elapsed_seconds": round(elapsed, 1),
         "shard_by": "sentinel2_tile_id",
         "shards": len(per_tile),
