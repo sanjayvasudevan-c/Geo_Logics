@@ -40,14 +40,28 @@ class TestValidConfig:
         assert config.preprocessing.use_mixup is False
         assert config.preprocessing.use_cutmix is False
 
-    def test_m2_fitted_parameters_are_unset(self, config: Config) -> None:
-        """The four S8-fitted parameters must not carry guessed defaults."""
-        assert config.m2.connectivity is None
-        assert config.m2.min_mapping_unit_px is None
-        assert config.m2.opening_kernel_px is None
-        assert config.m2.adjacency_dilation_px is None
-        assert config.m2.bin_boundary_rule is None, "boundary rule is confirmed at S7, not guessed"
-        assert config.m2.is_fitted is False
+    def test_m2_parameters_carry_the_S7_FITTED_values(self, config: Config) -> None:
+        """Before S7 this asserted the parameters were UNSET, to stop anyone guessing them.
+
+        S7 fitted them against ground-truth maps and released MCQ answers, so the guard is
+        inverted rather than removed: it now pins the measured values, and changing one without
+        re-running scripts/fit_geometry_conventions.py fails here.
+        See reports/experiments/geometry_conventions.md for the sweep tables.
+        """
+        assert config.m2.connectivity == 4, "100.00% per-class count accuracy; +1.50 pts over 8"
+        assert config.m2.min_mapping_unit_px == 0, "any MMU > 1 strictly hurts on GT maps"
+        assert config.m2.opening_kernel_px == 0, "the generator applies no cleanup"
+        assert config.m2.adjacency_dilation_px == 1, "97.62%; k=0 collapses to 64.55%"
+        assert config.m2.is_fitted is True
+
+    def test_bin_boundary_rule_is_a_convention_not_a_measurement(self, config: Config) -> None:
+        """S7 found this UNDER-DETERMINED: all three rules scored 99.9000% identically.
+
+        Exact float coverage essentially never lands on a decile boundary, so the case does not
+        arise. The value is the standard convention, adopted for definiteness only — no result
+        may be attributed to it.
+        """
+        assert config.m2.bin_boundary_rule == "inclusive_lower_exclusive_upper"
 
     def test_config_is_immutable(self, config: Config) -> None:
         with pytest.raises((TypeError, ValueError)):

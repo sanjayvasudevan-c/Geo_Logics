@@ -140,6 +140,7 @@ ignore = [
 # queries whose value is the JSON they emit.
 "scripts/data/split_class_coverage.py" = ["T20", "E501", "E701", "E702"]
 "scripts/data/tile_class_presence.py" = ["T20", "E501", "E701", "E702"]
+"scripts/fit_geometry_conventions.py" = ["T20", "E501", "E701", "E702"]
 
 # ----------------------------------------------------------------------------------
 # mypy
@@ -152,5 +153,5 @@ warn_unreachable = true
 show_error_codes = true
 
 [[tool.mypy.overrides]]
-module = ["rasterio.*", "skimage.*", "lightgbm.*", "structlog.*", "sklearn.*", "pyarrow.*"]
+module = ["rasterio.*", "skimage.*", "lightgbm.*", "structlog.*", "sklearn.*", "pyarrow.*", "scipy.*"]
 ignore_missing_imports = true

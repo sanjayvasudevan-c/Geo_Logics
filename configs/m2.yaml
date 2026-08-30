@@ -5,10 +5,13 @@ implementation: scipy_skimage
 # S17. They are null here deliberately: a guessed default would silently produce a wrong
 # count with a clean-looking trace (IMPLEMENTATION_MAP §5.3 failure #5). Geometry calls must
 # raise GeometryError while these are unset rather than assume a plausible value.
-connectivity: null
-min_mapping_unit_px: null
-opening_kernel_px: null
-adjacency_dilation_px: null
+# FITTED AT S7 against ground-truth reference maps and released MCQ answers, stratified across
+# all 5 folds and scored PER CLASS (S6 GATE-2 propagation), training split only.
+# Full sweep tables: reports/experiments/geometry_conventions.md
+connectivity: 4              # 100.00% per-class count accuracy; +1.50 pts over 8-connectivity
+min_mapping_unit_px: 0       # any MMU > 1 strictly HURTS: 2 -> 96.66%, 32 -> 85.93%
+opening_kernel_px: 0         # the generator applies no morphological cleanup
+adjacency_dilation_px: 1     # 97.62% per-class; k=0 collapses to 64.55%, so dilation is required
 
 # GR-2 (S3, APPROVED 2026-08-30): area_rounding_m2 is REMOVED. It was 1000, which is 144x
 # finer than the data supports and encoded a convention that does not exist in the VQA/MCQ
@@ -23,7 +26,12 @@ patch_area_m2: 1440000        # 120 px x 120 px x (10 m)^2; area_m2 = percent x 
 # sweep): inclusive forms include N, strict forms exclude it — 158 decisive groups, standard
 # semantics. Confidence MODERATE (33.9% of contradictory pairs are parse artifacts), so S7
 # must CONFIRM against computed truth once the S4 L3->19 table exists. Left null until then.
-bin_boundary_rule: null       # to be confirmed at S7; expected "inclusive_lower_exclusive_upper"
+# S7 RESULT: UNDER-DETERMINED, not fitted. All three candidate rules score IDENTICALLY
+# (99.9000% per-class, 99.8000% pooled, n=1000) because exact float coverage essentially never
+# lands precisely on a decile boundary, so the boundary case does not arise in the data.
+# The value below is the STANDARD CONVENTION, adopted for definiteness — it is NOT a
+# measurement, and no result should be attributed to this choice.
+bin_boundary_rule: inclusive_lower_exclusive_upper
 
 # Caption coverage tiers (VERIFIED): primary >25%, secondary 5-25%, marginal <5%.
 tier_primary_min: 0.25

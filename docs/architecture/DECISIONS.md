@@ -80,7 +80,16 @@ absent from the corpus entirely (S4 found 43 CORINE codes + 999, not 44).
 **Measurement caveat:** per-tile class presence was sampled at 140 maps per tile, which
 undercounts tiles containing very rare classes. The irreducible set is therefore an **upper
 bound** — an exhaustive scan could move a class from irreducible to reducible, never the
-reverse.
+reverse. The asymmetry means the current reporting is conservative in the safe direction.
+
+> **QUEUED VERIFICATION — V-S6-1. Low priority, non-blocking, must not silently persist.**
+> Run an **exhaustive** per-tile class scan (all 237,871 training maps, not 140/tile) to tighten
+> 14 to its true value. Cost is ~20-40 min of pure CPU with no GPU and no network, so the
+> natural moment is while the **S12 GPU rental is idle or warming up**. Command:
+> `uv run python scripts/data/tile_class_presence.py --exhaustive`
+> **Deadline: before S24 locks the final judge-facing numbers.** If it has not been run by
+> then, S24 must state explicitly that 14 is a sampled upper bound rather than presenting it
+> as exact. Do not let this reach S26 unexamined.
 
 **Reporting discipline this forces — binding on S13, S24, S26:**
 

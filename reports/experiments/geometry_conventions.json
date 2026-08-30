@@ -1,0 +1,202 @@
+{
+  "bin_boundary_rule": {
+    "best": {
+      "n": 1000,
+      "per_class_acc": 0.999,
+      "pooled_acc": 0.998,
+      "rule": "inclusive_lower_exclusive_upper"
+    },
+    "rows": [
+      {
+        "n": 1000,
+        "per_class_acc": 0.999,
+        "pooled_acc": 0.998,
+        "rule": "inclusive_lower_exclusive_upper"
+      },
+      {
+        "n": 1000,
+        "per_class_acc": 0.999,
+        "pooled_acc": 0.998,
+        "rule": "inclusive_both"
+      },
+      {
+        "n": 1000,
+        "per_class_acc": 0.999,
+        "pooled_acc": 0.998,
+        "rule": "exclusive_lower_inclusive_upper"
+      }
+    ]
+  },
+  "connectivity_mmu": {
+    "best": {
+      "classes": 13,
+      "connectivity": 4,
+      "mmu": 0,
+      "n": 1000,
+      "per_class_acc": 1.0,
+      "pooled_acc": 1.0
+    },
+    "grid": [
+      {
+        "classes": 13,
+        "connectivity": 4,
+        "mmu": 0,
+        "n": 1000,
+        "per_class_acc": 1.0,
+        "pooled_acc": 1.0
+      },
+      {
+        "classes": 13,
+        "connectivity": 4,
+        "mmu": 1,
+        "n": 1000,
+        "per_class_acc": 1.0,
+        "pooled_acc": 1.0
+      },
+      {
+        "classes": 13,
+        "connectivity": 4,
+        "mmu": 2,
+        "n": 1000,
+        "per_class_acc": 0.9666,
+        "pooled_acc": 0.978
+      },
+      {
+        "classes": 13,
+        "connectivity": 4,
+        "mmu": 4,
+        "n": 1000,
+        "per_class_acc": 0.9527,
+        "pooled_acc": 0.959
+      },
+      {
+        "classes": 13,
+        "connectivity": 4,
+        "mmu": 8,
+        "n": 1000,
+        "per_class_acc": 0.9353,
+        "pooled_acc": 0.941
+      },
+      {
+        "classes": 13,
+        "connectivity": 4,
+        "mmu": 16,
+        "n": 1000,
+        "per_class_acc": 0.9116,
+        "pooled_acc": 0.909
+      },
+      {
+        "classes": 13,
+        "connectivity": 4,
+        "mmu": 32,
+        "n": 1000,
+        "per_class_acc": 0.8593,
+        "pooled_acc": 0.867
+      },
+      {
+        "classes": 13,
+        "connectivity": 8,
+        "mmu": 0,
+        "n": 1000,
+        "per_class_acc": 0.985,
+        "pooled_acc": 0.99
+      },
+      {
+        "classes": 13,
+        "connectivity": 8,
+        "mmu": 1,
+        "n": 1000,
+        "per_class_acc": 0.985,
+        "pooled_acc": 0.99
+      },
+      {
+        "classes": 13,
+        "connectivity": 8,
+        "mmu": 2,
+        "n": 1000,
+        "per_class_acc": 0.9661,
+        "pooled_acc": 0.977
+      },
+      {
+        "classes": 13,
+        "connectivity": 8,
+        "mmu": 4,
+        "n": 1000,
+        "per_class_acc": 0.9522,
+        "pooled_acc": 0.958
+      },
+      {
+        "classes": 13,
+        "connectivity": 8,
+        "mmu": 8,
+        "n": 1000,
+        "per_class_acc": 0.9349,
+        "pooled_acc": 0.94
+      },
+      {
+        "classes": 13,
+        "connectivity": 8,
+        "mmu": 16,
+        "n": 1000,
+        "per_class_acc": 0.9116,
+        "pooled_acc": 0.909
+      },
+      {
+        "classes": 13,
+        "connectivity": 8,
+        "mmu": 32,
+        "n": 1000,
+        "per_class_acc": 0.8593,
+        "pooled_acc": 0.867
+      }
+    ],
+    "runner_up": {
+      "classes": 13,
+      "connectivity": 8,
+      "mmu": 0,
+      "n": 1000,
+      "per_class_acc": 0.985,
+      "pooled_acc": 0.99
+    }
+  },
+  "dilation": {
+    "best": {
+      "k": 1,
+      "n": 1000,
+      "per_class_acc": 0.9762,
+      "pooled_acc": 0.98
+    },
+    "rows": [
+      {
+        "k": 0,
+        "n": 1000,
+        "per_class_acc": 0.6455,
+        "pooled_acc": 0.592
+      },
+      {
+        "k": 1,
+        "n": 1000,
+        "per_class_acc": 0.9762,
+        "pooled_acc": 0.98
+      },
+      {
+        "k": 2,
+        "n": 1000,
+        "per_class_acc": 0.9727,
+        "pooled_acc": 0.978
+      },
+      {
+        "k": 3,
+        "n": 1000,
+        "per_class_acc": 0.9727,
+        "pooled_acc": 0.978
+      },
+      {
+        "k": 5,
+        "n": 1000,
+        "per_class_acc": 0.9703,
+        "pooled_acc": 0.975
+      }
+    ]
+  }
+}

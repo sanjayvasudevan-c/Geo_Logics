@@ -1,4 +1,4 @@
-LAST UPDATED: 2026-08-30 — S6 COMPLETE (stratified allocation reached the irreducible floor)
+LAST UPDATED: 2026-08-30 — S7 COMPLETE (M2 built; conventions FITTED at 100.00%)
 
 Stage numbering: S0–S26 (our own execution breakdown, per STAGE_PROMPTS.md). This is not the
 architecture PDF's numbering — the PDF has only an 8-week plan. The two reconcile via
@@ -338,6 +338,47 @@ S4 — TAXONOMY LAYER COMPLETE. 49 tests pass. THREE DECISIONS I TOOK WITHOUT SI
   both classes and so cannot demonstrate over-counting. The real naive failure is labelling each
   L3 class separately and summing. Corrected; the test now genuinely proves the guarantee.
 
+S7 — M2 SYMBOLIC GEOMETRY ENGINE + CONVENTION FITTING. COMPLETE. 43 geometry tests, 395 total.
+
+  CONVENTIONS RECOVERED FROM DATA, NOT GUESSED (training split only, fold-stratified,
+  scored PER CLASS per the S6 GATE-2 rule). Full tables:
+  reports/experiments/geometry_conventions.md
+      connectivity        = 4    -> 100.00% per-class count accuracy, +1.50 pts over 8-conn
+      min_mapping_unit_px = 0    -> any MMU > 1 STRICTLY HURTS (2 -> 96.66%, 32 -> 85.93%)
+      opening_kernel_px   = 0    -> the generator applies no morphological cleanup
+      adjacency_dilation  = 1    -> 97.62%; k=0 collapses to 64.55%, so dilation IS required
+  100.00% is the signal the architecture predicted: the generator's exact convention has been
+  recovered, which is free accuracy for every downstream stage.
+
+  *** S3 GR-2 CONDITION DISCHARGED — AND THE ANSWER IS A NON-RESULT ***
+    bin_boundary_rule is UNDER-DETERMINED, not fitted. All three candidate rules scored
+    IDENTICALLY (99.9000% per-class, 99.8000% pooled, n=1000) because exact float coverage
+    essentially never lands on a decile boundary, so the case does not arise.
+    Set to inclusive_lower_exclusive_upper as the STANDARD CONVENTION, for definiteness only.
+    IT IS NOT A MEASUREMENT. No result may be attributed to this choice; if an analysis ever
+    appears sensitive to it, that sensitivity is itself a bug.
+
+  *** THE FOLD-STRATIFICATION OBLIGATION WAS FAILED ONCE AND REDONE ***
+    A first fitting run drew all 1,000 items from FOLD 0 — it took the first N matches. That
+    would have fitted a convention on one region's geography, violating the S6 GATE-2 rule.
+    Caught by printing the folds represented. Re-run with a per-fold quota; final tables span
+    folds 0-4.
+
+  PERFORMANCE FIX THAT S8 DEPENDS ON: extract_regions was 163.89 ms/call, projecting to ~4.3
+  HOURS for S8's oracle sweep. skimage.regionprops over every component plus an O(pixels x
+  labels) np.isin were replaced with linear-time primitives (bincount for areas, find_objects
+  for bboxes, a LUT for the surviving mask). Now 28.10 ms on a worst-case fragmented random
+  map and 4.68 ms on REAL reference maps (which are smooth: mean 0.6 components/map).
+  S8 projection: 7.4 min for 5,000 patches. Test suite went 151s -> 2.05s.
+
+  A CONFIG GUARD WAS INVERTED, NOT DELETED: test_m2_fitted_parameters_are_unset asserted the
+  parameters were UNSET to stop anyone guessing them. S7 fitted them, so the test now pins the
+  MEASURED values — changing one without re-running the fit fails there.
+
+  RE-FIT REQUIRED AT S17: these were fitted on GROUND-TRUTH maps. IMPLEMENTATION_MAP §6.2
+  requires a second fit against PREDICTED maps, because the optimal cleanup for a noisy map is
+  not the optimal cleanup for a clean one. MMU=0 is very likely to change there.
+
 S6 — GEOGRAPHIC SPLITTING & LEAKAGE DETECTION. 22 leakage tests, 347 total. HALTED.
 
   *** STRATIFIED ALLOCATION RESOLVED MOST OF THE HALT — see GATE_REPORT_S6.md ***
@@ -354,6 +395,16 @@ S6 — GEOGRAPHIC SPLITTING & LEAKAGE DETECTION. 22 leakage tests, 347 total. HA
   The residual 14 are now PROVEN irreducible rather than assumed — measured by counting tiles
   containing each class. Caveat: per-tile presence sampled at 140 maps/tile undercounts very
   rare classes, so 14 is an UPPER bound on irreducibility.
+
+  *** QUEUED VERIFICATION V-S6-1 — low priority, non-blocking, DO NOT let it lapse ***
+    The irreducible-14 figure rests on a 140-maps/tile sample, so it is an UPPER bound
+    (sampling can only move a class OUT of the irreducible set, never into it — the current
+    reporting is therefore conservative in the safe direction). An exhaustive per-tile scan
+    would tighten it to the true value. ~20-40 min CPU, no GPU, no network — the natural slot
+    is while the S12 GPU rental is idle or warming up.
+    DEADLINE: before S24 locks final judge-facing numbers. If unrun by then, S24 must state
+    that 14 is a sampled upper bound rather than presenting it as exact.
+    See docs/architecture/DECISIONS.md V-S6-1.
 
   *** GATE 2 / S13 PROPAGATION — MUST BE KNOWN BEFORE S13 STARTS ***
     The transfer factor at S13 MUST be computed PER CLASS over each class's own valid fold set,
