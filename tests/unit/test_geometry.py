@@ -14,10 +14,13 @@ from __future__ import annotations
 import numpy as np
 import pytest
 
+from satquery.config import load_config
 from satquery.config.schema import M2Config
 from satquery.exceptions import GeometryError
 from satquery.geometry import (
+    CARDINALS,
     COMPASS,
+    DIAGONALS,
     GeometryParams,
     compute_adjacency,
     compute_area,
@@ -27,6 +30,7 @@ from satquery.geometry import (
     compute_referring_point,
     compute_relative_position,
     extract_regions,
+    quantise_bearing,
 )
 from satquery.taxonomy import load_taxonomy
 
@@ -45,7 +49,8 @@ def params():
     """Fully fitted parameters: 8-connectivity, no cleanup, MMU 0."""
     return GeometryParams(
         connectivity=8, min_mapping_unit_px=0, opening_kernel_px=0,
-        adjacency_dilation_px=1, gsd_m=10.0,
+        adjacency_dilation_px=1, diagonal_band_deg=16.0,
+        direction_reference_rule="mask_centroid", gsd_m=10.0,
     )
 
 
@@ -263,6 +268,83 @@ class TestRelativePosition:
         a = extract_regions(m, "Urban fabric", "c19", tax, params)
         b = extract_regions(m, "Inland waters", "c19", tax, params)
         assert compute_relative_position(a, b).valid is False
+
+    def test_unfitted_direction_convention_raises(self, tax) -> None:
+        """The S7-addendum parameters get the same guard as the original four.
+
+        A guessed 45-degree band is not neutral: it is the specific value the addendum
+        measured to be WRONG (87.01% against 93.57%), so silently defaulting to it would
+        produce a confident wrong direction with a clean trace.
+        """
+        unfitted = GeometryParams(connectivity=8, min_mapping_unit_px=0,
+                                  opening_kernel_px=0, adjacency_dilation_px=1)
+        m = _map([[URBAN, WATER]])
+        a = extract_regions(m, "Urban fabric", "c19", tax, unfitted)
+        b = extract_regions(m, "Inland waters", "c19", tax, unfitted)
+        with pytest.raises(GeometryError) as exc:
+            compute_relative_position(a, b)
+        assert set(exc.value.context["missing"]) == {
+            "diagonal_band_deg", "direction_reference_rule",
+        }
+
+
+class TestQuantiseBearing:
+    """The diagonal sectors are NOT 45 degrees wide — that is the S7-addendum finding."""
+
+    def test_band_45_reproduces_the_textbook_equal_sector_compass(self) -> None:
+        for i, want in enumerate(COMPASS):
+            assert quantise_bearing(i * 45.0, 45.0) == want
+
+    def test_band_0_collapses_to_cardinals_except_on_the_diagonal_itself(self) -> None:
+        """The sector is a CLOSED interval, so width 0 still admits the exact bearing.
+
+        Asserting "band 0 gives pure cardinals" is the tempting claim and it is false: at
+        exactly 45 degrees the zero-width sector still contains its own centre. That is a
+        measure-zero degenerate case rather than a bug, and it is pinned here so nobody
+        "fixes" the closed interval into a half-open one and silently changes what band 90
+        means at the same time.
+        """
+        off_diagonal = {quantise_bearing(a + 1.0, 0.0) for a in range(0, 360, 5)}
+        assert off_diagonal == set(CARDINALS)
+        assert quantise_bearing(45.0, 0.0) == "NE"      # the degenerate exact case
+
+    def test_band_90_collapses_to_pure_diagonals(self) -> None:
+        assert {quantise_bearing(a, 90.0) for a in range(0, 360, 5)} == set(DIAGONALS)
+
+    @pytest.mark.parametrize("bearing_deg", [0.0, 90.0, 180.0, 270.0])
+    def test_cardinal_bearings_are_cardinal_at_every_band(self, bearing_deg) -> None:
+        for band in (0.0, 16.0, 45.0, 89.0):
+            assert quantise_bearing(bearing_deg, band) in CARDINALS
+
+    def test_fitted_band_narrows_the_diagonal_sector(self) -> None:
+        """At 30 degrees the textbook rule says NE; the FITTED 16-degree band says N.
+
+        This is the single behaviour change that moved mcq|relative pos, so it is asserted
+        directly rather than inferred from an accuracy number.
+        """
+        assert quantise_bearing(30.0, 45.0) == "NE"
+        assert quantise_bearing(30.0, 16.0) == "N"
+        assert quantise_bearing(45.0, 16.0) == "NE"    # dead-on diagonals survive
+
+    def test_boundary_is_the_half_band(self) -> None:
+        assert quantise_bearing(45.0 - 8.0, 16.0) == "NE"     # exactly on the edge
+        assert quantise_bearing(45.0 - 8.001, 16.0) == "N"    # just outside
+
+    def test_wraps_around_north(self) -> None:
+        assert quantise_bearing(359.0, 16.0) == quantise_bearing(-1.0, 16.0) == "N"
+        assert quantise_bearing(360.0, 16.0) == "N"
+
+    def test_config_ships_the_fitted_values_not_the_textbook_ones(self) -> None:
+        """Guards against a silent revert to the equal-sector compass."""
+        cfg = load_config().m2
+        assert cfg.diagonal_band_deg is not None, "direction convention must be fitted"
+        assert cfg.diagonal_band_deg != 45.0, (
+            "45 degrees is the textbook rule the S7 addendum measured to be WRONG"
+        )
+        assert 10.0 <= cfg.diagonal_band_deg <= 22.0, (
+            "outside the band range the addendum could not statistically separate"
+        )
+        assert cfg.direction_reference_rule == "mask_centroid"
 
 
 class TestReferring:

@@ -33,6 +33,32 @@ patch_area_m2: 1440000        # 120 px x 120 px x (10 m)^2; area_m2 = percent x 
 # measurement, and no result should be attributed to this choice.
 bin_boundary_rule: inclusive_lower_exclusive_upper
 
+# Relative-position direction convention. FITTED AT THE S7 ADDENDUM against ground-truth maps
+# and released mcq|relative pos answers, all 5 folds, scored per class-pair, training split only.
+# Full sweep: reports/experiments/direction_convention.json
+#
+# MEASURED, decisive: the textbook 45-degree equal-sector 8-way compass is WRONG. It scores
+# 87.01% against 94.13% for a narrow band — the released answers are cardinal 81.60% of the
+# time while cardinals are only ~62% of the offered options, so the generator's diagonal
+# sectors are demonstrably much narrower than 45 degrees.
+#
+# UNDER-DETERMINED, honestly: the exact value inside roughly [10, 22] degrees is not
+# resolvable. McNemar exact tests over 2,500 items cannot separate any candidate from any
+# other (best p = 0.068). 16 is adopted because it is the ONE value where two INDEPENDENT
+# lines of evidence converge: it sits inside the accuracy plateau [9, 23], and it independently
+# reproduces the observed 18.40% diagonal-answer rate (predicting 17.76%) — a statistic the
+# accuracy sweep never optimised for. No result should be attributed to 16 over, say, 14 or 20.
+diagonal_band_deg: 16
+
+# Which point stands for a multi-component class. UNDER-DETERMINED: bbox_centre scores 0.39 pts
+# higher but McNemar cannot distinguish it (p = 0.072, 29/16 discordant), and mask_centroid vs
+# largest_component are indistinguishable in the strongest possible sense — they change ZERO of
+# 2,500 predicted answers. mask_centroid is adopted on two non-accuracy grounds: it is the same
+# "a class IS its mask" semantics compute_area and compute_count already use, and the centre of
+# the UNION bounding box is maximally sensitive to a single stray pixel, which is exactly the
+# wrong statistic once S13 feeds M2 predicted maps instead of ground truth.
+direction_reference_rule: mask_centroid
+
 # Caption coverage tiers (VERIFIED): primary >25%, secondary 5-25%, marginal <5%.
 tier_primary_min: 0.25
 tier_secondary_min: 0.05

@@ -37,7 +37,9 @@ from satquery.exceptions import GeometryError
 from satquery.taxonomy import Level, Taxonomy
 
 __all__ = [
+    "CARDINALS",
     "COMPASS",
+    "DIAGONALS",
     "AdjacencyResult",
     "AreaResult",
     "CountResult",
@@ -54,6 +56,7 @@ __all__ = [
     "compute_referring_point",
     "compute_relative_position",
     "extract_regions",
+    "quantise_bearing",
 ]
 
 IntArray = npt.NDArray[np.integer[Any]]
@@ -61,6 +64,31 @@ BoolArray = npt.NDArray[np.bool_]
 
 #: 8-way compass, ordered so index = round(angle / 45) with 0 = North.
 COMPASS: tuple[str, ...] = ("N", "NE", "E", "SE", "S", "SW", "W", "NW")
+#: Split out because the sectors are NOT equal width — see ``quantise_bearing``.
+CARDINALS: tuple[str, ...] = ("N", "E", "S", "W")
+DIAGONALS: tuple[str, ...] = ("NE", "SE", "SW", "NW")
+
+
+def quantise_bearing(angle_deg: float, diagonal_band_deg: float) -> str:
+    """Compass label for a bearing, under a diagonal sector of ``diagonal_band_deg`` width.
+
+    The textbook 8-way compass uses eight equal 45-degree sectors, which is ``45`` here. The
+    benchmark generator does **not**: its released answers are cardinal 81.60% of the time
+    while cardinals are only ~62% of the offered options, so its diagonal sectors are much
+    narrower. The width is therefore a fitted parameter, not a constant (S7 addendum).
+
+    Args:
+        angle_deg: Bearing with North at 0, increasing clockwise.
+        diagonal_band_deg: Total angular width of each diagonal sector, in [0, 90].
+            ``45`` gives equal sectors; ``0`` collapses to pure cardinals.
+
+    Returns:
+        One of the eight compass labels.
+    """
+    a = angle_deg % 360.0
+    if abs((a % 90.0) - 45.0) <= diagonal_band_deg / 2.0:
+        return DIAGONALS[int(a // 90.0) % 4]
+    return CARDINALS[int(round(a / 90.0)) % 4]
 
 
 @dataclass(frozen=True)
@@ -75,6 +103,8 @@ class GeometryParams:
     min_mapping_unit_px: int | None = None
     opening_kernel_px: int | None = None
     adjacency_dilation_px: int | None = None
+    diagonal_band_deg: float | None = None
+    direction_reference_rule: str | None = None
     gsd_m: float = 10.0
 
     @classmethod
@@ -85,6 +115,8 @@ class GeometryParams:
             min_mapping_unit_px=cfg.min_mapping_unit_px,
             opening_kernel_px=cfg.opening_kernel_px,
             adjacency_dilation_px=cfg.adjacency_dilation_px,
+            diagonal_band_deg=cfg.diagonal_band_deg,
+            direction_reference_rule=cfg.direction_reference_rule,
             gsd_m=gsd_m,
         )
 
@@ -396,32 +428,55 @@ def compute_adjacency(
 def compute_relative_position(
     regions_a: RegionSet, regions_b: RegionSet
 ) -> RelativePositionResult:
-    """Compass direction of A relative to B, from the centroid offset.
+    """Compass direction of A relative to B, under the fitted direction convention.
 
-    Row increases downward in image coordinates, so North is decreasing row.
+    Row increases downward in image coordinates, so North is decreasing row. Two fitted
+    parameters govern the result: which point stands for a multi-component class
+    (``direction_reference_rule``) and how wide the diagonal sectors are
+    (``diagonal_band_deg``). Both were recovered at the S7 addendum; see ``configs/m2.yaml``
+    for what is measured and what is under-determined.
+
+    **This function does not decide which class is the subject.** ``regions_a`` is the subject
+    and ``regions_b`` the reference; resolving that from a question's wording is the parser's
+    job, because several templates invert it (S7 addendum, ``oracle.subject_is_second``).
+
+    Raises:
+        GeometryError: If the direction convention is unfitted.
     """
+    regions_a.params.require("diagonal_band_deg", "direction_reference_rule")
+    band = regions_a.params.diagonal_band_deg
+    rule = regions_a.params.direction_reference_rule
+    assert band is not None and rule is not None
+
     if not regions_a.regions or not regions_b.regions:
         return RelativePositionResult(
             direction="", delta_row=0.0, delta_col=0.0, params=regions_a.params, valid=False
         )
 
-    def centroid(rs: RegionSet) -> tuple[float, float]:
+    def reference_point(rs: RegionSet) -> tuple[float, float]:
+        if rule == "largest_component":
+            return max(rs.regions, key=lambda r: r.area_px).centroid
+        if rule == "bbox_centre":
+            r0 = min(r.bbox[0] for r in rs.regions)
+            c0 = min(r.bbox[1] for r in rs.regions)
+            r1 = max(r.bbox[2] for r in rs.regions)
+            c1 = max(r.bbox[3] for r in rs.regions)
+            return ((r0 + r1) / 2.0, (c0 + c1) / 2.0)
         total = sum(r.area_px for r in rs.regions)
-        row = sum(r.centroid[0] * r.area_px for r in rs.regions) / total
-        col = sum(r.centroid[1] * r.area_px for r in rs.regions) / total
-        return row, col
+        return (sum(r.centroid[0] * r.area_px for r in rs.regions) / total,
+                sum(r.centroid[1] * r.area_px for r in rs.regions) / total)
 
-    ar, ac = centroid(regions_a)
-    br, bc = centroid(regions_b)
+    ar, ac = reference_point(regions_a)
+    br, bc = reference_point(regions_b)
     d_row, d_col = ar - br, ac - bc
     if d_row == 0 and d_col == 0:
         return RelativePositionResult(
             direction="", delta_row=0.0, delta_col=0.0, params=regions_a.params, valid=False
         )
     # atan2 with North at 0 and angles increasing clockwise (N -> NE -> E ...).
-    angle = np.degrees(np.arctan2(d_col, -d_row)) % 360.0
+    angle = float(np.degrees(np.arctan2(d_col, -d_row)) % 360.0)
     return RelativePositionResult(
-        direction=COMPASS[int(round(angle / 45.0)) % 8],
+        direction=quantise_bearing(angle, band),
         delta_row=float(d_row), delta_col=float(d_col), params=regions_a.params,
     )
 

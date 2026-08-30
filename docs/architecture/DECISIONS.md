@@ -144,3 +144,82 @@ images whose answers are unseen.
   present at inference.
 - **LEAKAGE:** M4 consuming the correct-option *letter*, or any feature derived from it, as an
   input feature. That is the M5 error in new clothing. Recorded in CLAUDE.md §7.
+
+
+---
+
+## D-S7A-1 — The relative-position direction convention
+
+**Decided:** 2026-08-30 (S7 addendum, ordered by the reviewer after the GATE 1 PASS)
+**Status:** FITTED, with two components explicitly recorded as UNDER-DETERMINED
+
+S7 fitted connectivity, MMU, opening kernel and adjacency dilation but left the direction rule
+uncalibrated. GATE 1 measured `mcq|relative pos` at 65.33% with **0% abstention** — genuinely
+wrong answers, not declined ones. The reviewer's reasoning for closing it before S9: Gate 1's
+own number was resting on one uncalibrated component while the rest were calibrated, and once
+S9's abstention work or S14's MCQ scorer touch this task, any debugging must first rule out
+"is this the known unfitted parameter" as a confound. Cheap now, expensive later.
+
+**Result: 65.33% -> 92.67% on validation (+27.34).** At matched n=300, exactly one of nine
+tasks moved and the other eight are bit-identical, so the gain is attributable to the
+convention and to nothing else.
+
+### The finding that was not what anyone expected
+
+The dominant error was **not** geometric. **25.96% of question stems invert subject and
+reference** — `Using the <A> as the reference, ... the position of the <B>` asks for B relative
+to A, as do `Relative to the <A>, where does the <B> appear` and `the spatial direction from
+<A> to <B>`. Read as written, those score a **forced 0.00%**: exact-matching a reversed bearing
+selects the option 180 degrees from the truth whenever offered, and the angular fallback picks
+the same, so the reversed reading *cannot* be accidentally right.
+
+**This was fixed in the parser (`oracle.subject_is_second`), not in M2.** Which class is the
+subject is a property of the wording; the geometry engine should not know about templates.
+`compute_relative_position` documents that its first argument is the subject and stops there.
+
+An anti-drift check in `scripts/fit_direction_convention.py` asserts that what the sweep fits
+and what `oracle.subject_is_second` ships agree on every item (2,500/2,500). Without it the
+fitted convention and the deployed parser could diverge silently and every reported number
+would describe a rule the system does not use.
+
+### What is measured, and what is not
+
+**MEASURED — decisive:** the textbook equal-sector 8-way compass is **wrong**. A 45-degree
+diagonal band scores 87.01% against 93.57% for a narrow one. Corroborated by a statistic the
+accuracy sweep never optimised for: released answers are cardinal 81.60% of the time while
+cardinals are only ~62% of the offered options. Improves in **5/5 folds** (+21.36 to +33.13).
+
+**UNDER-DETERMINED — a non-result, handled exactly as `bin_boundary_rule` was (L-S7-1):**
+
+| | |
+|---|---|
+| Exact band inside ~[10, 22] deg | **Not resolvable.** McNemar exact tests over 2,500 items separate no candidate from any other; best p = 0.068 |
+| `mask_centroid` vs `largest_component` | Differ in *position* on 263/2,500 items and change **zero** predicted answers |
+| `mask_centroid` vs `bbox_centre` | Change 40/2,500 answers; 0.39 pts apart; p = 0.072 |
+
+The shipped values are **not** the accuracy argmax. `diagonal_band_deg = 16` is the one value
+where two *independent* lines of evidence converge: it lies inside the accuracy plateau **and**
+it reproduces the observed diagonal-answer rate. `direction_reference_rule = mask_centroid` is
+adopted on two non-accuracy grounds — it is the same "a class **is** its mask" semantics that
+`compute_area` and `compute_count` already use, and the centre of a *union* bounding box is
+maximally sensitive to a single stray pixel, which is precisely the wrong statistic once S13
+feeds M2 predicted maps instead of ground truth. **No result may be attributed to 16 over 14,
+or to `mask_centroid` over `largest_component`.**
+
+The selection rule is encoded in the fitting script rather than applied by hand: prefer the
+convergent candidate unless McNemar can actually separate it from the argmax at p < 0.05.
+
+### Capacity check (D-S7-1's argument, reapplied)
+
+Fitted here: 4 booleans + a 3-way choice + one scalar, well under 10 bits, against 2,500
+supervised labels needing >= 5,000 bits to memorise. A convention of this size cannot encode
+per-patch answers. Train only; evaluated on validation.
+
+### Residual — I guessed, then measured, and the measurement contradicted me
+
+I wrote into the draft report that the remaining error was most likely the `between` family's
+symmetric phrasing. **Measuring it proved that wrong:** `between` is at 95.97%, the second-best
+family. All four land within 93.74%-97.10% and each family's share of the residual tracks its
+share of the items. Orientation is fully resolved; what remains is evenly-distributed
+borderline-angle error, which is what an under-determined band width predicts. The claim was
+removed from the report and replaced with the measured table. Another instance of CLAUDE.md §5.

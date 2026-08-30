@@ -1,6 +1,11 @@
 # GATE 1 — Oracle Symbolic Accuracy
 
-**Stage:** S8 · **Date:** 2026-08-30 · **STATUS: HALTED — decision required**
+**Stage:** S8 + S7 addendum · **Date:** 2026-08-30 · **STATUS: GATE 1 PASSED**
+
+> Sections 1-6 are the **original Gate 1 measurement**, on which the PASS verdict
+> was given. They are deliberately left as measured. **§7 is the addendum** that
+> fitted the one convention S7 had left uncalibrated; it shows before and after
+> side by side rather than replacing the original numbers.
 
 Measures `ORACLE(t)` in `TARGET(t) = ORACLE(t) x TRANSFER(t)`: what the symbolic path
 scores when segmentation is **perfect**. Ground-truth CORINE maps fed into M2. No GPU,
@@ -42,19 +47,13 @@ them (IMPLEMENTATION_MAP §8.3).
 
 ## 3. Diagnosis of every task below ~90%
 
-### `mcq|relative pos` — 65.33%. **Convention error, not geometry.**
+### `mcq|relative pos` — **RESOLVED at the S7 addendum. See §7.**
 
-0% abstention, so these are genuinely wrong answers rather than declined ones.
-Diagnosis found and fixed a real bug: the option matcher compared a *single compass
-letter as a substring*, so a computed `SE` matched the option "bottom-left" because
-`"S" in "SE"`. Compound-first exact matching with an angular-nearest fallback moved
-it **55.33% -> 65.33%**.
-
-The residual is a genuine **unfitted convention**: the generator resolves diagonals
-differently from a centroid-offset 8-way compass. Observed case — computed `SW` with
-options {E, NE, W, S}, where `S` and `W` are exactly equidistant and the generator
-chose `S`. **S7 fitted connectivity, MMU, opening and dilation but never the direction
-rule.** It is a fittable parameter that nobody has fitted yet.
+Measured at **65.33%** in the original Gate 1 run and diagnosed there as a
+convention error rather than a geometry error, because abstention was 0%. That
+diagnosis was correct: fitting the convention moved it to **92.67%** 
+(**+27.34** points) with no change to the geometry engine's
+measurement code. The original number is preserved throughout this report.
 
 ### `binary|area` — 74.33% strict / 94.49% attempted. **Parser error.**
 
@@ -121,3 +120,117 @@ fields, and CLAUDE.md §7 still forbids them as model *inputs*.
 - Referring expression and referring point were **NOT MEASURED**: they need IoU against
   released boxes rather than exact match, which this harness does not yet score.
 - METEOR and CIDEr not computed (additional packages). BLEU-4 defines the gate.
+
+---
+
+## 7. ADDENDUM — the direction convention, fitted
+
+**Added after the Gate 1 decision, at the reviewer's direction.** Gate 1 verdict
+PASS was recorded against the numbers in §1-§6 above; nothing there is restated
+to look better than it was measured. The one component S7 left uncalibrated has
+since been fitted, and this section reports what that changed.
+
+### 7.1 Before / after
+
+Same protocol, same validation split, same 300 items per task. Only the
+relative-position convention differs.
+
+| task | before | after | delta |
+|---|---|---|---|
+| `binary|presence` | 100.00% | 100.00% | +0.00 |
+| `binary|area` | 74.33% | 74.33% | +0.00 |
+| `binary|count` | 91.00% | 91.00% | +0.00 |
+| `binary|adjacency` | 95.67% | 95.67% | +0.00 |
+| `mcq|presence` | 90.67% | 90.67% | +0.00 |
+| `mcq|area` | 88.67% | 88.67% | +0.00 |
+| `mcq|count` | 100.00% | 100.00% | +0.00 |
+| `mcq|adjacency` | 78.33% | 78.33% | +0.00 |
+| `mcq|relative pos` | 65.33% | **92.67%** | **+27.34** |
+| **MACRO (strict)** | 87.11% | **90.15%** | **+3.04** |
+| **MACRO (attempted)** | 93.89% | **96.92%** | **+3.03** |
+| **HEADLINE GAP** | +38.04 | **+41.07** | **+3.03** |
+
+**Attribution is clean: exactly 1 of 9 tasks moved**
+(`mcq|relative pos`). The other 8 are
+bit-identical, so the macro gain is attributable to the convention and to nothing
+else. The blind baseline is unchanged at 49.07%, as it must be — no baseline was re-fitted.
+
+The macro number moved because one task moved a long way, not because nine tasks
+each drifted up a little. Read §7.1 by the row, not by the bottom line.
+
+### 7.2 What was measured, and what was not
+
+Fitted on **train** only, all 5 folds, scored per class-pair over each pair's own
+valid fold set (S6 GATE-2 propagation). Evaluated on **validation**, above.
+
+**MEASURED — decisive:**
+
+- Template family `ref_first` (511 items) **inverts subject and
+  reference**: read as written it scores 0.00%, flipped 87.10%.
+- Template family `from_to` (138 items) **inverts subject and
+  reference**: read as written it scores 0.00%, flipped 91.25%.
+
+  The 0.00% is not a coincidence and should not be quoted as a dramatic finding:
+  exact-matching a reversed bearing selects the option 180 degrees from the truth
+  whenever it is offered, so the reversed reading *cannot* be accidentally right.
+  It does mean the error was total on 25.96% of items, which is why this single
+  fix dominates the delta.
+
+- The textbook equal-sector 8-way compass is **wrong**. A 45-degree diagonal band
+  scores 87.01% against 93.57% for a narrow one. Corroborating this independently:
+  released answers are cardinal 81.60% of the time while cardinals are
+  only ~62% of the offered options.
+
+**UNDER-DETERMINED — a non-result, exactly as `bin_boundary_rule` was:**
+
+- The exact band inside roughly [10, 22] degrees is **not resolvable**. McNemar
+  exact tests over 2,500 items separate no candidate from any other (best
+  p = 0.068). The shipped value, 16 degrees, is the one point where two *independent*
+  lines of evidence converge — it lies inside the accuracy plateau and it
+  reproduces the observed diagonal-answer rate, a statistic the accuracy sweep
+  never optimised for. It is **not** the accuracy argmax, which was
+  bbox_centre at 12 degrees and is 0.39 pts higher and
+  statistically indistinguishable. No result should be attributed to 16 over 14.
+- The reference-point rule is under-determined in the strongest possible sense:
+  `mask_centroid` and `largest_component` differ in *position* on 263 of 2,500
+  items and change **zero** predicted answers. `mask_centroid` is shipped on two
+  non-accuracy grounds — it is the same "a class is its mask" semantics
+  `compute_area` and `compute_count` already use, and the centre of a union
+  bounding box is maximally sensitive to one stray pixel, which is the wrong
+  statistic once S13 feeds M2 *predicted* maps instead of ground truth.
+
+### 7.3 Per-fold stability
+
+| fold | n | before | after | delta |
+|---|---|---|---|---|
+| 0 | 500 | 64.32% | 93.25% | +28.93 |
+| 1 | 500 | 64.03% | 96.48% | +32.45 |
+| 2 | 500 | 74.35% | 95.71% | +21.36 |
+| 3 | 500 | 63.73% | 96.86% | +33.13 |
+| 4 | 500 | 61.63% | 94.50% | +32.87 |
+
+Improves in **5/5 folds** (min +21.36, max +33.13) — not a single-region artifact.
+
+### 7.4 Residual — measured, not guessed
+
+`mcq|relative pos` sits at 92.67% with **0% abstention**,
+so the remainder are still wrong answers rather than declined ones. Train-split
+accuracy under the fitted convention is 93.57% per class-pair, so validation tracks train
+and this is the convention's ceiling rather than an overfit that failed to
+transfer.
+
+The obvious guess is that one template family is still mis-parsed. **It is not.**
+Per-family accuracy under the fitted convention:
+
+| template family | n | accuracy | errors | share of residual |
+|---|---|---|---|---|
+| `subject_first` | 1,727 | 94.56% | 94 | 69.6% |
+| `ref_first` | 511 | 93.74% | 32 | 23.7% |
+| `from_to` | 138 | 97.10% | 4 | 3.0% |
+| `between` | 124 | 95.97% | 5 | 3.7% |
+
+All four families land within 93.74%-97.10%, and each
+family's share of the residual tracks its share of the items. The orientation
+question is therefore **fully resolved**; what remains is borderline-angle error
+distributed evenly, which is what an under-determined band width predicts. No
+further convention is claimed, and none is available to fit without more evidence.

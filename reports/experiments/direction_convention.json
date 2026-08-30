@@ -1,0 +1,1452 @@
+{
+  "before_after": {
+    "baseline": {
+      "per_pair_acc": 0.6474,
+      "pooled_acc": 0.668
+    },
+    "fitted": {
+      "per_pair_acc": 0.9357,
+      "pooled_acc": 0.946
+    }
+  },
+  "families": {
+    "between": 124,
+    "from_to": 138,
+    "ref_first": 511,
+    "subject_first": 1727
+  },
+  "fitted": {
+    "diagonal_band_deg": 16.0,
+    "direction_orientation_flip": {
+      "between": false,
+      "from_to": true,
+      "ref_first": true,
+      "subject_first": false
+    },
+    "direction_reference_rule": "mask_centroid"
+  },
+  "grid": {
+    "accuracy_argmax": [
+      "bbox_centre",
+      12.0
+    ],
+    "chosen_band_deg": 16.0,
+    "chosen_rule": "mask_centroid",
+    "coarse": [
+      {
+        "band_deg": 0.0,
+        "exact_match_rate": 0.8104,
+        "n": 2500,
+        "per_pair_acc": 0.9142,
+        "pooled_acc": 0.9264,
+        "rule": "mask_centroid"
+      },
+      {
+        "band_deg": 0.0,
+        "exact_match_rate": 0.8104,
+        "n": 2500,
+        "per_pair_acc": 0.9142,
+        "pooled_acc": 0.9264,
+        "rule": "largest_component"
+      },
+      {
+        "band_deg": 0.0,
+        "exact_match_rate": 0.812,
+        "n": 2500,
+        "per_pair_acc": 0.9142,
+        "pooled_acc": 0.9312,
+        "rule": "bbox_centre"
+      },
+      {
+        "band_deg": 5.0,
+        "exact_match_rate": 0.834,
+        "n": 2500,
+        "per_pair_acc": 0.9249,
+        "pooled_acc": 0.9404,
+        "rule": "mask_centroid"
+      },
+      {
+        "band_deg": 5.0,
+        "exact_match_rate": 0.834,
+        "n": 2500,
+        "per_pair_acc": 0.9249,
+        "pooled_acc": 0.9404,
+        "rule": "largest_component"
+      },
+      {
+        "band_deg": 5.0,
+        "exact_match_rate": 0.842,
+        "n": 2500,
+        "per_pair_acc": 0.9378,
+        "pooled_acc": 0.9432,
+        "rule": "bbox_centre"
+      },
+      {
+        "band_deg": 10.0,
+        "exact_match_rate": 0.8448,
+        "n": 2500,
+        "per_pair_acc": 0.9381,
+        "pooled_acc": 0.9412,
+        "rule": "mask_centroid"
+      },
+      {
+        "band_deg": 10.0,
+        "exact_match_rate": 0.8448,
+        "n": 2500,
+        "per_pair_acc": 0.9381,
+        "pooled_acc": 0.9412,
+        "rule": "largest_component"
+      },
+      {
+        "band_deg": 10.0,
+        "exact_match_rate": 0.8576,
+        "n": 2500,
+        "per_pair_acc": 0.9441,
+        "pooled_acc": 0.9508,
+        "rule": "bbox_centre"
+      },
+      {
+        "band_deg": 15.0,
+        "exact_match_rate": 0.8536,
+        "n": 2500,
+        "per_pair_acc": 0.9351,
+        "pooled_acc": 0.9448,
+        "rule": "mask_centroid"
+      },
+      {
+        "band_deg": 15.0,
+        "exact_match_rate": 0.8536,
+        "n": 2500,
+        "per_pair_acc": 0.9351,
+        "pooled_acc": 0.9448,
+        "rule": "largest_component"
+      },
+      {
+        "band_deg": 15.0,
+        "exact_match_rate": 0.856,
+        "n": 2500,
+        "per_pair_acc": 0.933,
+        "pooled_acc": 0.9492,
+        "rule": "bbox_centre"
+      },
+      {
+        "band_deg": 20.0,
+        "exact_match_rate": 0.8428,
+        "n": 2500,
+        "per_pair_acc": 0.9387,
+        "pooled_acc": 0.9452,
+        "rule": "mask_centroid"
+      },
+      {
+        "band_deg": 20.0,
+        "exact_match_rate": 0.8428,
+        "n": 2500,
+        "per_pair_acc": 0.9387,
+        "pooled_acc": 0.9452,
+        "rule": "largest_component"
+      },
+      {
+        "band_deg": 20.0,
+        "exact_match_rate": 0.842,
+        "n": 2500,
+        "per_pair_acc": 0.9328,
+        "pooled_acc": 0.946,
+        "rule": "bbox_centre"
+      },
+      {
+        "band_deg": 25.0,
+        "exact_match_rate": 0.8196,
+        "n": 2500,
+        "per_pair_acc": 0.9279,
+        "pooled_acc": 0.94,
+        "rule": "mask_centroid"
+      },
+      {
+        "band_deg": 25.0,
+        "exact_match_rate": 0.8196,
+        "n": 2500,
+        "per_pair_acc": 0.9279,
+        "pooled_acc": 0.94,
+        "rule": "largest_component"
+      },
+      {
+        "band_deg": 25.0,
+        "exact_match_rate": 0.8156,
+        "n": 2500,
+        "per_pair_acc": 0.92,
+        "pooled_acc": 0.9376,
+        "rule": "bbox_centre"
+      },
+      {
+        "band_deg": 30.0,
+        "exact_match_rate": 0.79,
+        "n": 2500,
+        "per_pair_acc": 0.8963,
+        "pooled_acc": 0.928,
+        "rule": "mask_centroid"
+      },
+      {
+        "band_deg": 30.0,
+        "exact_match_rate": 0.79,
+        "n": 2500,
+        "per_pair_acc": 0.8963,
+        "pooled_acc": 0.928,
+        "rule": "largest_component"
+      },
+      {
+        "band_deg": 30.0,
+        "exact_match_rate": 0.7848,
+        "n": 2500,
+        "per_pair_acc": 0.9081,
+        "pooled_acc": 0.9308,
+        "rule": "bbox_centre"
+      },
+      {
+        "band_deg": 35.0,
+        "exact_match_rate": 0.756,
+        "n": 2500,
+        "per_pair_acc": 0.8913,
+        "pooled_acc": 0.9212,
+        "rule": "mask_centroid"
+      },
+      {
+        "band_deg": 35.0,
+        "exact_match_rate": 0.756,
+        "n": 2500,
+        "per_pair_acc": 0.8913,
+        "pooled_acc": 0.9212,
+        "rule": "largest_component"
+      },
+      {
+        "band_deg": 35.0,
+        "exact_match_rate": 0.7536,
+        "n": 2500,
+        "per_pair_acc": 0.875,
+        "pooled_acc": 0.9188,
+        "rule": "bbox_centre"
+      },
+      {
+        "band_deg": 40.0,
+        "exact_match_rate": 0.7184,
+        "n": 2500,
+        "per_pair_acc": 0.8821,
+        "pooled_acc": 0.9108,
+        "rule": "mask_centroid"
+      },
+      {
+        "band_deg": 40.0,
+        "exact_match_rate": 0.7184,
+        "n": 2500,
+        "per_pair_acc": 0.8821,
+        "pooled_acc": 0.9108,
+        "rule": "largest_component"
+      },
+      {
+        "band_deg": 40.0,
+        "exact_match_rate": 0.7092,
+        "n": 2500,
+        "per_pair_acc": 0.8649,
+        "pooled_acc": 0.9068,
+        "rule": "bbox_centre"
+      },
+      {
+        "band_deg": 45.0,
+        "exact_match_rate": 0.6816,
+        "n": 2500,
+        "per_pair_acc": 0.8701,
+        "pooled_acc": 0.8984,
+        "rule": "mask_centroid"
+      },
+      {
+        "band_deg": 45.0,
+        "exact_match_rate": 0.6816,
+        "n": 2500,
+        "per_pair_acc": 0.8701,
+        "pooled_acc": 0.8984,
+        "rule": "largest_component"
+      },
+      {
+        "band_deg": 45.0,
+        "exact_match_rate": 0.6688,
+        "n": 2500,
+        "per_pair_acc": 0.8632,
+        "pooled_acc": 0.8932,
+        "rule": "bbox_centre"
+      },
+      {
+        "band_deg": 50.0,
+        "exact_match_rate": 0.6416,
+        "n": 2500,
+        "per_pair_acc": 0.8494,
+        "pooled_acc": 0.8844,
+        "rule": "mask_centroid"
+      },
+      {
+        "band_deg": 50.0,
+        "exact_match_rate": 0.6416,
+        "n": 2500,
+        "per_pair_acc": 0.8494,
+        "pooled_acc": 0.8844,
+        "rule": "largest_component"
+      },
+      {
+        "band_deg": 50.0,
+        "exact_match_rate": 0.624,
+        "n": 2500,
+        "per_pair_acc": 0.8604,
+        "pooled_acc": 0.8816,
+        "rule": "bbox_centre"
+      },
+      {
+        "band_deg": 55.0,
+        "exact_match_rate": 0.5916,
+        "n": 2500,
+        "per_pair_acc": 0.8469,
+        "pooled_acc": 0.872,
+        "rule": "mask_centroid"
+      },
+      {
+        "band_deg": 55.0,
+        "exact_match_rate": 0.5916,
+        "n": 2500,
+        "per_pair_acc": 0.8469,
+        "pooled_acc": 0.872,
+        "rule": "largest_component"
+      },
+      {
+        "band_deg": 55.0,
+        "exact_match_rate": 0.58,
+        "n": 2500,
+        "per_pair_acc": 0.8454,
+        "pooled_acc": 0.8672,
+        "rule": "bbox_centre"
+      },
+      {
+        "band_deg": 60.0,
+        "exact_match_rate": 0.5448,
+        "n": 2500,
+        "per_pair_acc": 0.837,
+        "pooled_acc": 0.8548,
+        "rule": "mask_centroid"
+      },
+      {
+        "band_deg": 60.0,
+        "exact_match_rate": 0.5448,
+        "n": 2500,
+        "per_pair_acc": 0.837,
+        "pooled_acc": 0.8548,
+        "rule": "largest_component"
+      },
+      {
+        "band_deg": 60.0,
+        "exact_match_rate": 0.532,
+        "n": 2500,
+        "per_pair_acc": 0.8373,
+        "pooled_acc": 0.8512,
+        "rule": "bbox_centre"
+      },
+      {
+        "band_deg": 65.0,
+        "exact_match_rate": 0.4988,
+        "n": 2500,
+        "per_pair_acc": 0.8292,
+        "pooled_acc": 0.8448,
+        "rule": "mask_centroid"
+      },
+      {
+        "band_deg": 65.0,
+        "exact_match_rate": 0.4988,
+        "n": 2500,
+        "per_pair_acc": 0.8292,
+        "pooled_acc": 0.8448,
+        "rule": "largest_component"
+      },
+      {
+        "band_deg": 65.0,
+        "exact_match_rate": 0.4864,
+        "n": 2500,
+        "per_pair_acc": 0.8267,
+        "pooled_acc": 0.8416,
+        "rule": "bbox_centre"
+      },
+      {
+        "band_deg": 70.0,
+        "exact_match_rate": 0.4476,
+        "n": 2500,
+        "per_pair_acc": 0.8161,
+        "pooled_acc": 0.828,
+        "rule": "mask_centroid"
+      },
+      {
+        "band_deg": 70.0,
+        "exact_match_rate": 0.4476,
+        "n": 2500,
+        "per_pair_acc": 0.8161,
+        "pooled_acc": 0.828,
+        "rule": "largest_component"
+      },
+      {
+        "band_deg": 70.0,
+        "exact_match_rate": 0.4336,
+        "n": 2500,
+        "per_pair_acc": 0.802,
+        "pooled_acc": 0.824,
+        "rule": "bbox_centre"
+      },
+      {
+        "band_deg": 75.0,
+        "exact_match_rate": 0.39,
+        "n": 2500,
+        "per_pair_acc": 0.796,
+        "pooled_acc": 0.812,
+        "rule": "mask_centroid"
+      },
+      {
+        "band_deg": 75.0,
+        "exact_match_rate": 0.39,
+        "n": 2500,
+        "per_pair_acc": 0.796,
+        "pooled_acc": 0.812,
+        "rule": "largest_component"
+      },
+      {
+        "band_deg": 75.0,
+        "exact_match_rate": 0.3796,
+        "n": 2500,
+        "per_pair_acc": 0.7947,
+        "pooled_acc": 0.81,
+        "rule": "bbox_centre"
+      },
+      {
+        "band_deg": 80.0,
+        "exact_match_rate": 0.3264,
+        "n": 2500,
+        "per_pair_acc": 0.7841,
+        "pooled_acc": 0.7956,
+        "rule": "mask_centroid"
+      },
+      {
+        "band_deg": 80.0,
+        "exact_match_rate": 0.3264,
+        "n": 2500,
+        "per_pair_acc": 0.7841,
+        "pooled_acc": 0.7956,
+        "rule": "largest_component"
+      },
+      {
+        "band_deg": 80.0,
+        "exact_match_rate": 0.3228,
+        "n": 2500,
+        "per_pair_acc": 0.7841,
+        "pooled_acc": 0.7948,
+        "rule": "bbox_centre"
+      },
+      {
+        "band_deg": 85.0,
+        "exact_match_rate": 0.2536,
+        "n": 2500,
+        "per_pair_acc": 0.7658,
+        "pooled_acc": 0.7756,
+        "rule": "mask_centroid"
+      },
+      {
+        "band_deg": 85.0,
+        "exact_match_rate": 0.2536,
+        "n": 2500,
+        "per_pair_acc": 0.7658,
+        "pooled_acc": 0.7756,
+        "rule": "largest_component"
+      },
+      {
+        "band_deg": 85.0,
+        "exact_match_rate": 0.2588,
+        "n": 2500,
+        "per_pair_acc": 0.7661,
+        "pooled_acc": 0.774,
+        "rule": "bbox_centre"
+      },
+      {
+        "band_deg": 90.0,
+        "exact_match_rate": 0.184,
+        "n": 2500,
+        "per_pair_acc": 0.7492,
+        "pooled_acc": 0.754,
+        "rule": "mask_centroid"
+      },
+      {
+        "band_deg": 90.0,
+        "exact_match_rate": 0.184,
+        "n": 2500,
+        "per_pair_acc": 0.7492,
+        "pooled_acc": 0.754,
+        "rule": "largest_component"
+      },
+      {
+        "band_deg": 90.0,
+        "exact_match_rate": 0.184,
+        "n": 2500,
+        "per_pair_acc": 0.7512,
+        "pooled_acc": 0.7516,
+        "rule": "bbox_centre"
+      }
+    ],
+    "convergent_rules": [
+      "mask_centroid",
+      "largest_component"
+    ],
+    "dist_matched_deg": 16.0,
+    "dist_rows": [
+      {
+        "band_deg": 0.0,
+        "pred_diagonal_rate": 0.002
+      },
+      {
+        "band_deg": 2.0,
+        "pred_diagonal_rate": 0.024
+      },
+      {
+        "band_deg": 4.0,
+        "pred_diagonal_rate": 0.0472
+      },
+      {
+        "band_deg": 6.0,
+        "pred_diagonal_rate": 0.0724
+      },
+      {
+        "band_deg": 8.0,
+        "pred_diagonal_rate": 0.0932
+      },
+      {
+        "band_deg": 10.0,
+        "pred_diagonal_rate": 0.112
+      },
+      {
+        "band_deg": 12.0,
+        "pred_diagonal_rate": 0.136
+      },
+      {
+        "band_deg": 14.0,
+        "pred_diagonal_rate": 0.156
+      },
+      {
+        "band_deg": 16.0,
+        "pred_diagonal_rate": 0.1776
+      },
+      {
+        "band_deg": 18.0,
+        "pred_diagonal_rate": 0.1972
+      },
+      {
+        "band_deg": 20.0,
+        "pred_diagonal_rate": 0.22
+      },
+      {
+        "band_deg": 22.0,
+        "pred_diagonal_rate": 0.2424
+      },
+      {
+        "band_deg": 24.0,
+        "pred_diagonal_rate": 0.266
+      },
+      {
+        "band_deg": 26.0,
+        "pred_diagonal_rate": 0.2912
+      },
+      {
+        "band_deg": 28.0,
+        "pred_diagonal_rate": 0.314
+      },
+      {
+        "band_deg": 30.0,
+        "pred_diagonal_rate": 0.334
+      },
+      {
+        "band_deg": 32.0,
+        "pred_diagonal_rate": 0.354
+      },
+      {
+        "band_deg": 34.0,
+        "pred_diagonal_rate": 0.3696
+      },
+      {
+        "band_deg": 36.0,
+        "pred_diagonal_rate": 0.39
+      },
+      {
+        "band_deg": 38.0,
+        "pred_diagonal_rate": 0.4088
+      },
+      {
+        "band_deg": 40.0,
+        "pred_diagonal_rate": 0.434
+      },
+      {
+        "band_deg": 42.0,
+        "pred_diagonal_rate": 0.4544
+      },
+      {
+        "band_deg": 44.0,
+        "pred_diagonal_rate": 0.4744
+      }
+    ],
+    "fine": {
+      "bbox_centre": [
+        {
+          "band_deg": 0.0,
+          "per_pair_acc": 0.9142,
+          "pooled_acc": 0.9312
+        },
+        {
+          "band_deg": 1.0,
+          "per_pair_acc": 0.9171,
+          "pooled_acc": 0.9344
+        },
+        {
+          "band_deg": 2.0,
+          "per_pair_acc": 0.9302,
+          "pooled_acc": 0.936
+        },
+        {
+          "band_deg": 3.0,
+          "per_pair_acc": 0.9329,
+          "pooled_acc": 0.9388
+        },
+        {
+          "band_deg": 4.0,
+          "per_pair_acc": 0.9319,
+          "pooled_acc": 0.9404
+        },
+        {
+          "band_deg": 5.0,
+          "per_pair_acc": 0.9378,
+          "pooled_acc": 0.9432
+        },
+        {
+          "band_deg": 6.0,
+          "per_pair_acc": 0.9415,
+          "pooled_acc": 0.9452
+        },
+        {
+          "band_deg": 7.0,
+          "per_pair_acc": 0.9419,
+          "pooled_acc": 0.9468
+        },
+        {
+          "band_deg": 8.0,
+          "per_pair_acc": 0.9418,
+          "pooled_acc": 0.9464
+        },
+        {
+          "band_deg": 9.0,
+          "per_pair_acc": 0.943,
+          "pooled_acc": 0.9476
+        },
+        {
+          "band_deg": 10.0,
+          "per_pair_acc": 0.9441,
+          "pooled_acc": 0.9508
+        },
+        {
+          "band_deg": 11.0,
+          "per_pair_acc": 0.9435,
+          "pooled_acc": 0.95
+        },
+        {
+          "band_deg": 12.0,
+          "per_pair_acc": 0.9452,
+          "pooled_acc": 0.9512
+        },
+        {
+          "band_deg": 13.0,
+          "per_pair_acc": 0.9408,
+          "pooled_acc": 0.9492
+        },
+        {
+          "band_deg": 14.0,
+          "per_pair_acc": 0.9332,
+          "pooled_acc": 0.9496
+        },
+        {
+          "band_deg": 15.0,
+          "per_pair_acc": 0.933,
+          "pooled_acc": 0.9492
+        },
+        {
+          "band_deg": 16.0,
+          "per_pair_acc": 0.9356,
+          "pooled_acc": 0.9508
+        },
+        {
+          "band_deg": 17.0,
+          "per_pair_acc": 0.9375,
+          "pooled_acc": 0.9508
+        },
+        {
+          "band_deg": 18.0,
+          "per_pair_acc": 0.9355,
+          "pooled_acc": 0.9492
+        },
+        {
+          "band_deg": 19.0,
+          "per_pair_acc": 0.9338,
+          "pooled_acc": 0.9488
+        },
+        {
+          "band_deg": 20.0,
+          "per_pair_acc": 0.9328,
+          "pooled_acc": 0.946
+        },
+        {
+          "band_deg": 21.0,
+          "per_pair_acc": 0.9321,
+          "pooled_acc": 0.9452
+        },
+        {
+          "band_deg": 22.0,
+          "per_pair_acc": 0.9307,
+          "pooled_acc": 0.942
+        },
+        {
+          "band_deg": 23.0,
+          "per_pair_acc": 0.9219,
+          "pooled_acc": 0.9412
+        },
+        {
+          "band_deg": 24.0,
+          "per_pair_acc": 0.9215,
+          "pooled_acc": 0.9396
+        },
+        {
+          "band_deg": 25.0,
+          "per_pair_acc": 0.92,
+          "pooled_acc": 0.9376
+        },
+        {
+          "band_deg": 26.0,
+          "per_pair_acc": 0.917,
+          "pooled_acc": 0.9348
+        },
+        {
+          "band_deg": 27.0,
+          "per_pair_acc": 0.9165,
+          "pooled_acc": 0.9332
+        },
+        {
+          "band_deg": 28.0,
+          "per_pair_acc": 0.9108,
+          "pooled_acc": 0.9328
+        },
+        {
+          "band_deg": 29.0,
+          "per_pair_acc": 0.9103,
+          "pooled_acc": 0.9324
+        },
+        {
+          "band_deg": 30.0,
+          "per_pair_acc": 0.9081,
+          "pooled_acc": 0.9308
+        },
+        {
+          "band_deg": 31.0,
+          "per_pair_acc": 0.906,
+          "pooled_acc": 0.9284
+        },
+        {
+          "band_deg": 32.0,
+          "per_pair_acc": 0.8909,
+          "pooled_acc": 0.9244
+        },
+        {
+          "band_deg": 33.0,
+          "per_pair_acc": 0.8849,
+          "pooled_acc": 0.9224
+        },
+        {
+          "band_deg": 34.0,
+          "per_pair_acc": 0.8753,
+          "pooled_acc": 0.92
+        },
+        {
+          "band_deg": 35.0,
+          "per_pair_acc": 0.875,
+          "pooled_acc": 0.9188
+        },
+        {
+          "band_deg": 36.0,
+          "per_pair_acc": 0.8726,
+          "pooled_acc": 0.9148
+        },
+        {
+          "band_deg": 37.0,
+          "per_pair_acc": 0.8687,
+          "pooled_acc": 0.9124
+        },
+        {
+          "band_deg": 38.0,
+          "per_pair_acc": 0.868,
+          "pooled_acc": 0.9112
+        },
+        {
+          "band_deg": 39.0,
+          "per_pair_acc": 0.8662,
+          "pooled_acc": 0.9096
+        },
+        {
+          "band_deg": 40.0,
+          "per_pair_acc": 0.8649,
+          "pooled_acc": 0.9068
+        },
+        {
+          "band_deg": 41.0,
+          "per_pair_acc": 0.8702,
+          "pooled_acc": 0.904
+        },
+        {
+          "band_deg": 42.0,
+          "per_pair_acc": 0.8682,
+          "pooled_acc": 0.9016
+        },
+        {
+          "band_deg": 43.0,
+          "per_pair_acc": 0.8679,
+          "pooled_acc": 0.9008
+        },
+        {
+          "band_deg": 44.0,
+          "per_pair_acc": 0.8665,
+          "pooled_acc": 0.898
+        },
+        {
+          "band_deg": 45.0,
+          "per_pair_acc": 0.8632,
+          "pooled_acc": 0.8932
+        }
+      ],
+      "largest_component": [
+        {
+          "band_deg": 0.0,
+          "per_pair_acc": 0.9142,
+          "pooled_acc": 0.9264
+        },
+        {
+          "band_deg": 1.0,
+          "per_pair_acc": 0.9167,
+          "pooled_acc": 0.9296
+        },
+        {
+          "band_deg": 2.0,
+          "per_pair_acc": 0.9182,
+          "pooled_acc": 0.9332
+        },
+        {
+          "band_deg": 3.0,
+          "per_pair_acc": 0.9244,
+          "pooled_acc": 0.9372
+        },
+        {
+          "band_deg": 4.0,
+          "per_pair_acc": 0.9234,
+          "pooled_acc": 0.9392
+        },
+        {
+          "band_deg": 5.0,
+          "per_pair_acc": 0.9249,
+          "pooled_acc": 0.9404
+        },
+        {
+          "band_deg": 6.0,
+          "per_pair_acc": 0.9351,
+          "pooled_acc": 0.944
+        },
+        {
+          "band_deg": 7.0,
+          "per_pair_acc": 0.935,
+          "pooled_acc": 0.944
+        },
+        {
+          "band_deg": 8.0,
+          "per_pair_acc": 0.9359,
+          "pooled_acc": 0.9428
+        },
+        {
+          "band_deg": 9.0,
+          "per_pair_acc": 0.9383,
+          "pooled_acc": 0.9424
+        },
+        {
+          "band_deg": 10.0,
+          "per_pair_acc": 0.9381,
+          "pooled_acc": 0.9412
+        },
+        {
+          "band_deg": 11.0,
+          "per_pair_acc": 0.9385,
+          "pooled_acc": 0.9432
+        },
+        {
+          "band_deg": 12.0,
+          "per_pair_acc": 0.9383,
+          "pooled_acc": 0.9448
+        },
+        {
+          "band_deg": 13.0,
+          "per_pair_acc": 0.9376,
+          "pooled_acc": 0.9448
+        },
+        {
+          "band_deg": 14.0,
+          "per_pair_acc": 0.9362,
+          "pooled_acc": 0.9456
+        },
+        {
+          "band_deg": 15.0,
+          "per_pair_acc": 0.9351,
+          "pooled_acc": 0.9448
+        },
+        {
+          "band_deg": 16.0,
+          "per_pair_acc": 0.9357,
+          "pooled_acc": 0.946
+        },
+        {
+          "band_deg": 17.0,
+          "per_pair_acc": 0.9363,
+          "pooled_acc": 0.9464
+        },
+        {
+          "band_deg": 18.0,
+          "per_pair_acc": 0.9362,
+          "pooled_acc": 0.9456
+        },
+        {
+          "band_deg": 19.0,
+          "per_pair_acc": 0.9401,
+          "pooled_acc": 0.9456
+        },
+        {
+          "band_deg": 20.0,
+          "per_pair_acc": 0.9387,
+          "pooled_acc": 0.9452
+        },
+        {
+          "band_deg": 21.0,
+          "per_pair_acc": 0.9391,
+          "pooled_acc": 0.9448
+        },
+        {
+          "band_deg": 22.0,
+          "per_pair_acc": 0.9413,
+          "pooled_acc": 0.9444
+        },
+        {
+          "band_deg": 23.0,
+          "per_pair_acc": 0.9377,
+          "pooled_acc": 0.9424
+        },
+        {
+          "band_deg": 24.0,
+          "per_pair_acc": 0.928,
+          "pooled_acc": 0.9408
+        },
+        {
+          "band_deg": 25.0,
+          "per_pair_acc": 0.9279,
+          "pooled_acc": 0.94
+        },
+        {
+          "band_deg": 26.0,
+          "per_pair_acc": 0.9261,
+          "pooled_acc": 0.9388
+        },
+        {
+          "band_deg": 27.0,
+          "per_pair_acc": 0.9121,
+          "pooled_acc": 0.9364
+        },
+        {
+          "band_deg": 28.0,
+          "per_pair_acc": 0.9038,
+          "pooled_acc": 0.9336
+        },
+        {
+          "band_deg": 29.0,
+          "per_pair_acc": 0.8966,
+          "pooled_acc": 0.9292
+        },
+        {
+          "band_deg": 30.0,
+          "per_pair_acc": 0.8963,
+          "pooled_acc": 0.928
+        },
+        {
+          "band_deg": 31.0,
+          "per_pair_acc": 0.8956,
+          "pooled_acc": 0.9264
+        },
+        {
+          "band_deg": 32.0,
+          "per_pair_acc": 0.8945,
+          "pooled_acc": 0.9244
+        },
+        {
+          "band_deg": 33.0,
+          "per_pair_acc": 0.8933,
+          "pooled_acc": 0.9232
+        },
+        {
+          "band_deg": 34.0,
+          "per_pair_acc": 0.8933,
+          "pooled_acc": 0.9232
+        },
+        {
+          "band_deg": 35.0,
+          "per_pair_acc": 0.8913,
+          "pooled_acc": 0.9212
+        },
+        {
+          "band_deg": 36.0,
+          "per_pair_acc": 0.889,
+          "pooled_acc": 0.92
+        },
+        {
+          "band_deg": 37.0,
+          "per_pair_acc": 0.8886,
+          "pooled_acc": 0.9192
+        },
+        {
+          "band_deg": 38.0,
+          "per_pair_acc": 0.8878,
+          "pooled_acc": 0.9172
+        },
+        {
+          "band_deg": 39.0,
+          "per_pair_acc": 0.8859,
+          "pooled_acc": 0.9152
+        },
+        {
+          "band_deg": 40.0,
+          "per_pair_acc": 0.8821,
+          "pooled_acc": 0.9108
+        },
+        {
+          "band_deg": 41.0,
+          "per_pair_acc": 0.8665,
+          "pooled_acc": 0.9072
+        },
+        {
+          "band_deg": 42.0,
+          "per_pair_acc": 0.8643,
+          "pooled_acc": 0.9036
+        },
+        {
+          "band_deg": 43.0,
+          "per_pair_acc": 0.8636,
+          "pooled_acc": 0.9016
+        },
+        {
+          "band_deg": 44.0,
+          "per_pair_acc": 0.8718,
+          "pooled_acc": 0.9012
+        },
+        {
+          "band_deg": 45.0,
+          "per_pair_acc": 0.8701,
+          "pooled_acc": 0.8984
+        }
+      ],
+      "mask_centroid": [
+        {
+          "band_deg": 0.0,
+          "per_pair_acc": 0.9142,
+          "pooled_acc": 0.9264
+        },
+        {
+          "band_deg": 1.0,
+          "per_pair_acc": 0.9167,
+          "pooled_acc": 0.9296
+        },
+        {
+          "band_deg": 2.0,
+          "per_pair_acc": 0.9182,
+          "pooled_acc": 0.9332
+        },
+        {
+          "band_deg": 3.0,
+          "per_pair_acc": 0.9244,
+          "pooled_acc": 0.9372
+        },
+        {
+          "band_deg": 4.0,
+          "per_pair_acc": 0.9234,
+          "pooled_acc": 0.9392
+        },
+        {
+          "band_deg": 5.0,
+          "per_pair_acc": 0.9249,
+          "pooled_acc": 0.9404
+        },
+        {
+          "band_deg": 6.0,
+          "per_pair_acc": 0.9351,
+          "pooled_acc": 0.944
+        },
+        {
+          "band_deg": 7.0,
+          "per_pair_acc": 0.935,
+          "pooled_acc": 0.944
+        },
+        {
+          "band_deg": 8.0,
+          "per_pair_acc": 0.9359,
+          "pooled_acc": 0.9428
+        },
+        {
+          "band_deg": 9.0,
+          "per_pair_acc": 0.9383,
+          "pooled_acc": 0.9424
+        },
+        {
+          "band_deg": 10.0,
+          "per_pair_acc": 0.9381,
+          "pooled_acc": 0.9412
+        },
+        {
+          "band_deg": 11.0,
+          "per_pair_acc": 0.9385,
+          "pooled_acc": 0.9432
+        },
+        {
+          "band_deg": 12.0,
+          "per_pair_acc": 0.9383,
+          "pooled_acc": 0.9448
+        },
+        {
+          "band_deg": 13.0,
+          "per_pair_acc": 0.9376,
+          "pooled_acc": 0.9448
+        },
+        {
+          "band_deg": 14.0,
+          "per_pair_acc": 0.9362,
+          "pooled_acc": 0.9456
+        },
+        {
+          "band_deg": 15.0,
+          "per_pair_acc": 0.9351,
+          "pooled_acc": 0.9448
+        },
+        {
+          "band_deg": 16.0,
+          "per_pair_acc": 0.9357,
+          "pooled_acc": 0.946
+        },
+        {
+          "band_deg": 17.0,
+          "per_pair_acc": 0.9363,
+          "pooled_acc": 0.9464
+        },
+        {
+          "band_deg": 18.0,
+          "per_pair_acc": 0.9362,
+          "pooled_acc": 0.9456
+        },
+        {
+          "band_deg": 19.0,
+          "per_pair_acc": 0.9401,
+          "pooled_acc": 0.9456
+        },
+        {
+          "band_deg": 20.0,
+          "per_pair_acc": 0.9387,
+          "pooled_acc": 0.9452
+        },
+        {
+          "band_deg": 21.0,
+          "per_pair_acc": 0.9391,
+          "pooled_acc": 0.9448
+        },
+        {
+          "band_deg": 22.0,
+          "per_pair_acc": 0.9413,
+          "pooled_acc": 0.9444
+        },
+        {
+          "band_deg": 23.0,
+          "per_pair_acc": 0.9377,
+          "pooled_acc": 0.9424
+        },
+        {
+          "band_deg": 24.0,
+          "per_pair_acc": 0.928,
+          "pooled_acc": 0.9408
+        },
+        {
+          "band_deg": 25.0,
+          "per_pair_acc": 0.9279,
+          "pooled_acc": 0.94
+        },
+        {
+          "band_deg": 26.0,
+          "per_pair_acc": 0.9261,
+          "pooled_acc": 0.9388
+        },
+        {
+          "band_deg": 27.0,
+          "per_pair_acc": 0.9121,
+          "pooled_acc": 0.9364
+        },
+        {
+          "band_deg": 28.0,
+          "per_pair_acc": 0.9038,
+          "pooled_acc": 0.9336
+        },
+        {
+          "band_deg": 29.0,
+          "per_pair_acc": 0.8966,
+          "pooled_acc": 0.9292
+        },
+        {
+          "band_deg": 30.0,
+          "per_pair_acc": 0.8963,
+          "pooled_acc": 0.928
+        },
+        {
+          "band_deg": 31.0,
+          "per_pair_acc": 0.8956,
+          "pooled_acc": 0.9264
+        },
+        {
+          "band_deg": 32.0,
+          "per_pair_acc": 0.8945,
+          "pooled_acc": 0.9244
+        },
+        {
+          "band_deg": 33.0,
+          "per_pair_acc": 0.8933,
+          "pooled_acc": 0.9232
+        },
+        {
+          "band_deg": 34.0,
+          "per_pair_acc": 0.8933,
+          "pooled_acc": 0.9232
+        },
+        {
+          "band_deg": 35.0,
+          "per_pair_acc": 0.8913,
+          "pooled_acc": 0.9212
+        },
+        {
+          "band_deg": 36.0,
+          "per_pair_acc": 0.889,
+          "pooled_acc": 0.92
+        },
+        {
+          "band_deg": 37.0,
+          "per_pair_acc": 0.8886,
+          "pooled_acc": 0.9192
+        },
+        {
+          "band_deg": 38.0,
+          "per_pair_acc": 0.8878,
+          "pooled_acc": 0.9172
+        },
+        {
+          "band_deg": 39.0,
+          "per_pair_acc": 0.8859,
+          "pooled_acc": 0.9152
+        },
+        {
+          "band_deg": 40.0,
+          "per_pair_acc": 0.8821,
+          "pooled_acc": 0.9108
+        },
+        {
+          "band_deg": 41.0,
+          "per_pair_acc": 0.8665,
+          "pooled_acc": 0.9072
+        },
+        {
+          "band_deg": 42.0,
+          "per_pair_acc": 0.8643,
+          "pooled_acc": 0.9036
+        },
+        {
+          "band_deg": 43.0,
+          "per_pair_acc": 0.8636,
+          "pooled_acc": 0.9016
+        },
+        {
+          "band_deg": 44.0,
+          "per_pair_acc": 0.8718,
+          "pooled_acc": 0.9012
+        },
+        {
+          "band_deg": 45.0,
+          "per_pair_acc": 0.8701,
+          "pooled_acc": 0.8984
+        }
+      ]
+    },
+    "rule_best": {
+      "bbox_centre": {
+        "peak_acc": 0.9452,
+        "peak_deg": [
+          12.0
+        ],
+        "plateau_deg": [
+          6.0,
+          13.0
+        ]
+      },
+      "largest_component": {
+        "peak_acc": 0.9413,
+        "peak_deg": [
+          22.0
+        ],
+        "plateau_deg": [
+          9.0,
+          23.0
+        ]
+      },
+      "mask_centroid": {
+        "peak_acc": 0.9413,
+        "peak_deg": [
+          22.0
+        ],
+        "plateau_deg": [
+          9.0,
+          23.0
+        ]
+      }
+    },
+    "rule_spread": 0.0039,
+    "true_diagonal_rate": 0.184
+  },
+  "n": 2500,
+  "orientation": {
+    "fitted": {
+      "between": false,
+      "from_to": true,
+      "ref_first": true,
+      "subject_first": false
+    },
+    "rows": [
+      {
+        "as_written": 0.0,
+        "family": "ref_first",
+        "flip": true,
+        "flipped": 0.871,
+        "n": 511
+      },
+      {
+        "as_written": 0.8538,
+        "family": "subject_first",
+        "flip": false,
+        "flipped": 0.0,
+        "n": 1727
+      },
+      {
+        "as_written": 0.8954,
+        "family": "between",
+        "flip": false,
+        "flipped": 0.0,
+        "n": 124
+      },
+      {
+        "as_written": 0.0,
+        "family": "from_to",
+        "flip": true,
+        "flipped": 0.9125,
+        "n": 138
+      }
+    ],
+    "shipped_parser_disagreements": 0
+  },
+  "per_fold": [
+    {
+      "baseline": 0.6432,
+      "fitted": 0.9325,
+      "fold": 0,
+      "n": 500
+    },
+    {
+      "baseline": 0.6403,
+      "fitted": 0.9648,
+      "fold": 1,
+      "n": 500
+    },
+    {
+      "baseline": 0.7435,
+      "fitted": 0.9571,
+      "fold": 2,
+      "n": 500
+    },
+    {
+      "baseline": 0.6373,
+      "fitted": 0.9686,
+      "fold": 3,
+      "n": 500
+    },
+    {
+      "baseline": 0.6163,
+      "fitted": 0.945,
+      "fold": 4,
+      "n": 500
+    }
+  ],
+  "residual_by_family": {
+    "rows": [
+      {
+        "accuracy": 0.9456,
+        "errors": 94,
+        "family": "subject_first",
+        "n": 1727,
+        "share_of_errors": 0.6963
+      },
+      {
+        "accuracy": 0.9374,
+        "errors": 32,
+        "family": "ref_first",
+        "n": 511,
+        "share_of_errors": 0.237
+      },
+      {
+        "accuracy": 0.971,
+        "errors": 4,
+        "family": "from_to",
+        "n": 138,
+        "share_of_errors": 0.0296
+      },
+      {
+        "accuracy": 0.9597,
+        "errors": 5,
+        "family": "between",
+        "n": 124,
+        "share_of_errors": 0.037
+      }
+    ],
+    "total_errors": 135,
+    "worst": {
+      "accuracy": 0.9456,
+      "errors": 94,
+      "family": "subject_first",
+      "n": 1727,
+      "share_of_errors": 0.6963
+    }
+  },
+  "rule_decidability": {
+    "largest_component vs bbox_centre": {
+      "predicted_answer_differs": 40,
+      "reference_point_differs": 2500
+    },
+    "mask_centroid vs bbox_centre": {
+      "predicted_answer_differs": 40,
+      "reference_point_differs": 2500
+    },
+    "mask_centroid vs largest_component": {
+      "predicted_answer_differs": 0,
+      "reference_point_differs": 263
+    }
+  },
+  "skips": {}
+}

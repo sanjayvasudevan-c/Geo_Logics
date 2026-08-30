@@ -1,9 +1,9 @@
 {
   "_macro": {
     "best_blind": 0.4907,
-    "gap": 0.4107,
-    "oracle_attempted": 0.9692,
-    "oracle_strict": 0.9015
+    "gap": 0.3804,
+    "oracle_attempted": 0.9389,
+    "oracle_strict": 0.8711
   },
   "binary|adjacency": {
     "blind": {
@@ -493,14 +493,14 @@
     "oracle": {
       "abstain_rate": 0.0,
       "abstain_reasons": {},
-      "attempted_accuracy": 0.9267,
-      "ci95_high": 0.9567,
-      "ci95_low": 0.8967,
+      "attempted_accuracy": 0.6533,
+      "ci95_high": 0.71,
+      "ci95_low": 0.5967,
       "n": 300,
       "n_abstained": 0,
       "n_attempted": 300,
-      "n_correct": 278,
-      "strict_accuracy": 0.9267,
+      "n_correct": 196,
+      "strict_accuracy": 0.6533,
       "task": "mcq|relative pos"
     }
   }

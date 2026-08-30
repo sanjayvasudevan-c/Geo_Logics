@@ -7,7 +7,9 @@ Deterministic. `scipy.ndimage` + `skimage.measure` only. **No neural network any
 from __future__ import annotations
 
 from satquery.geometry.engine import (
+    CARDINALS,
     COMPASS,
+    DIAGONALS,
     AdjacencyResult,
     AreaResult,
     CaptionAttributes,
@@ -26,10 +28,13 @@ from satquery.geometry.engine import (
     compute_referring_point,
     compute_relative_position,
     extract_regions,
+    quantise_bearing,
 )
 
 __all__ = [
+    "CARDINALS",
     "COMPASS",
+    "DIAGONALS",
     "AdjacencyResult",
     "AreaResult",
     "CaptionAttributes",
@@ -48,4 +53,5 @@ __all__ = [
     "compute_referring_point",
     "compute_relative_position",
     "extract_regions",
+    "quantise_bearing",
 ]

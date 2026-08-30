@@ -1,0 +1,507 @@
+{
+  "_macro": {
+    "best_blind": 0.4955,
+    "gap": 0.3958,
+    "oracle_attempted": 0.9684,
+    "oracle_strict": 0.8913
+  },
+  "binary|adjacency": {
+    "blind": {
+      "abstain_rate": 0.0,
+      "abstain_reasons": {},
+      "attempted_accuracy": 0.7429,
+      "ci95_high": 0.7857,
+      "ci95_low": 0.7,
+      "n": 420,
+      "n_abstained": 0,
+      "n_attempted": 420,
+      "n_correct": 312,
+      "strict_accuracy": 0.7429,
+      "task": "binary|adjacency"
+    },
+    "class_prior": {
+      "abstain_rate": 0.0,
+      "abstain_reasons": {},
+      "attempted_accuracy": 0.5,
+      "ci95_high": 0.5,
+      "ci95_low": 0.5,
+      "n": 420,
+      "n_abstained": 0,
+      "n_attempted": 420,
+      "n_correct": 210,
+      "strict_accuracy": 0.5,
+      "task": "binary|adjacency"
+    },
+    "majority": {
+      "abstain_rate": 0.0,
+      "abstain_reasons": {},
+      "attempted_accuracy": 0.5,
+      "ci95_high": 0.5,
+      "ci95_low": 0.5,
+      "n": 420,
+      "n_abstained": 0,
+      "n_attempted": 420,
+      "n_correct": 210,
+      "strict_accuracy": 0.5,
+      "task": "binary|adjacency"
+    },
+    "oracle": {
+      "abstain_rate": 0.0238,
+      "abstain_reasons": {
+        "adjacency needs two classes": 10
+      },
+      "attempted_accuracy": 0.978,
+      "ci95_high": 0.9738,
+      "ci95_low": 0.9357,
+      "n": 420,
+      "n_abstained": 10,
+      "n_attempted": 410,
+      "n_correct": 401,
+      "strict_accuracy": 0.9548,
+      "task": "binary|adjacency"
+    }
+  },
+  "binary|area": {
+    "blind": {
+      "abstain_rate": 0.0,
+      "abstain_reasons": {},
+      "attempted_accuracy": 0.6643,
+      "ci95_high": 0.7095,
+      "ci95_low": 0.6214,
+      "n": 420,
+      "n_abstained": 0,
+      "n_attempted": 420,
+      "n_correct": 279,
+      "strict_accuracy": 0.6643,
+      "task": "binary|area"
+    },
+    "class_prior": {
+      "abstain_rate": 0.0,
+      "abstain_reasons": {},
+      "attempted_accuracy": 0.5,
+      "ci95_high": 0.5,
+      "ci95_low": 0.5,
+      "n": 420,
+      "n_abstained": 0,
+      "n_attempted": 420,
+      "n_correct": 210,
+      "strict_accuracy": 0.5,
+      "task": "binary|area"
+    },
+    "majority": {
+      "abstain_rate": 0.0,
+      "abstain_reasons": {},
+      "attempted_accuracy": 0.5,
+      "ci95_high": 0.5,
+      "ci95_low": 0.5,
+      "n": 420,
+      "n_abstained": 0,
+      "n_attempted": 420,
+      "n_correct": 210,
+      "strict_accuracy": 0.5,
+      "task": "binary|area"
+    },
+    "oracle": {
+      "abstain_rate": 0.2429,
+      "abstain_reasons": {
+        "area question with no comparator": 32,
+        "area question with no threshold": 40,
+        "no class name resolved": 30
+      },
+      "attempted_accuracy": 0.9528,
+      "ci95_high": 0.7643,
+      "ci95_low": 0.6738,
+      "n": 420,
+      "n_abstained": 102,
+      "n_attempted": 318,
+      "n_correct": 303,
+      "strict_accuracy": 0.7214,
+      "task": "binary|area"
+    }
+  },
+  "binary|count": {
+    "blind": {
+      "abstain_rate": 0.0,
+      "abstain_reasons": {},
+      "attempted_accuracy": 0.7405,
+      "ci95_high": 0.7857,
+      "ci95_low": 0.6929,
+      "n": 420,
+      "n_abstained": 0,
+      "n_attempted": 420,
+      "n_correct": 311,
+      "strict_accuracy": 0.7405,
+      "task": "binary|count"
+    },
+    "class_prior": {
+      "abstain_rate": 0.0,
+      "abstain_reasons": {},
+      "attempted_accuracy": 0.5,
+      "ci95_high": 0.5,
+      "ci95_low": 0.5,
+      "n": 420,
+      "n_abstained": 0,
+      "n_attempted": 420,
+      "n_correct": 210,
+      "strict_accuracy": 0.5,
+      "task": "binary|count"
+    },
+    "majority": {
+      "abstain_rate": 0.0,
+      "abstain_reasons": {},
+      "attempted_accuracy": 0.5,
+      "ci95_high": 0.5,
+      "ci95_low": 0.5,
+      "n": 420,
+      "n_abstained": 0,
+      "n_attempted": 420,
+      "n_correct": 210,
+      "strict_accuracy": 0.5,
+      "task": "binary|count"
+    },
+    "oracle": {
+      "abstain_rate": 0.0905,
+      "abstain_reasons": {
+        "count question with no comparator": 3,
+        "no class name resolved": 35
+      },
+      "attempted_accuracy": 0.9791,
+      "ci95_high": 0.9238,
+      "ci95_low": 0.8548,
+      "n": 420,
+      "n_abstained": 38,
+      "n_attempted": 382,
+      "n_correct": 374,
+      "strict_accuracy": 0.8905,
+      "task": "binary|count"
+    }
+  },
+  "binary|presence": {
+    "blind": {
+      "abstain_rate": 0.0,
+      "abstain_reasons": {},
+      "attempted_accuracy": 0.8333,
+      "ci95_high": 0.869,
+      "ci95_low": 0.7952,
+      "n": 420,
+      "n_abstained": 0,
+      "n_attempted": 420,
+      "n_correct": 350,
+      "strict_accuracy": 0.8333,
+      "task": "binary|presence"
+    },
+    "class_prior": {
+      "abstain_rate": 0.0,
+      "abstain_reasons": {},
+      "attempted_accuracy": 0.5,
+      "ci95_high": 0.5,
+      "ci95_low": 0.5,
+      "n": 420,
+      "n_abstained": 0,
+      "n_attempted": 420,
+      "n_correct": 210,
+      "strict_accuracy": 0.5,
+      "task": "binary|presence"
+    },
+    "majority": {
+      "abstain_rate": 0.0,
+      "abstain_reasons": {},
+      "attempted_accuracy": 0.5,
+      "ci95_high": 0.5,
+      "ci95_low": 0.5,
+      "n": 420,
+      "n_abstained": 0,
+      "n_attempted": 420,
+      "n_correct": 210,
+      "strict_accuracy": 0.5,
+      "task": "binary|presence"
+    },
+    "oracle": {
+      "abstain_rate": 0.0,
+      "abstain_reasons": {},
+      "attempted_accuracy": 1.0,
+      "ci95_high": 1.0,
+      "ci95_low": 1.0,
+      "n": 420,
+      "n_abstained": 0,
+      "n_attempted": 420,
+      "n_correct": 420,
+      "strict_accuracy": 1.0,
+      "task": "binary|presence"
+    }
+  },
+  "mcq|adjacency": {
+    "blind": {
+      "abstain_rate": 0.0,
+      "abstain_reasons": {},
+      "attempted_accuracy": 0.3048,
+      "ci95_high": 0.35,
+      "ci95_low": 0.2619,
+      "n": 420,
+      "n_abstained": 0,
+      "n_attempted": 420,
+      "n_correct": 128,
+      "strict_accuracy": 0.3048,
+      "task": "mcq|adjacency"
+    },
+    "class_prior": {
+      "abstain_rate": 0.0,
+      "abstain_reasons": {},
+      "attempted_accuracy": 0.2286,
+      "ci95_high": 0.269,
+      "ci95_low": 0.1905,
+      "n": 420,
+      "n_abstained": 0,
+      "n_attempted": 420,
+      "n_correct": 96,
+      "strict_accuracy": 0.2286,
+      "task": "mcq|adjacency"
+    },
+    "majority": {
+      "abstain_rate": 0.0,
+      "abstain_reasons": {},
+      "attempted_accuracy": 0.2905,
+      "ci95_high": 0.3333,
+      "ci95_low": 0.2476,
+      "n": 420,
+      "n_abstained": 0,
+      "n_attempted": 420,
+      "n_correct": 122,
+      "strict_accuracy": 0.2905,
+      "task": "mcq|adjacency"
+    },
+    "oracle": {
+      "abstain_rate": 0.2286,
+      "abstain_reasons": {
+        "no MCQ option yielded two classes": 96
+      },
+      "attempted_accuracy": 0.9815,
+      "ci95_high": 0.7976,
+      "ci95_low": 0.7119,
+      "n": 420,
+      "n_abstained": 96,
+      "n_attempted": 324,
+      "n_correct": 318,
+      "strict_accuracy": 0.7571,
+      "task": "mcq|adjacency"
+    }
+  },
+  "mcq|area": {
+    "blind": {
+      "abstain_rate": 0.0,
+      "abstain_reasons": {},
+      "attempted_accuracy": 0.2619,
+      "ci95_high": 0.3048,
+      "ci95_low": 0.219,
+      "n": 420,
+      "n_abstained": 0,
+      "n_attempted": 420,
+      "n_correct": 110,
+      "strict_accuracy": 0.2619,
+      "task": "mcq|area"
+    },
+    "class_prior": {
+      "abstain_rate": 0.0,
+      "abstain_reasons": {},
+      "attempted_accuracy": 0.2595,
+      "ci95_high": 0.3024,
+      "ci95_low": 0.2214,
+      "n": 420,
+      "n_abstained": 0,
+      "n_attempted": 420,
+      "n_correct": 109,
+      "strict_accuracy": 0.2595,
+      "task": "mcq|area"
+    },
+    "majority": {
+      "abstain_rate": 0.0,
+      "abstain_reasons": {},
+      "attempted_accuracy": 0.2524,
+      "ci95_high": 0.2952,
+      "ci95_low": 0.2095,
+      "n": 420,
+      "n_abstained": 0,
+      "n_attempted": 420,
+      "n_correct": 106,
+      "strict_accuracy": 0.2524,
+      "task": "mcq|area"
+    },
+    "oracle": {
+      "abstain_rate": 0.1262,
+      "abstain_reasons": {
+        "no class name resolved": 53
+      },
+      "attempted_accuracy": 1.0,
+      "ci95_high": 0.9048,
+      "ci95_low": 0.8405,
+      "n": 420,
+      "n_abstained": 53,
+      "n_attempted": 367,
+      "n_correct": 367,
+      "strict_accuracy": 0.8738,
+      "task": "mcq|area"
+    }
+  },
+  "mcq|count": {
+    "blind": {
+      "abstain_rate": 0.0,
+      "abstain_reasons": {},
+      "attempted_accuracy": 0.231,
+      "ci95_high": 0.2714,
+      "ci95_low": 0.1905,
+      "n": 420,
+      "n_abstained": 0,
+      "n_attempted": 420,
+      "n_correct": 97,
+      "strict_accuracy": 0.231,
+      "task": "mcq|count"
+    },
+    "class_prior": {
+      "abstain_rate": 0.0,
+      "abstain_reasons": {},
+      "attempted_accuracy": 0.2048,
+      "ci95_high": 0.2452,
+      "ci95_low": 0.1667,
+      "n": 420,
+      "n_abstained": 0,
+      "n_attempted": 420,
+      "n_correct": 86,
+      "strict_accuracy": 0.2048,
+      "task": "mcq|count"
+    },
+    "majority": {
+      "abstain_rate": 0.0,
+      "abstain_reasons": {},
+      "attempted_accuracy": 0.2048,
+      "ci95_high": 0.2452,
+      "ci95_low": 0.1667,
+      "n": 420,
+      "n_abstained": 0,
+      "n_attempted": 420,
+      "n_correct": 86,
+      "strict_accuracy": 0.2048,
+      "task": "mcq|count"
+    },
+    "oracle": {
+      "abstain_rate": 0.0,
+      "abstain_reasons": {},
+      "attempted_accuracy": 1.0,
+      "ci95_high": 1.0,
+      "ci95_low": 1.0,
+      "n": 420,
+      "n_abstained": 0,
+      "n_attempted": 420,
+      "n_correct": 420,
+      "strict_accuracy": 1.0,
+      "task": "mcq|count"
+    }
+  },
+  "mcq|presence": {
+    "blind": {
+      "abstain_rate": 0.0,
+      "abstain_reasons": {},
+      "attempted_accuracy": 0.4476,
+      "ci95_high": 0.5,
+      "ci95_low": 0.3976,
+      "n": 420,
+      "n_abstained": 0,
+      "n_attempted": 420,
+      "n_correct": 188,
+      "strict_accuracy": 0.4476,
+      "task": "mcq|presence"
+    },
+    "class_prior": {
+      "abstain_rate": 0.0,
+      "abstain_reasons": {},
+      "attempted_accuracy": 0.25,
+      "ci95_high": 0.2929,
+      "ci95_low": 0.2024,
+      "n": 420,
+      "n_abstained": 0,
+      "n_attempted": 420,
+      "n_correct": 105,
+      "strict_accuracy": 0.25,
+      "task": "mcq|presence"
+    },
+    "majority": {
+      "abstain_rate": 0.0,
+      "abstain_reasons": {},
+      "attempted_accuracy": 0.2548,
+      "ci95_high": 0.3024,
+      "ci95_low": 0.2143,
+      "n": 420,
+      "n_abstained": 0,
+      "n_attempted": 420,
+      "n_correct": 107,
+      "strict_accuracy": 0.2548,
+      "task": "mcq|presence"
+    },
+    "oracle": {
+      "abstain_rate": 0.0,
+      "abstain_reasons": {},
+      "attempted_accuracy": 0.8929,
+      "ci95_high": 0.9238,
+      "ci95_low": 0.8643,
+      "n": 420,
+      "n_abstained": 0,
+      "n_attempted": 420,
+      "n_correct": 375,
+      "strict_accuracy": 0.8929,
+      "task": "mcq|presence"
+    }
+  },
+  "mcq|relative pos": {
+    "blind": {
+      "abstain_rate": 0.0,
+      "abstain_reasons": {},
+      "attempted_accuracy": 0.2333,
+      "ci95_high": 0.2738,
+      "ci95_low": 0.1929,
+      "n": 420,
+      "n_abstained": 0,
+      "n_attempted": 420,
+      "n_correct": 98,
+      "strict_accuracy": 0.2333,
+      "task": "mcq|relative pos"
+    },
+    "class_prior": {
+      "abstain_rate": 0.0,
+      "abstain_reasons": {},
+      "attempted_accuracy": 0.2214,
+      "ci95_high": 0.2571,
+      "ci95_low": 0.181,
+      "n": 420,
+      "n_abstained": 0,
+      "n_attempted": 420,
+      "n_correct": 93,
+      "strict_accuracy": 0.2214,
+      "task": "mcq|relative pos"
+    },
+    "majority": {
+      "abstain_rate": 0.0,
+      "abstain_reasons": {},
+      "attempted_accuracy": 0.231,
+      "ci95_high": 0.2738,
+      "ci95_low": 0.1929,
+      "n": 420,
+      "n_abstained": 0,
+      "n_attempted": 420,
+      "n_correct": 97,
+      "strict_accuracy": 0.231,
+      "task": "mcq|relative pos"
+    },
+    "oracle": {
+      "abstain_rate": 0.0,
+      "abstain_reasons": {},
+      "attempted_accuracy": 0.931,
+      "ci95_high": 0.9548,
+      "ci95_low": 0.9048,
+      "n": 420,
+      "n_abstained": 0,
+      "n_attempted": 420,
+      "n_correct": 391,
+      "strict_accuracy": 0.931,
+      "task": "mcq|relative pos"
+    }
+  }
+}

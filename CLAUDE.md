@@ -151,7 +151,7 @@ If the architecture is ambiguous, say so instead of inventing a resolution.
 fixing.** When a test fails, the first question is *which* is wrong: the code, the test, or the
 belief the test encodes. Patching the assertion to make it pass destroys the finding.
 
-This has now paid off three times, each producing the most important result of its stage:
+This has now paid off five times, each producing the most important result of its stage:
 
 - **S5** — a weak mask test led to the discovery that no function bound the tensor and its
   band-presence mask together, so they could silently disagree. The fix was structural, not a
@@ -166,6 +166,16 @@ This has now paid off three times, each producing the most important result of i
   that *diagnostic output* as a claim to verify caught a convention being fitted on one
   region's geography. Re-running fold-stratified moved the connectivity margin from +3.31 to
   +1.50 points, so the single-fold run had genuinely been distorting the answer.
+
+- **S7 addendum** — the claim was one I had already *written into a report*: that the residual
+  `mcq|relative pos` error was most likely the `between` template family. Measuring it before
+  publishing showed `between` was the **second-best** family (95.97%); the residual is spread
+  evenly across all four. The sentence was replaced with the measured table. Two other
+  suspicious outputs in the same stage were also run down rather than accepted: two reference
+  rules scoring *identically* at all 19 band values (real — they change zero answers), and a
+  1-degree "plateau" that turned out to be a broad ridge no test could resolve. **The strongest
+  version of this rule so far: a claim is not safe merely because it is plausible, unmeasured,
+  and about to ship.**
 
 **The generalised form: instrument your own process, and treat its output as a claim.** The
 S7 case is the principle working one stage after being written down, and in its stronger

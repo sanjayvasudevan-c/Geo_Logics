@@ -178,6 +178,14 @@ class M2Config(_Base):
     # computed truth. None until then — a guessed rule would silently mis-bin boundary cases.
     bin_boundary_rule: Literal["inclusive_lower_exclusive_upper", "inclusive_both"] | None = None
 
+    # Relative-position direction convention, fitted at the S7 ADDENDUM. ``diagonal_band_deg``
+    # is the angular width of each diagonal sector: 45 is the textbook equal-sector 8-way
+    # compass, 0 collapses to pure cardinals. Null until fitted, for the same reason as above.
+    diagonal_band_deg: float | None = Field(default=None, ge=0, le=90)
+    direction_reference_rule: (
+        Literal["mask_centroid", "largest_component", "bbox_centre"] | None
+    ) = None
+
     tier_primary_min: float = Field(default=0.25, gt=0, lt=1)
     tier_secondary_min: float = Field(default=0.05, gt=0, lt=1)
     referring_area_min: float = Field(default=0.01, gt=0, lt=1)

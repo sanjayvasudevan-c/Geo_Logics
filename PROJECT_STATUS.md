@@ -1,4 +1,5 @@
-LAST UPDATED: 2026-08-30 — S8 GATE 1 MEASURED — HALTED, DECISION REQUIRED
+LAST UPDATED: 2026-08-30 — GATE 1 **PASSED**; S7 ADDENDUM (direction convention) COMPLETE
+NEXT: S9 — query parser + M10 intent-classifier fallback. Standard effort (approved).
 
 Stage numbering: S0–S26 (our own execution breakdown, per STAGE_PROMPTS.md). This is not the
 architecture PDF's numbering — the PDF has only an 8-week plan. The two reconcile via
@@ -338,14 +339,57 @@ S4 — TAXONOMY LAYER COMPLETE. 49 tests pass. THREE DECISIONS I TOOK WITHOUT SI
   both classes and so cannot demonstrate over-counting. The real naive failure is labelling each
   L3 class separately and summing. Corrected; the test now genuinely proves the guarantee.
 
-S8 — GATE 1: ORACLE EXPERIMENT. MEASURED. *** HALTED — DECISION REQUIRED ***
+S7-ADDENDUM — RELATIVE-POSITION DIRECTION CONVENTION. FITTED. 433 tests pass (up from 395),
+  ruff clean, mypy --strict clean. oracle.py previously had NO unit tests at all — which is
+  exactly how both of this task's defects shipped; tests/unit/test_oracle_direction.py adds them.
+  See reports/evaluation/GATE1_oracle.md §7, reports/experiments/direction_convention.json,
+  scripts/fit_direction_convention.py, DECISIONS.md D-S7A-1.
+
+  Ordered by the reviewer after the GATE 1 PASS: S7 had fitted connectivity, MMU, opening and
+  dilation but left the direction rule uncalibrated, so Gate 1's own number rested on one
+  uncalibrated component. Closed while isolated, before S9/S14 could confound it.
+
+  *** RESULT: mcq|relative pos 65.33% -> 92.67% (+27.34). MACRO 87.11% -> 90.15%. ***
+  Attribution is CLEAN: at matched n=300 exactly ONE of nine tasks moved; the other eight are
+  bit-identical, and the blind baseline is unchanged at 49.07%.
+
+  MEASURED — decisive:
+    * TEMPLATE ORIENTATION was the dominant error, not geometry. 25.96% of stems INVERT
+      subject and reference ("Using the <A> as the reference, ... position of the <B>";
+      "Relative to the <A>, where does the <B> appear"; "spatial direction from <A> to <B>").
+      Read as written they score a FORCED 0.00% — the reversed bearing selects the option 180
+      degrees from truth, so it cannot be accidentally right. Fixed in the PARSER
+      (oracle.subject_is_second), not in M2: which class is the subject is a wording property.
+    * THE TEXTBOOK 8-WAY COMPASS IS WRONG. Equal 45-degree sectors score 87.01% vs 93.57% for a
+      narrow diagonal band. Corroborated independently: released answers are cardinal 81.60% of
+      the time while cardinals are only ~62% of offered options.
+    * Improves in 5/5 folds (+21.36 to +33.13). Not a single-region artifact.
+
+  UNDER-DETERMINED — reported as a non-result, exactly as bin_boundary_rule was:
+    * The exact band inside ~[10,22] degrees is NOT resolvable. McNemar exact tests over 2,500
+      items separate NO candidate from any other (best p=0.068). 16 is shipped because it is the
+      one value where TWO INDEPENDENT lines of evidence converge (inside the accuracy plateau
+      AND reproduces the observed diagonal-answer rate). It is NOT the accuracy argmax.
+    * direction_reference_rule: mask_centroid and largest_component change ZERO of 2,500
+      answers. mask_centroid shipped on non-accuracy grounds — same "a class is its mask"
+      semantics as compute_area/compute_count, and a union-bbox centre is maximally sensitive
+      to one stray pixel, which is wrong once S13 feeds M2 PREDICTED maps.
+
+  RESIDUAL — measured, not guessed. I guessed the `between` family was the remaining defect;
+  MEASURING IT PROVED ME WRONG (between = 95.97%, second best). All four families land within
+  93.74%-97.10% and each family's error share tracks its item share. Orientation is fully
+  resolved; the remainder is evenly-distributed borderline-angle error, which is what an
+  under-determined band predicts. No further convention is claimed.
+
+S8 — GATE 1: ORACLE EXPERIMENT. *** PASSED 2026-08-30 *** (verdict given on the numbers below,
+  before the S7 addendum; they are preserved unchanged in GATE1_oracle.md §1-§6)
   See reports/evaluation/GATE1_oracle.md and reports/experiments/GATE_REPORT_S8.md
 
-  *** THE GATE 1 NUMBER ***
-      MACRO ORACLE (strict, abstentions = wrong) : 87.11%
-      MACRO ORACLE (attempted only)              : 93.89%
-      MACRO best blind / majority baseline       : 49.07%
-      HEADLINE GAP                               : +38.04 points
+  *** THE GATE 1 NUMBER (as measured at the gate) ***
+      MACRO ORACLE (strict, abstentions = wrong) : 87.11%   -> 90.15% after the addendum
+      MACRO ORACLE (attempted only)              : 93.89%   -> 96.92% after the addendum
+      MACRO best blind / majority baseline       : 49.07%   (unchanged)
+      HEADLINE GAP                               : +38.04 points -> +41.07 after the addendum
 
   Per task (n=300 each, validation split, 95% bootstrap CI over PATCHES):
       binary|presence     100.00%  [100.0,100.0]   blind 82.67%   gap +17.33
@@ -380,6 +424,8 @@ S8 — GATE 1: ORACLE EXPERIMENT. MEASURED. *** HALTED — DECISION REQUIRED ***
       SUBSTRING, so computed SE matched "bottom-left" because "S" in "SE"): 55.33% -> 65.33%.
       Residual is an UNFITTED CONVENTION - the generator resolves diagonals differently.
       S7 fitted connectivity/MMU/opening/dilation but NEVER the direction rule.
+      >>> THIS DIAGNOSIS WAS CORRECT AND HAS SINCE BEEN CLOSED: see S7-ADDENDUM above.
+      >>> 65.33% -> 92.67% with no change to any geometry measurement code.
     binary|area 74.33% strict / 94.49% attempted - PARSER error (no threshold / no comparator).
     mcq|adjacency 78.33% strict / 98.33% attempted - PARSER error (option-pair splitter).
 

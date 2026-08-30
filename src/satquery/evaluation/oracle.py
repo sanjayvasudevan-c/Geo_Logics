@@ -82,6 +82,34 @@ DIRECTION_PHRASES: tuple[tuple[str, str], ...] = (
 #: Compass bearing in degrees, for angular nearest-option fallback.
 BEARING = {"N": 0, "NE": 45, "E": 90, "SE": 135, "S": 180, "SW": 225, "W": 270, "NW": 315}
 
+#: Relative-position templates that INVERT subject and reference, so the first-mentioned class
+#: is the *reference* and the second is the subject. Measured at the S7 addendum over 81 stems:
+#:
+#:   "Using the <A> as the reference, ... the position of the <B>"  -> B relative to A
+#:   "Relative to the <A>, where does the <B> appear in the scene"  -> B relative to A
+#:   "What is the spatial direction from the <A> to the <B>"        -> B relative to A
+#:
+#: This covers 25.96% of items. Reading the first class as the subject scored **0.00%** on
+#: them — not by coincidence: exact-matching the reversed bearing selects the option 180
+#: degrees from the truth whenever it is offered, and the angular fallback picks the same,
+#: so the reversed reading can never be accidentally right. This was the single largest
+#: contributor to the 34.67% error rate GATE 1 measured on ``mcq|relative pos``.
+SUBJECT_SECOND: tuple[re.Pattern[str], ...] = (
+    re.compile(r"^\s*(?:using|considering|relative to|in relation to|compared (?:to|with))\b",
+               re.I),
+    re.compile(r"\bas (?:the|a) reference\b", re.I),
+    re.compile(r"\b(?:spatial )?direction from\b", re.I),
+)
+
+
+def subject_is_second(question: str) -> bool:
+    """Whether the SECOND class mentioned is the subject of a relative-position question.
+
+    Matched against the stem only, so an option such as "to the left" cannot trigger it.
+    """
+    stem = question.split("?", 1)[0]
+    return any(rx.search(stem) for rx in SUBJECT_SECOND)
+
 
 def option_direction(text: str) -> str | None:
     """Compass for an MCQ option, longest phrase first so compounds win."""
@@ -371,8 +399,15 @@ def answer_question(
         if category == "relative pos":
             if len(classes) < 2:
                 return ParseFailure("relative position needs two classes", question)
-            a = extract_regions(class_map, classes[0], level, taxonomy, params)
-            b = extract_regions(class_map, classes[1], level, taxonomy, params)
+            # Which class is the SUBJECT is a template property, not a geometry one. Several
+            # stems invert it (S7 addendum); getting this backwards is unrecoverable, because
+            # the reversed bearing is never accidentally the right answer.
+            subject, reference = (
+                (classes[1], classes[0]) if subject_is_second(question)
+                else (classes[0], classes[1])
+            )
+            a = extract_regions(class_map, subject, level, taxonomy, params)
+            b = extract_regions(class_map, reference, level, taxonomy, params)
             rel = compute_relative_position(a, b)
             if not rel.valid:
                 return ParseFailure("one class absent; direction undefined", question)
