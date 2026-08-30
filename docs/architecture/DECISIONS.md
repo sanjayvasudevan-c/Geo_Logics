@@ -110,3 +110,37 @@ changes disguised as fixes:
 - **Reporting cross-fold results at coarse-7** would make coverage complete, but hides exactly
   the sibling-level confusion the benchmark's adversarial "no" answers are built from
   (IMPLEMENTATION_MAP §1.4). The reported level would no longer match the segmentation target.
+
+
+---
+
+## D-S7-1 — MCQ answers as fitting targets: verified NOT circular
+
+**Decided:** 2026-08-30 (S7) · **Status:** VERIFIED
+
+S7 recovered M2's conventions using the correct MCQ option as ground truth (`mcq|count`'s
+option **is** the true region count; `mcq|area`'s range **contains** the true coverage). Because
+S3 had already found a real circularity of similar shape (the `country` column equalling its own
+MCQ answer 100.00% of the time), this was checked rather than assumed.
+
+**It is not circular, and the argument is information-theoretic rather than rhetorical:**
+
+| | |
+|---|---|
+| What fitting produced | **5 global scalars** — connectivity, MMU, opening, dilation, boundary rule |
+| Capacity of that output | **~7 bits** (14 connectivity x MMU settings, 3 rules, 5 radii) |
+| Labels consumed | **1,000**, needing **>= 2,000 bits** to memorise |
+| Conclusion | The config **cannot** encode per-patch answers. It selects an algorithm variant. |
+
+At inference M2 receives a *predicted* map plus those scalars and never reads a released answer.
+
+**Contrast with the S5 hazard:** M5's danger was the answer masquerading as an *input* at
+inference. Here the answer is used once, offline, to choose an algorithm — then applied to
+images whose answers are unseen.
+
+**⚠ The line that must not be crossed at S14:**
+
+- **Permitted:** M4 consumes the four option *values*. They are printed in the question and
+  present at inference.
+- **LEAKAGE:** M4 consuming the correct-option *letter*, or any feature derived from it, as an
+  input feature. That is the M5 error in new clothing. Recorded in CLAUDE.md §7.

@@ -141,6 +141,7 @@ ignore = [
 "scripts/data/split_class_coverage.py" = ["T20", "E501", "E701", "E702"]
 "scripts/data/tile_class_presence.py" = ["T20", "E501", "E701", "E702"]
 "scripts/fit_geometry_conventions.py" = ["T20", "E501", "E701", "E702"]
+"scripts/run_caption_oracle.py" = ["T20", "E501", "E701", "E702", "ANN", "E741", "SIM108"]
 
 # ----------------------------------------------------------------------------------
 # mypy

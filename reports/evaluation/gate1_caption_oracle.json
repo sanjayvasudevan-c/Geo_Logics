@@ -1,0 +1,16 @@
+{
+  "bleu4": 15.354567007024626,
+  "brevity_penalty": 0.4911,
+  "hyp_len": 18190,
+  "m8_verdict": "BUILD M8 \u2014 template->style rewriter",
+  "meteor_cider": "NOT COMPUTED",
+  "n": 220,
+  "precisions": [
+    54.9,
+    32.81,
+    25.0,
+    21.22
+  ],
+  "ref_len": 31126,
+  "rouge_l": 33.87
+}

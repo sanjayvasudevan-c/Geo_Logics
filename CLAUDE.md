@@ -162,6 +162,16 @@ This has now paid off three times, each producing the most important result of i
   boundary. That became the strongest evidence in the stage.
 - **S6** — a taxonomy test's *precondition* was wrong (`np.isin` already merged the classes it
   was meant to separate), so it could not have demonstrated the failure it claimed to.
+- **S7** — no test failed at all. A fitting run printed `folds represented: [0]`, and treating
+  that *diagnostic output* as a claim to verify caught a convention being fitted on one
+  region's geography. Re-running fold-stratified moved the connectivity margin from +3.31 to
+  +1.50 points, so the single-fold run had genuinely been distorting the answer.
+
+**The generalised form: instrument your own process, and treat its output as a claim.** The
+S7 case is the principle working one stage after being written down, and in its stronger
+version — not "investigate a failing assertion" but "print what you are about to rely on, then
+check it says what you assumed." A pipeline that reports nothing about itself cannot be caught
+being wrong.
 
 The corollary: **a test that could pass vacuously is not a test.** Detectors need a guard
 proving they can still fire — a planted violation, or an assertion that the detector matched
@@ -206,6 +216,18 @@ logged in `reports/experiments/EXPERIMENT_LOG.md`.
   every metadata-MCQ number downstream. This holds regardless of what S15 decides about M5's
   existence. `latitude`/`longitude` are the same hazard by proxy, since country and climate zone
   are lookups from them. Enforce at the dataloader boundary, not by convention.
+
+- **Answer labels may be FITTING TARGETS, never model INPUTS.** S7 used the correct MCQ option
+  as ground truth to recover M2's conventions, which is legitimate: the answer was consumed
+  once, offline, to choose among a handful of algorithm variants, and the chosen variant is
+  then applied to images whose answers are unseen. The capacity argument makes it airtight —
+  the fitted output is **5 global scalars carrying ~7 bits**, which cannot encode the 1,000
+  per-patch labels (>=2,000 bits) it was fitted against. Reverse-engineering the generator is
+  the architecture's central thesis, not leakage.
+  **The line that must not be crossed, binding on S14:** M4 may consume the four option
+  *values* (they are printed in the question and available at inference). M4 may **never**
+  consume the correct-option *letter*, or any feature derived from it, as an input — that is
+  the M5 circularity in a new costume.
 - Any preprocessing that **learns parameters** (normalization statistics, class weights, TF-IDF
   vocabulary, scalers, MMU/dilation/connectivity fits) is fitted on **training data only**.
 - Test for: target leakage, train/test contamination, duplicate leakage, geographic leakage,

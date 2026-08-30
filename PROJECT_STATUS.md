@@ -1,4 +1,4 @@
-LAST UPDATED: 2026-08-30 — S7 COMPLETE (M2 built; conventions FITTED at 100.00%)
+LAST UPDATED: 2026-08-30 — S8 GATE 1 MEASURED — HALTED, DECISION REQUIRED
 
 Stage numbering: S0–S26 (our own execution breakdown, per STAGE_PROMPTS.md). This is not the
 architecture PDF's numbering — the PDF has only an 8-week plan. The two reconcile via
@@ -337,6 +337,54 @@ S4 — TAXONOMY LAYER COMPLETE. 49 tests pass. THREE DECISIONS I TOOK WITHOUT SI
   aggregation-before-geometry test's precondition used np.isin([111,112]), which already merges
   both classes and so cannot demonstrate over-counting. The real naive failure is labelling each
   L3 class separately and summing. Corrected; the test now genuinely proves the guarantee.
+
+S8 — GATE 1: ORACLE EXPERIMENT. MEASURED. *** HALTED — DECISION REQUIRED ***
+  See reports/evaluation/GATE1_oracle.md and reports/experiments/GATE_REPORT_S8.md
+
+  *** THE GATE 1 NUMBER ***
+      MACRO ORACLE (strict, abstentions = wrong) : 87.11%
+      MACRO ORACLE (attempted only)              : 93.89%
+      MACRO best blind / majority baseline       : 49.07%
+      HEADLINE GAP                               : +38.04 points
+
+  Per task (n=300 each, validation split, 95% bootstrap CI over PATCHES):
+      binary|presence     100.00%  [100.0,100.0]   blind 82.67%   gap +17.33
+      binary|area          74.33%  [ 69.3, 79.3]   blind 61.00%   gap +13.33  (21.3% abstain)
+      binary|count         91.00%  [ 86.7, 94.7]   blind 72.33%   gap +18.67
+      binary|adjacency     95.67%  [ 93.3, 97.7]   blind 72.33%   gap +23.34
+      mcq|presence         90.67%  [ 87.3, 94.0]   blind 46.67%   gap +44.00
+      mcq|area             88.67%  [ 85.3, 92.3]   blind 23.33%   gap +62.00  (11.3% abstain)
+      mcq|count           100.00%  [100.0,100.0]   blind 21.67%   gap +71.00
+      mcq|adjacency        78.33%  [ 73.0, 83.0]   blind 26.33%   gap +52.00  (20.3% abstain)
+      mcq|relative pos     65.33%  [ 59.7, 71.0]   blind 24.67%   gap +40.66
+
+  THE 6.78-POINT STRICT-vs-ATTEMPTED GAP IS ENTIRELY PARSER ABSTENTION, NOT GEOMETRY.
+  Those are S9's to fix and are the cheapest points in the project.
+
+  *** M8 GATE (O2 caption oracle): BLEU-4 = 15.35 -> BUILD M8 ***
+    Lands in the 10-35 band the architecture predicted. A FIRST RUN SCORED 2.60 and would have
+    said "drop symbolic captioning" — that was an ARTIFACT: brevity penalty 0.1205, the template
+    ran 3x short and omitted the season/country/climate opening S3 VERIFIED the generator
+    appends. 15.35 is still a LOWER bound (BP remains 0.4911).
+
+  *** HONESTY FINDING THAT MUST REACH THE JUDGE PACK ***
+    binary|presence: the BLIND baseline scores 82.67% — TF-IDF + linear SVM on question text
+    alone, NO IMAGE. The class name predicts the answer, because common classes are usually
+    present. The oracle still wins (+17.33) and is perfect, but quoting 100% without 82.67%
+    beside it overstates what was demonstrated. Same discipline as the adjacency 57.1% finding.
+    By contrast MCQ tasks are NOT language-guessable: blind 21-47% vs oracle 65-100%.
+
+  DIAGNOSIS OF EVERY LOW TASK (required by the stage):
+    mcq|relative pos 65.33% - CONVENTION error, not geometry. 0% abstention = genuinely wrong.
+      Found and fixed a real bug (option matcher compared a single compass letter as a
+      SUBSTRING, so computed SE matched "bottom-left" because "S" in "SE"): 55.33% -> 65.33%.
+      Residual is an UNFITTED CONVENTION - the generator resolves diagonals differently.
+      S7 fitted connectivity/MMU/opening/dilation but NEVER the direction rule.
+    binary|area 74.33% strict / 94.49% attempted - PARSER error (no threshold / no comparator).
+    mcq|adjacency 78.33% strict / 98.33% attempted - PARSER error (option-pair splitter).
+
+  NOT MEASURED: referring expression and referring point need IoU against released boxes rather
+  than exact match; the harness does not yet score them. METEOR/CIDEr not computed.
 
 S7 — M2 SYMBOLIC GEOMETRY ENGINE + CONVENTION FITTING. COMPLETE. 43 geometry tests, 395 total.
 
