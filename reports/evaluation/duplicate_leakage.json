@@ -1,0 +1,10 @@
+{
+  "distinct_ground_locations": 115040,
+  "locations_with_repeat_acquisitions": 69479,
+  "max_acquisitions_per_location": 4,
+  "patches_involved": 192310,
+  "patches_involved_pct": 80.85,
+  "random_split_locations_spanning_folds": 62195,
+  "random_split_pct_of_repeats": 89.52,
+  "s2_tile_locations_spanning_folds": 0
+}

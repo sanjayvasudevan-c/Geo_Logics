@@ -1,0 +1,64 @@
+{
+  "country": {
+    "adjacent_pairs_split": 47,
+    "adjacent_pairs_split_pct": 0.01121,
+    "balance": 0.4976,
+    "blocks": 10,
+    "blocks_spanning_folds": 0,
+    "fold_sizes": {
+      "0": 74293,
+      "1": 43721,
+      "2": 36967,
+      "3": 37238,
+      "4": 45652
+    },
+    "min_inter_fold_km": 10.8802,
+    "n_patches": 237871,
+    "same_block_rate_geographic": 0.0,
+    "same_block_rate_random": 0.186167,
+    "total_adjacent_pairs": 419356
+  },
+  "grid_1deg": {
+    "adjacent_pairs_split": 8769,
+    "adjacent_pairs_split_pct": 2.20947,
+    "balance": 0.9996,
+    "blocks": 123,
+    "blocks_spanning_folds": 0,
+    "fold_sizes": {
+      "0": 45821,
+      "1": 45833,
+      "2": 45819,
+      "3": 45826,
+      "4": 45815
+    },
+    "min_inter_fold_km": 0.4185,
+    "n_patches": 229114,
+    "same_block_rate_geographic": 0.0,
+    "same_block_rate_random": 0.019099,
+    "total_adjacent_pairs": 396883
+  },
+  "random_baseline": {
+    "adjacent_pairs_split": 335195,
+    "adjacent_pairs_split_pct": 79.9309,
+    "total_adjacent_pairs": 419356
+  },
+  "s2_tile": {
+    "adjacent_pairs_split": 0,
+    "adjacent_pairs_split_pct": 0.0,
+    "balance": 0.9913,
+    "blocks": 54,
+    "blocks_spanning_folds": 0,
+    "fold_sizes": {
+      "0": 47492,
+      "1": 47800,
+      "2": 47601,
+      "3": 47383,
+      "4": 47595
+    },
+    "min_inter_fold_km": 0.3589,
+    "n_patches": 237871,
+    "same_block_rate_geographic": 0.0,
+    "same_block_rate_random": 0.033214,
+    "total_adjacent_pairs": 419356
+  }
+}

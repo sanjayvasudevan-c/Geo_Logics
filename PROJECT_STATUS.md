@@ -1,4 +1,4 @@
-LAST UPDATED: 2026-08-30 — S5 V1 Validation + Preprocessing COMPLETE (blocked item noted)
+LAST UPDATED: 2026-08-30 — S6 Geographic Splitting — HALTED, 1 GATE REPORT OPEN
 
 Stage numbering: S0–S26 (our own execution breakdown, per STAGE_PROMPTS.md). This is not the
 architecture PDF's numbering — the PDF has only an 8-week plan. The two reconcile via
@@ -224,7 +224,32 @@ EXPERIMENTS RUN: none (no measurement stage has been reached)
 BEST CURRENT METRICS: none — no gate has been reached. Per CLAUDE.md §11, no target exists
 until the corresponding measurement exists.
 
-S5 — V1 INPUT VALIDATION + SENSOR PREPROCESSING COMPLETE. 72 new tests, 317 total.
+S5 — V1 INPUT VALIDATION + SENSOR PREPROCESSING COMPLETE & APPROVED. 325 tests total.
+
+  TWO REVIEW FIXES APPLIED AT CLOSE-OUT (both root causes, not symptoms):
+
+  R1. BAND-PRESENCE MASK — a missing binding function, not just a weak test.
+      stack_channels() and band_presence_mask() were independent calls, so a caller could
+      build a tensor with B11 zeroed and a mask claiming B11 present, and NOTHING would catch
+      the contradiction. That failure survives review and CI and only surfaces as a corrupted
+      training run — the loss still descends, the model still trains, it just learns the wrong
+      thing from contaminated inputs.
+      FIX: PreprocessedInput + preprocess(), which DERIVE presence from the same information
+      that fills the tensor. Drift is now structurally impossible, not merely discouraged.
+      The test now asserts the real claim on the tensor a forward pass receives:
+      "measured but genuinely dark" and "never measured" produce BYTE-IDENTICAL 12-channel
+      tensors, and only the mask recovers the difference.
+
+  R2. SYNTHETIC LABELLING — CLAUDE.md §7 was followed by habit, not checked.
+      Spot-check found test_taxonomy.py fabricating CORINE class maps with ZERO labelling.
+      FIX: escalated from documented to tested (same move as the rasterio-only grep).
+      tests/unit/test_synthetic_labelling.py detects fabricating modules and asserts each
+      declares SYNTHETIC, that the raster factory is filename-labelled, and that all GeoTIFF
+      creation stays in that one labelled place. Carries a guard against the detector matching
+      nothing and passing vacuously — it caught ITSELF on first run.
+
+  METHOD NOTE CARRIED FORWARD: for every subsequent stage, ask of each test "does this assert
+  the REAL claim, or something adjacent to it?" Both R1 and R2 were found that way.
   BUILT:
     src/satquery/data/validation.py    — V1: rasterio-only, typed InputManifest or a typed
       InputValidationError whose `check` field names the exact failed check. Never coerces a
@@ -312,6 +337,61 @@ S4 — TAXONOMY LAYER COMPLETE. 49 tests pass. THREE DECISIONS I TOOK WITHOUT SI
   aggregation-before-geometry test's precondition used np.isin([111,112]), which already merges
   both classes and so cannot demonstrate over-counting. The real naive failure is labelling each
   L3 class separately and summing. Corrected; the test now genuinely proves the guarantee.
+
+S6 — GEOGRAPHIC SPLITTING & LEAKAGE DETECTION. 22 leakage tests, 347 total. HALTED.
+
+  *** S6 IS HALTED — see reports/experiments/GATE_REPORT_S6.md ***
+  20 of 44 CORINE L3 classes are absent from at least one fold under geographic blocking.
+  STRUCTURAL, not sampling: Portugal has 0 patches in folds 2 and 4, and every Mediterranean
+  class missing from exactly those folds is Portugal-concentrated (212, 213, 223, 241, 244,
+  323, 522). Three countries occupy a single fold each. 335 Glaciers is absent from every fold,
+  matching S4's finding that it is absent from the corpus.
+  Geographic blocking prevents leakage PRECISELY BY separating regions, so a regionally
+  confined class cannot appear in every fold. The goals are in direct tension.
+  RECOMMENDATION: accept, and report per-class IoU only over folds containing the class,
+  publishing per-class fold coverage beside every number. Never average over a class a fold
+  does not contain. This propagates into GATE 2's transfer factor.
+
+  THE BINDING-vs-LABEL SCRUTINY PAID OFF IMMEDIATELY — carried in from the S5 review:
+    Every strategy passes the LABEL check (no block spans folds). Only one passes the BINDING
+    check (no physically touching patch pair spans folds):
+        country     0 blocks spanning ->    47 touching pairs split (0.0112%)
+        grid_1deg   0 blocks spanning -> 8,769 touching pairs split (2.2095%)  <-- edge-of-cell
+        s2_tile     0 blocks spanning ->     0 touching pairs split (0.0000%)
+    grid_1deg has the BEST fold balance (1.000) and looks perfect by the label check while
+    splitting 8,769 physically adjacent pairs. No amount of checking block labels would have
+    found it. Adjacency is exact, not inferred: patch ids encode tile/row/col.
+    RECOMMENDED STRATEGY: s2_tile.
+
+  TWO JUDGE-FACING NUMBERS (both measured, both on real data):
+    1. Physically touching pairs severed by the split, of 419,356 total:
+         RANDOM  335,195 (79.93%)      s2_tile  0 (0.00%)
+    2. REPEAT ACQUISITIONS — a hazard the architecture did not anticipate. reBEN images the
+       same ground location on up to 4 dates. 115,040 distinct (tile,row,col) locations across
+       237,871 patches; 69,479 locations carry repeats, involving 192,310 patches = 80.8% OF
+       THE TRAINING SPLIT.
+         RANDOM  62,195 locations (89.5% of repeats) scatter near-twins across folds
+         s2_tile 0 (0.0%)
+    Found because a test asserted (tile,row,col) was unique and FAILED. The test's assumption
+    was wrong, not the data — investigating rather than "fixing" the assertion surfaced the
+    single strongest piece of evidence in the stage.
+
+  RESIDUAL LIMITATION, STATED: within-tile adjacency cannot see across tile boundaries.
+  s2_tile's min inter-fold great-circle distance is 0.359 km, below the 1.2 km patch width, so
+  cross-tile proximity remains. Sentinel-2 tiles overlap, so this is expected. s2_tile
+  eliminates within-tile leakage entirely and reduces but does not eliminate cross-tile
+  proximity. The figure is a sampled lower bound.
+
+  ARTIFACTS: data/processed/splits/{country,grid_1deg,s2_tile}_k5_seed1337.json (splits are an
+  artifact, not a recomputation), reports/evaluation/split_report.md,
+  reports/evaluation/{split_measurements,duplicate_leakage,fold_class_coverage}.json
+
+CLOSED ITEMS
+  * GitHub collaborators (5 addresses) — CLOSED 2026-08-30. Handled by the human directly
+    through the GitHub web UI. Root constraint for the record: the GitHub API adds
+    collaborators by USERNAME, not email; only 1 of 5 addresses resolved to a public username
+    (diya240108@gmail.com -> diya-240108), gh CLI was not installed, and no admin-scoped token
+    was available. The web UI accepts email addresses; the API does not.
 
 NAMED PREREQUISITES FOR LATER STAGES (logged at S3 close-out — these are BLOCKERS, not notes)
 
