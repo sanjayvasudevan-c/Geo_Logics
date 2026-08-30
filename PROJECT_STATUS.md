@@ -1,4 +1,4 @@
-LAST UPDATED: 2026-08-30 — S4 Taxonomy Layer COMPLETE (3 decisions taken, see below)
+LAST UPDATED: 2026-08-30 — S5 V1 Validation + Preprocessing COMPLETE (blocked item noted)
 
 Stage numbering: S0–S26 (our own execution breakdown, per STAGE_PROMPTS.md). This is not the
 architecture PDF's numbering — the PDF has only an 8-week plan. The two reconcile via
@@ -223,6 +223,42 @@ EXPERIMENTS RUN: none (no measurement stage has been reached)
 
 BEST CURRENT METRICS: none — no gate has been reached. Per CLAUDE.md §11, no target exists
 until the corresponding measurement exists.
+
+S5 — V1 INPUT VALIDATION + SENSOR PREPROCESSING COMPLETE. 72 new tests, 317 total.
+  BUILT:
+    src/satquery/data/validation.py    — V1: rasterio-only, typed InputManifest or a typed
+      InputValidationError whose `check` field names the exact failed check. Never coerces a
+      broken input into a best-effort manifest.
+    src/satquery/preprocessing/bands.py    — the FROZEN 12-channel order, asserted by test.
+    src/satquery/preprocessing/sensors.py  — linear->dB, bilinear 20m->10m, z-score,
+      band-presence mask, spectral indices (off by default).
+    src/satquery/preprocessing/norm_stats.py + scripts/data/compute_norm_stats.py
+      — training-split-only statistics with split_hash and n_samples recorded.
+
+  *** NOT YET VERIFIED — REAL NORMALISATION STATISTICS DO NOT EXIST ***
+    configs/norm_stats.yaml has NOT been generated. compute_norm_stats.py requires imagery,
+    which is the 117.69 GB deferred tier (standing decision, before S12). The script REFUSES
+    to run on any split other than 'train' and exits non-zero without imagery rather than
+    emitting fabricated numbers. Every preprocessing test uses SYNTHETIC data with known
+    values, so they test arithmetic correctness, not real-data behaviour.
+    CONSEQUENCE: the preprocessing path is correct but UNCALIBRATED. It cannot be run on real
+    reBEN imagery until the imagery lands. This is a prerequisite for S11/S12, alongside GPU.
+
+  DESIGN POINTS WORTH KNOWING:
+    * SAR zero/negative power is FLOORED to -50 dB and the floored-pixel COUNT is returned,
+      not hidden. NaN/inf in the INPUT raises rather than propagating — a corrupt product is
+      reported, not silently repaired.
+    * Band-presence mask is a length-10 first-class input, tested to prove a dropped band is
+      distinguishable from a genuinely dark one (zeros alone cannot say "not measured").
+    * 60 m bands (B01/B09/B10) are absent from the frozen order by construction; a test
+      asserts they can never appear in the 12-channel output.
+    * GeoTIFF metadata tags are sanitised at the V1 boundary (control chars stripped, length
+      capped) because they reach the query parser — a prompt-injection surface.
+    * A test greps src/ for PIL/cv2/imread imports, so CLAUDE.md §1's rasterio-only rule is
+      enforced by CI rather than by convention.
+
+  TEST-SUITE PLUMBING: tests/synthetic.py holds the SYNTHETIC raster factory and `tests` was
+  added to pytest pythonpath, so shared helpers import cleanly without relative-import hacks.
 
 S4 — TAXONOMY LAYER COMPLETE. 49 tests pass. THREE DECISIONS I TOOK WITHOUT SIGN-OFF
   (asked twice, proceeded rather than block a third time — overturn any of these freely):

@@ -61,7 +61,8 @@ packages = ["src/satquery"]
 # ----------------------------------------------------------------------------------
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-pythonpath = ["src"]
+# `tests` is on the path so shared helpers (tests/synthetic.py) import cleanly
+pythonpath = ["src", "tests"]
 markers = [
     "model: model-level validation; may be slow or hardware-specific",
     "unit: fast, isolated, no I/O and no network",
@@ -74,7 +75,11 @@ markers = [
 # threshold (11 min) and is a hardware validation, not a unit test. Run it explicitly with
 # `-m slow` when qualifying a new machine — see tests/model/test_keepawake_duration.py.
 addopts = "-ra --strict-markers --strict-config -m 'not slow'"
-filterwarnings = ["error::DeprecationWarning:satquery.*"]
+filterwarnings = [
+    "error::DeprecationWarning:satquery.*",
+    # rasterio 1.4.3 uses `*` for Affine matmul internally; not our code, not actionable.
+    "ignore:Use `@` matmul instead:PendingDeprecationWarning",
+]
 
 # ----------------------------------------------------------------------------------
 # coverage
