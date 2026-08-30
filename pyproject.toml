@@ -41,6 +41,9 @@ dependencies = [
     #     stdlib (added in 3.14) and no zstd CLI is present on this machine, so the archives
     #     are unreadable without this. Added at S2.
     "zstandard==0.23.0",
+    # --- M10 model persistence. Already present transitively via scikit-learn, but declared
+    #     because satquery.routing.m10_classifier imports it directly. Added at S9.
+    "joblib==1.4.2",
 ]
 
 [project.optional-dependencies]

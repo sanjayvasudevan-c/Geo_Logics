@@ -223,3 +223,106 @@ family. All four land within 93.74%-97.10% and each family's share of the residu
 share of the items. Orientation is fully resolved; what remains is evenly-distributed
 borderline-angle error, which is what an under-determined band width predicts. The claim was
 removed from the report and replaced with the measured table. Another instance of CLAUDE.md §5.
+
+
+---
+
+## D-S9-1 — A5 CLOSED: the real intent vocabulary is 9, not 8
+
+**Decided:** 2026-08-30 (S9) · **Status:** MEASURED · **Closes:** assumption A5
+
+A5 (IMPLEMENTATION_MAP §10.2) recorded the intent enum as **provisional**, to be replaced by
+the empirical vocabulary once S3 measured it. S3 measured the task space but the enum was never
+regenerated, and S9 is the stage that fixes M10's label set, so it is closed here.
+
+**Measured:** the 15 `type` x `category` tasks collapse onto **9 routing intents**.
+
+| | |
+|---|---|
+| Tasks measured (S3, confirmed again at S9 over 229,307 rows) | **15** |
+| Distinct routing intents among them | **9** |
+| `Intent` enum values | **10** — the 10th is `CHANGE` |
+
+The collapses, each on a stated ground rather than convenience:
+
+- `binary|X` and `mcq|X` share an intent for presence / area / count / adjacency: the *question*
+  is the same, only the answer format differs, and `answer_format` carries that separately.
+- `mcq|country`, `mcq|season`, `mcq|climate zone` -> one `METADATA_MCQ`, because they share one
+  tool plan (M5 -> M4 -> M9). Distinguishing them is M5's job, not the router's.
+- `bounding box|reference` and `bounding box|point` stay **apart** despite sharing a tool plan,
+  because they take different inputs (`<ref>` tag vs `<point>` coordinate) and produce different
+  `QuerySpec` shapes. The parser resolves both at 100% from their tags.
+- `CHANGE` has **zero rows** in BigEarthNet.txt. It belongs to the SECOND/CDVQA path (M6, S17)
+  and is carried in the enum so the router's registry does not change shape later.
+
+### Discrepancy with CLAUDE.md §1 — flagged, not silently absorbed
+
+CLAUDE.md §1 describes M10 as **"8-way intent classification"**. The measured label space is
+**9**. The S9 stage prompt itself lists a **10-value** enum, so the frozen table and the stage
+prompt already disagreed with each other before any measurement.
+
+This is not treated as a §6 architecture change, because A5 pre-authorised exactly this
+substitution: *"the provisional intent enum replaced by the S3-confirmed vocabulary; R1's
+registry and M10's label set regenerated."* Executing A5 is what happened. **It is recorded here
+rather than absorbed silently, and CLAUDE.md §1's "8-way" should be read as superseded by this
+measurement.** If the reviewer prefers 8, the only defensible collapse is merging
+`REFERRING_EXPR` with `REFERRING_POINT`; that would cost nothing at the router (same plan) but
+would erase a distinction the parser makes for free.
+
+## D-S9-2 — M10 is fitted on ALL training questions, not on the rules' residue
+
+**Decided:** 2026-08-30 (S9) · **Status:** MEASURED
+
+The intuitive design is to fit the fallback only on the questions the rules fail on, since that
+is all it ever sees at inference. **Measured, that is wrong here:**
+
+| training pool | distinct labels | accuracy on the held-out residue |
+|---|---|---|
+| rules-residue only (56 items) | **2** | 69.23% (on the earlier, larger residue) |
+| **all training questions (9,000)** | **9** | **100.00%** |
+
+The rules are good enough that the training residue holds only 56 items across 2 intents. A
+model fitted on it is **structurally unable to emit seven of the nine intents** — it would
+mis-route with total confidence any residue question whose intent never happened to appear in
+the training residue. Fitting on the full training pool keeps the label space intact; M10 is
+still only *invoked* on residue.
+
+**The accuracy figure must not be quoted.** The held-out residue is **18 items**, of which only
+**4 are unseen text** — see D-S9-3.
+
+## D-S9-3 — Question text repeats across splits; M10 accuracy must be split by it
+
+**Decided:** 2026-08-30 (S9) · **Status:** MEASURED HAZARD, disclosed
+
+S3 measured ~220,840 distinct `input` strings across 7,128,971 train+validation rows, so
+questions repeat heavily. Measured directly at S9: **31.53% of sampled validation questions
+appear verbatim in the training sample**, and for the parser residue specifically it reached
+**38.94%**.
+
+An early M10 run scored a clean **100.00% over 719 residue items** and that number was partly
+memorisation of exact strings. `scripts/evaluate_parser.py` now always reports the
+verbatim-in-train and unseen-text halves separately, and the unseen-text half is the honest one.
+
+This is the CLAUDE.md §7 "duplicate leakage" hazard in a form the geographic split does not
+address: **the S6 fold machinery separates patches, not question strings.** Any future component
+trained on question *text* — M10 here, and M8's stylizer later — must be reported this way.
+
+## D-S9-4 — Parser rules were developed against validation; a disjoint slice is used to report
+
+**Decided:** 2026-08-30 (S9) · **Status:** METHODOLOGY, disclosed
+
+The rules were written by inspecting parse errors, and early iterations inspected errors drawn
+from **validation**. That makes those items development data. Rather than quote them, S9 added
+`--holdout-skip`, which discards the first N items per task and samples a disjoint slice that
+development never saw.
+
+| slice | coverage | precision | end-to-end |
+|---|---|---|---|
+| development (inspected during rule writing) | 99.47% | 98.48% | 97.96% |
+| **held-out (never inspected)** | **99.60%** | **98.44%** | **98.04%** |
+
+The difference is within noise, so the rules generalise and nothing was lost. **The point is
+that this was measured rather than assumed** — a parser tuned against its own test set can look
+identical to one that generalises, right up until it does not. The held-out numbers are the ones
+reported everywhere. The residue in the held-out slice was deliberately **not** fixed, because
+tuning against it would convert the last clean measurement into another development sample.

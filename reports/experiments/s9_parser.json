@@ -1,0 +1,201 @@
+{
+  "confusion": {
+    "adjacency->presence": 33,
+    "area->presence": 22,
+    "presence->area": 15
+  },
+  "halt": false,
+  "m10": {
+    "accuracy": 1.0,
+    "accuracy_unseen_text": 1.0,
+    "accuracy_verbatim": 1.0,
+    "all_train_accuracy": 1.0,
+    "all_train_n_labels": 9,
+    "combined_intent_accuracy": 0.9844,
+    "labels": [
+      "adjacency",
+      "area",
+      "caption",
+      "count",
+      "metadata_mcq",
+      "presence",
+      "referring_expr",
+      "referring_point",
+      "relative_position"
+    ],
+    "macro_f1": 1.0,
+    "manifest": {
+      "labels": [
+        "adjacency",
+        "area",
+        "caption",
+        "count",
+        "metadata_mcq",
+        "presence",
+        "referring_expr",
+        "referring_point",
+        "relative_position"
+      ],
+      "model": "TfidfVectorizer(1,2) -> LinearSVC",
+      "n_train": 9000,
+      "seed": 1337,
+      "train_split_hash": "2d97f53e0856216c",
+      "trained_on": "train split only"
+    },
+    "n_eval_residue": 18,
+    "n_train_all": 9000,
+    "n_train_residue": 56,
+    "n_train_residue_intents": 2,
+    "n_unseen_text": 4,
+    "n_verbatim_in_train": 14,
+    "residue_only_accuracy": 1.0,
+    "residue_only_n_labels": 2
+  },
+  "macro": {
+    "coverage": 0.996,
+    "precision": 0.9843
+  },
+  "per_task": [
+    {
+      "category": "adjacency",
+      "coverage": 1.0,
+      "end_to_end": 0.9367,
+      "n": 300,
+      "precision": 0.9367,
+      "type": "binary"
+    },
+    {
+      "category": "area",
+      "coverage": 0.9733,
+      "end_to_end": 0.9333,
+      "n": 300,
+      "precision": 0.9589,
+      "type": "binary"
+    },
+    {
+      "category": "count",
+      "coverage": 1.0,
+      "end_to_end": 1.0,
+      "n": 300,
+      "precision": 1.0,
+      "type": "binary"
+    },
+    {
+      "category": "presence",
+      "coverage": 0.9667,
+      "end_to_end": 0.9167,
+      "n": 300,
+      "precision": 0.9483,
+      "type": "binary"
+    },
+    {
+      "category": "point",
+      "coverage": 1.0,
+      "end_to_end": 1.0,
+      "n": 300,
+      "precision": 1.0,
+      "type": "bounding box"
+    },
+    {
+      "category": "reference",
+      "coverage": 1.0,
+      "end_to_end": 1.0,
+      "n": 300,
+      "precision": 1.0,
+      "type": "bounding box"
+    },
+    {
+      "category": "None",
+      "coverage": 1.0,
+      "end_to_end": 1.0,
+      "n": 300,
+      "precision": 1.0,
+      "type": "captioning"
+    },
+    {
+      "category": "adjacency",
+      "coverage": 1.0,
+      "end_to_end": 0.9533,
+      "n": 300,
+      "precision": 0.9533,
+      "type": "mcq"
+    },
+    {
+      "category": "area",
+      "coverage": 1.0,
+      "end_to_end": 0.9667,
+      "n": 300,
+      "precision": 0.9667,
+      "type": "mcq"
+    },
+    {
+      "category": "climate zone",
+      "coverage": 1.0,
+      "end_to_end": 1.0,
+      "n": 300,
+      "precision": 1.0,
+      "type": "mcq"
+    },
+    {
+      "category": "count",
+      "coverage": 1.0,
+      "end_to_end": 1.0,
+      "n": 300,
+      "precision": 1.0,
+      "type": "mcq"
+    },
+    {
+      "category": "country",
+      "coverage": 1.0,
+      "end_to_end": 1.0,
+      "n": 300,
+      "precision": 1.0,
+      "type": "mcq"
+    },
+    {
+      "category": "presence",
+      "coverage": 1.0,
+      "end_to_end": 1.0,
+      "n": 300,
+      "precision": 1.0,
+      "type": "mcq"
+    },
+    {
+      "category": "relative pos",
+      "coverage": 1.0,
+      "end_to_end": 1.0,
+      "n": 300,
+      "precision": 1.0,
+      "type": "mcq"
+    },
+    {
+      "category": "season",
+      "coverage": 1.0,
+      "end_to_end": 1.0,
+      "n": 300,
+      "precision": 1.0,
+      "type": "mcq"
+    }
+  ],
+  "pooled": {
+    "coverage": 0.996,
+    "end_to_end": 0.9804,
+    "n": 4500,
+    "precision": 0.9844
+  },
+  "residue_by_task": {
+    "binary|area": 8,
+    "binary|presence": 10
+  },
+  "residue_examples": {
+    "no intent cue matched": [
+      "Does the satellite image display mixed forest?",
+      "Is the class pastures the only one in the image?",
+      "Does the satellite image display natural grasslands or sparsely vegetated areas?"
+    ]
+  },
+  "residue_reasons": {
+    "no intent cue matched": 18
+  },
+  "rule_coverage_floor": 0.5
+}

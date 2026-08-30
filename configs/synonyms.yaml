@@ -42,9 +42,15 @@ observed:
       - land principally occupied by agriculture with significant areas of natural vegetation
       - "land principally occupied by agriculture, with significant areas of natural vegetation"
                                                 # 40,862
+      # PLURAL form, measured at S9: 99 of 897 sampled occurrences write "lands". Without it
+      # the whole class fails to resolve and the question abstains.
+      - lands principally occupied by agriculture with significant areas of natural vegetation
+      - "lands principally occupied by agriculture, with significant areas of natural vegetation"
   Agro-forestry areas:
     level: c19
-    forms: [agro-forestry areas, agroforestry areas]   # 34,090
+    # SINGULAR form added at S9: "an agro-forestry area come into contact with pastures" was
+    # resolving to one class instead of two, so the adjacency question abstained.
+    forms: [agro-forestry areas, agroforestry areas, agro-forestry area, agroforestry area]
   Broad-leaved forest:
     level: c19
     forms: [broad-leaved forest, broad-leaved forests, broadleaved forest]   # 45,577

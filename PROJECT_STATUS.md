@@ -1,5 +1,80 @@
-LAST UPDATED: 2026-08-30 — GATE 1 **PASSED**; S7 ADDENDUM (direction convention) COMPLETE
-NEXT: S9 — query parser + M10 intent-classifier fallback. Standard effort (approved).
+LAST UPDATED: 2026-08-30 — S9 COMPLETE (Q1 parser + M10 fallback). 548 tests pass.
+NEXT: S10 — R1 deterministic router + typed contracts + scene cache.
+
+=== CARRIED FORWARD — KEEP VISIBLE UNTIL CLOSED ===
+
+CF-1  PARSER-ABSTENTION GAP — **S9's explicit target.** OPEN.
+      Gate 1 strict 87.11% vs attempted 93.89% = a 6.78-point gap that is ENTIRELY parser
+      abstention, not geometry. After the S7 addendum the same gap is 90.15% vs 96.92% =
+      6.77 points. It is the cheapest accuracy in the project because the geometry behind it
+      is already correct. Known composition, measured at S8 (n=300/task, validation):
+        binary|area       21.3% abstain — 'no threshold' 24, 'no comparator' 24, 'no class' 16
+        mcq|adjacency     20.3% abstain — all 'no MCQ option yielded two classes'
+        mcq|area          11.3% abstain — 'no class name resolved'
+        binary|count       7.3% abstain — mostly 'no class name resolved'
+        binary|adjacency   2.3% abstain — 'adjacency needs two classes'
+      NOTE the shape of this: the dominant cause across five task types is CLASS RESOLUTION
+      and OPTION SPLITTING, not comparator vocabulary. S9's parser should be measured against
+      that breakdown, not against a generic coverage number.
+
+      >>> S9 UPDATE — STILL OPEN, and it is worth being exact about why.
+      >>> S9 built Q1 (src/satquery/routing/parser.py), which reaches 99.60% coverage on a
+      >>> held-out validation slice. But GATE 1's abstentions were produced by a DIFFERENT
+      >>> module — satquery/evaluation/oracle.py's S8 answer producer — so the 6.77 points do
+      >>> NOT close automatically, and claiming otherwise would be a false close.
+      >>> What IS established: the Gate 1 abstention causes are the same defect classes Q1
+      >>> just fixed and now has tests for —
+      >>>    'no class name resolved' -> the `sea`-inside-"season" substring bug, the missing
+      >>>                                comma variants, and the missing plural "lands ..."
+      >>>    'no threshold'           -> `m^2` was never matched (109 of 333 sampled spellings)
+      >>>    'no MCQ option yielded two classes' -> options were never searched for the pair
+      >>> So the fix is to route the oracle through Q1 rather than to re-derive it. That is a
+      >>> real change to how a GATE number was produced, so it is NOT being done silently here.
+      >>> Proposed home: S13, where predicted maps are scored end-to-end and the oracle is
+      >>> re-run anyway. Flagging now so it is a decision, not a discovery.
+
+CF-2  M8 BUILD AUTHORIZATION — CONFIRMED STILL LIVE, NOT LOST. Queued for its own stage.
+      GATE: caption BLEU-4 = 15.35 -> **BUILD M8**, inside the 10-35 band the architecture
+      predicted. Measured at S8 (O2 caption oracle, 220 captions); see GATE1_oracle.md §5.
+      15.35 is a LOWER bound — brevity penalty is still 0.4911, so a richer template scores
+      higher. M8 = Flan-T5-base (250M) or Qwen2.5-0.5B-Instruct LoRA, per CLAUDE.md §1, and
+      it is a template->style REWRITER only: CLAUDE.md §2 forbids it producing any number.
+      Do not re-litigate this gate; it is decided. Just build it when its stage arrives.
+
+CF-4  DUPLICATE LEAKAGE IN QUESTION TEXT — NEW at S9, open. See DECISIONS.md D-S9-3.
+      MEASURED: 31.53% of sampled validation questions appear VERBATIM in the training sample;
+      for the parser residue it was 38.94%. S3's ~220,840 distinct `input` strings are spread
+      over 7,128,971 rows, so text repeats heavily. The S6 geographic folds separate PATCHES,
+      not question STRINGS, so this hazard is not covered by existing splitting.
+      Binding on any future component trained on question text — M10 here, M8's stylizer later:
+      report the verbatim-in-train and unseen-text halves SEPARATELY. An early M10 run scored a
+      clean 100.00% over 719 items that was partly string memorisation.
+
+CF-3  TEST-COVERAGE AUDIT — opened 2026-08-30 at the reviewer's direction after the
+      S7 addendum showed oracle.py had shipped two independent defects with ZERO unit tests.
+      Ran `pytest --cov` across the whole package rather than waiting for S24. TOTAL 72%.
+      Modules materially below the line:
+        evaluation/harness.py      **0%**  <-- see below, this one is not like the others
+        data/download.py             0%    (S2 one-shot acquisition script, already run)
+        inference/assembler.py       0%    (stub, no logic yet — S10+)
+        evaluation/oracle.py        37%    (was 0%; the S7 addendum covered the direction path
+                                            only. The remaining 63% is the S8 answer producer,
+                                            which S9 is about to replace/extend anyway.)
+        evaluation/forensics.py     40%    (the quarantine GUARD is tested; the row-group
+                                            iteration paths are not)
+        taxonomy/core.py            76%
+      ** harness.py at 0% is qualitatively different from the rest and is being closed in S9,
+      not deferred. ** It is the module that computed EVERY Gate 1 number — strict vs attempted
+      accuracy, abstention accounting, and the bootstrap CI that resamples over patches rather
+      than annotations. An off-by-one in its percentile index would have put a wrong confidence
+      interval on every row of the gate report with nothing to catch it. A module that produces
+      gate numbers must not be the least-tested module in the package.
+      >>> CLOSED at S9: tests/unit/test_harness.py, 17 tests. Includes a property test that
+      >>> CLUSTERED patches must yield a WIDER interval than independent ones — if that ever
+      >>> reverses, the resample has silently gone back to annotation level and every gate CI
+      >>> is too tight. The rest of CF-3 remains open for the S24 audit.
+
+=== END CARRIED FORWARD ===
 
 Stage numbering: S0–S26 (our own execution breakdown, per STAGE_PROMPTS.md). This is not the
 architecture PDF's numbering — the PDF has only an 8-week plan. The two reconcile via
@@ -338,6 +413,44 @@ S4 — TAXONOMY LAYER COMPLETE. 49 tests pass. THREE DECISIONS I TOOK WITHOUT SI
   aggregation-before-geometry test's precondition used np.isin([111,112]), which already merges
   both classes and so cannot demonstrate over-counting. The real naive failure is labelling each
   L3 class separately and summing. Corrected; the test now genuinely proves the guarantee.
+
+S9 — Q1 RULE PARSER + M10 FALLBACK. COMPLETE. 548 tests pass (up from 433), ruff + mypy clean.
+  See reports/evaluation/S9_parser.md, reports/experiments/s9_parser.json,
+  DECISIONS.md D-S9-1..4. Built: src/satquery/routing/{parser,m10_classifier}.py.
+
+  *** HELD-OUT VALIDATION: coverage 99.60%  precision 98.44%  end-to-end 98.04% ***
+      Combined with M10: 98.44%. Residue 18/4,500 = 0.40%.
+      HALT CHECK (stage prompt): coverage 99.60% vs 50% floor -> PASS. The rules are the
+      primary path and M10 is a genuine fallback, which is what the architecture intends.
+
+  METHODOLOGY, disclosed (D-S9-4): the rules were written by inspecting parse errors, and early
+  iterations inspected VALIDATION errors — making those items development data. Added
+  --holdout-skip to sample a disjoint slice development never saw. Dev slice scored
+  99.47/98.48/97.96 vs held-out 99.60/98.44/98.04, so the rules generalise. Every number
+  reported is the held-out one. The held-out residue was deliberately NOT fixed.
+
+  FIVE DEFECTS FOUND AND FIXED, all measured on real questions:
+    * `sea` matched INSIDE the word "season" (14 short forms exposed; `urban` in "suburban",
+      `town` in "downtown") -> mcq|season precision was 0.00%. Whole-word matching now.
+    * A CLASS NAME was being read as an intent cue: "Land principally occupied by agriculture,
+      with significant areas of natural vegetation" contains "occupied" AND "areas", firing two
+      AREA cues by itself -> 151 presence questions misrouted. Cues now read class-masked text.
+    * MCQ stems ending in ":" not "?" left the option list inside the stem -> 68 misroutes.
+    * `m^2` was NEVER MATCHED — 109 of 333 sampled m2 spellings. THE MOST SERIOUS IN KIND: the
+      others misroute a question, this one DROPS THE STATED VALUE while still routing to AREA,
+      i.e. a confident answer to the wrong question rather than an honest abstention.
+    * Caption stems say "including the region, time of year" -> 71 captions hit METADATA_MCQ.
+  Each has an assertion in tests/unit/test_query_parser.py that would have caught it.
+
+  A5 CLOSED (D-S9-1): the real intent vocabulary is 9, not the "8-way" CLAUDE.md §1 states.
+  15 tasks -> 9 intents; the enum carries a 10th, CHANGE, which has ZERO rows in this benchmark.
+  Flagged rather than absorbed: CLAUDE.md §1 and the S9 stage prompt already disagreed with each
+  other, and A5 pre-authorised replacing the provisional enum with the measured one.
+
+  M10 (D-S9-2): fitted on ALL 9,000 training questions, not on the rules' residue. Measured —
+  the training residue holds 56 items across only 2 intents, so a residue-fitted M10 is
+  STRUCTURALLY UNABLE to emit 7 of the 9 intents. Persisted with its training-split hash.
+  ITS ACCURACY IS NOT QUOTABLE: the held-out residue is 18 items, only 4 of them unseen text.
 
 S7-ADDENDUM — RELATIVE-POSITION DIRECTION CONVENTION. FITTED. 433 tests pass (up from 395),
   ruff clean, mypy --strict clean. oracle.py previously had NO unit tests at all — which is
@@ -714,7 +827,7 @@ STANDING ITEM — COMPUTE + FULL-CORPUS STORAGE (decided 2026-08-30, deferred to
     A1  mandatory capabilities taken from the architecture document (defined §11.0)
     A2  CLOSED at S1 — STAGE_PROMPTS.md committed, read, and all S-anchors verified
     A3  M6 live-inference input vs SECOND/CDVQA training data — resolve at S17
-    A5  real task vocabulary (8-way vs 10-way vs 15 tasks) — resolve at S3
+    A5  CLOSED at S9 — measured: 15 tasks -> 9 intents (+CHANGE unused here). D-S9-1.
     A6  does area exclude MMU-dropped components — resolve at S8
     A7  is M5 wired into the caption path — resolve at S8
     A8  how M3/M4 map onto CDVQA's closed 19-category answer set — resolve at S17
