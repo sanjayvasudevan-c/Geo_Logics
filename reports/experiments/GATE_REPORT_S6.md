@@ -67,6 +67,65 @@ it cannot fix single-country classes and should not be presented as a solution.
 **NOT blocked by this gate:** the leakage machinery itself is complete and passing. The
 `s2_tile` strategy splits **zero** touching pairs and **zero** repeat-acquisition locations.
 
+---
+
+## RESOLUTION — stratified allocation reached the irreducible floor
+
+**The original analysis conflated two independent degrees of freedom.** Block *integrity*
+(no block spans folds — non-negotiable, settled) and block *assignment* (which fold a whole
+block joins — a free choice). Size-balanced packing optimised fold balance and nothing else, so
+a region's classes clustered into a few folds as a pure artifact of packing order. Geography
+forces that no tile spans folds; it does **not** force which fold a tile joins.
+
+Option C was therefore tested before falling back to Option A.
+
+| Allocation | classes absent | irreducible | **artifact** | fold balance | touching pairs split |
+|---|---|---|---|---|---|
+| size-balanced | 17 | 14 | **3** — 132, 141, 421 | 0.991 | 0 of 419,356 |
+| **stratified** | **14** | 14 | **0** | 0.954 | 0 of 419,356 |
+| *theoretical floor* | *14* | *14* | *0* | — | — |
+
+**Stratified allocation removes every removable absence and reaches the floor exactly.** The
+leakage guarantee is unchanged — zero touching pairs split under both. Cost is fold balance
+0.991 → 0.954, which is acceptable.
+
+### Why the residual 14 are provably irreducible
+
+Blocks are atomic, so **a class present in fewer than k=5 tiles cannot appear in all 5 folds
+under any allocation whatsoever.** Counting tiles per class settles it arithmetically rather
+than by argument:
+
 ```
-STATUS: HALTED — WAITING FOR YOUR DECISION
+123 Port areas (3 tiles)        124 Airports (3)            212 Perm. irrigated land (3)
+213 Rice fields (3)             223 Olive groves (3)        241 Annual+permanent crops (3)
+244 Agro-forestry (3)           323 Sclerophyllous veg (3)  334 Burnt areas (4)
+335 Glaciers (0 — absent)       422 Salines (2)             423 Intertidal flats (4)
+521 Coastal lagoons (3)         522 Estuaries (2)
+```
+
+Most are single-growing-region Mediterranean crops concentrated in Portugal. This is now a
+**checked** result, not an assumed one — which is what makes Option A defensible.
+
+**Measurement caveat:** per-tile presence was sampled at 140 maps/tile, which undercounts tiles
+holding very rare classes. The irreducible set is an **upper bound**; an exhaustive scan could
+move a class from irreducible to reducible, never the reverse.
+
+### Final decision
+
+- **FINAL SPLIT:** `data/processed/splits/FINAL_s2_tile_stratified_k5_seed1337.json`
+- **Option A applies to the residual 14 only**, and its reporting discipline stands:
+  1. per-class IoU reported **only over folds containing the class**;
+  2. per-class fold coverage published **beside every number**;
+  3. mean-over-folds mIoU **not comparable** across classes with different fold-presence sets.
+- **k=5 unchanged. No collapse to coarse-7.** Both were rejected as quiet architecture changes
+  disguised as workarounds — see `docs/architecture/DECISIONS.md` D-S6-2.
+
+### Propagation — binding before S13 starts
+
+**The transfer factor at GATE 2 must be computed per class over each class's own valid fold
+set, not as a single pooled number**, because the fold-presence set differs per class. Recorded
+in `PROJECT_STATUS.md` and `docs/architecture/DECISIONS.md` L-S6-2.
+
+```
+STATUS: RESOLVED — stratified allocation adopted; Option A covers the proven residual
 ```

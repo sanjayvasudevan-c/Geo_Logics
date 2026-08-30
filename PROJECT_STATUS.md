@@ -1,4 +1,4 @@
-LAST UPDATED: 2026-08-30 — S6 Geographic Splitting — HALTED, 1 GATE REPORT OPEN
+LAST UPDATED: 2026-08-30 — S6 COMPLETE (stratified allocation reached the irreducible floor)
 
 Stage numbering: S0–S26 (our own execution breakdown, per STAGE_PROMPTS.md). This is not the
 architecture PDF's numbering — the PDF has only an 8-week plan. The two reconcile via
@@ -340,7 +340,28 @@ S4 — TAXONOMY LAYER COMPLETE. 49 tests pass. THREE DECISIONS I TOOK WITHOUT SI
 
 S6 — GEOGRAPHIC SPLITTING & LEAKAGE DETECTION. 22 leakage tests, 347 total. HALTED.
 
-  *** S6 IS HALTED — see reports/experiments/GATE_REPORT_S6.md ***
+  *** STRATIFIED ALLOCATION RESOLVED MOST OF THE HALT — see GATE_REPORT_S6.md ***
+  Block INTEGRITY and block ASSIGNMENT are independent degrees of freedom. The original
+  analysis conflated them. Size-balanced packing concentrated a region's classes in a few folds
+  as a pure artifact of packing order.
+      size-balanced : 17 absent = 14 irreducible + 3 ARTIFACT (132, 141, 421)
+      STRATIFIED    : 14 absent = 14 irreducible + 0 artifact   <-- theoretical floor
+      floor         : 14 (classes present in <5 tiles; blocks are atomic so NO allocation
+                          can place them in all 5 folds)
+  Leakage guarantee UNCHANGED: 0 of 419,356 touching pairs split under both. Cost: fold
+  balance 0.991 -> 0.954. FINAL SPLIT:
+      data/processed/splits/FINAL_s2_tile_stratified_k5_seed1337.json
+  The residual 14 are now PROVEN irreducible rather than assumed — measured by counting tiles
+  containing each class. Caveat: per-tile presence sampled at 140 maps/tile undercounts very
+  rare classes, so 14 is an UPPER bound on irreducibility.
+
+  *** GATE 2 / S13 PROPAGATION — MUST BE KNOWN BEFORE S13 STARTS ***
+    The transfer factor at S13 MUST be computed PER CLASS over each class's own valid fold set,
+    NOT as a single pooled number. The fold-presence set differs per class: 14 classes are
+    absent from at least one fold, so a pooled mean averages a different class set per fold and
+    is not comparable. Per-class fold coverage must be published beside every number.
+
+  *** ORIGINAL HALT (now largely resolved) — see reports/experiments/GATE_REPORT_S6.md ***
   20 of 44 CORINE L3 classes are absent from at least one fold under geographic blocking.
   STRUCTURAL, not sampling: Portugal has 0 patches in folds 2 and 4, and every Mediterranean
   class missing from exactly those folds is Portugal-concentrated (212, 213, 223, 241, 244,

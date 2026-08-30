@@ -147,6 +147,26 @@ If something failed, report the failure and the traceback.
 If an assumption is unvalidated, mark it: `ASSUMPTION — REQUIRES VALIDATION`
 If the architecture is ambiguous, say so instead of inventing a resolution.
 
+**A failing assertion is a claim about the world, not a bug in the test. Investigate before
+fixing.** When a test fails, the first question is *which* is wrong: the code, the test, or the
+belief the test encodes. Patching the assertion to make it pass destroys the finding.
+
+This has now paid off three times, each producing the most important result of its stage:
+
+- **S5** — a weak mask test led to the discovery that no function bound the tensor and its
+  band-presence mask together, so they could silently disagree. The fix was structural, not a
+  tightened assertion.
+- **S6** — `assert (tile, row, col) is unique` failed. The assumption was wrong, not the data:
+  reBEN images the same ground location on up to 4 dates, and **80.8% of the training split**
+  is repeat acquisitions. A random split scatters 89.5% of those near-twins across the fold
+  boundary. That became the strongest evidence in the stage.
+- **S6** — a taxonomy test's *precondition* was wrong (`np.isin` already merged the classes it
+  was meant to separate), so it could not have demonstrated the failure it claimed to.
+
+The corollary: **a test that could pass vacuously is not a test.** Detectors need a guard
+proving they can still fire — a planted violation, or an assertion that the detector matched
+something. Both the quarantine audit (S3) and the leakage suite (S6) carry one.
+
 ---
 
 ## 6. CHANGE CONTROL

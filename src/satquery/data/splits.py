@@ -43,6 +43,7 @@ __all__ = [
     "SplitManifest",
     "adjacent_pairs_spanning_folds",
     "assign_folds",
+    "assign_folds_stratified",
     "block_keys",
     "haversine_km",
     "load_manifest",
@@ -355,3 +356,100 @@ def same_block_pair_rate(
         if block_of[a] == block_of[b]:
             same_block += 1
     return same_block / cross if cross else 0.0
+
+
+def assign_folds_stratified(
+    frame: pd.DataFrame,
+    block_contents: dict[str, set[int]],
+    *,
+    strategy: BlockStrategy = "s2_tile",
+    k: int = 5,
+    seed: int = 1337,
+    size_weight: float = 0.15,
+) -> SplitManifest:
+    """Assign blocks to folds so rare class coverage spreads, keeping every block atomic.
+
+    Block **integrity** and block **assignment** are independent degrees of freedom.
+    :func:`assign_folds` packs largest-block-first into the smallest fold, which optimises fold
+    balance and nothing else — so a country's blocks can land in a handful of folds purely as an
+    artifact of packing order, taking its region-specific classes with them. Geography forces
+    that no block spans folds; it does not force *which* fold a whole block joins.
+
+    This allocator keeps the leakage guarantee identical (blocks stay atomic, so no touching
+    pair is ever split) while choosing assignments that spread rare classes. Blocks are
+    processed rarest-content-first, and each goes to whichever fold gains the most
+    rarity-weighted new class coverage, with a mild size penalty to keep folds balanced.
+
+    A class present in fewer than ``k`` blocks cannot reach every fold under **any** allocation,
+    because blocks are atomic. Those absences are irreducible and this function cannot fix them;
+    it exists to remove the ones that are merely artifacts.
+
+    Args:
+        frame: Geography table with ``patch_id`` and the column ``strategy`` needs.
+        block_contents: Block id to the set of class codes it contains.
+        strategy: Blocking strategy. Blocks remain atomic regardless.
+        k: Number of folds.
+        seed: Recorded for reproducibility; ties break deterministically on block id.
+        size_weight: Relative weight of fold-size balance against coverage gain.
+
+    Returns:
+        The :class:`SplitManifest`.
+
+    Raises:
+        ConfigError: If ``k`` is invalid or there are fewer blocks than folds.
+        ContractViolationError: If any block ends up spanning folds.
+    """
+    if k < 2:
+        raise ConfigError("k must be at least 2", k=k)
+
+    blocks = block_keys(frame, strategy)
+    sizes = blocks.value_counts().to_dict()
+    if len(sizes) < k:
+        raise ConfigError(
+            "fewer blocks than folds", strategy=strategy, blocks=len(sizes), k=k
+        )
+
+    # Rarity weight: a class in few blocks is worth far more to place well.
+    block_count = {
+        cls: sum(1 for s in block_contents.values() if cls in s)
+        for cls in {c for s in block_contents.values() for c in s}
+    }
+    weight = {cls: 1.0 / max(n, 1) for cls, n in block_count.items()}
+
+    def rarity(block: str) -> float:
+        return sum(weight.get(c, 0.0) for c in block_contents.get(block, set()))
+
+    # Rarest-content first, then largest, then block id — fully deterministic.
+    ordered = sorted(sizes, key=lambda b: (-rarity(b), -sizes[b], b))
+
+    load = dict.fromkeys(range(k), 0)
+    covered: dict[int, set[int]] = {f: set() for f in range(k)}
+    fold_of_block: dict[str, int] = {}
+    mean_size = sum(sizes.values()) / k
+
+    for block in ordered:
+        contents = block_contents.get(block, set())
+        best_fold, best_score = 0, float("-inf")
+        for fold in range(k):
+            gain = sum(weight.get(c, 0.0) for c in contents - covered[fold])
+            imbalance = (load[fold] + sizes[block] - mean_size) / mean_size
+            score = gain - size_weight * max(imbalance, 0.0)
+            if score > best_score:
+                best_fold, best_score = fold, score
+        fold_of_block[block] = best_fold
+        load[best_fold] += sizes[block]
+        covered[best_fold] |= contents
+
+    fold_of = {str(p): fold_of_block[b] for p, b in zip(frame["patch_id"], blocks, strict=True)}
+    block_of = {str(p): str(b) for p, b in zip(frame["patch_id"], blocks, strict=True)}
+    manifest = SplitManifest(
+        strategy=strategy, k=k, seed=seed, fold_of=fold_of, block_of=block_of,
+        fold_sizes=dict(sorted(load.items())), block_count=len(sizes),
+    )
+    spanning = manifest.blocks_spanning_folds()
+    if spanning:
+        raise ContractViolationError(
+            "stratified allocation split a block across folds",
+            spanning_blocks=spanning[:10], count=len(spanning),
+        )
+    return manifest

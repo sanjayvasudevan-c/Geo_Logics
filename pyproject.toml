@@ -136,7 +136,10 @@ ignore = [
 # These are dense exploratory queries whose value is the JSON they emit; compact
 # statement style and long literal regexes are appropriate there.
 "scripts/forensics/**" = ["T20", "E501", "E701", "E702", "B007", "E741"]
+# One-off measurement scripts, same rationale as scripts/forensics: dense exploratory
+# queries whose value is the JSON they emit.
 "scripts/data/split_class_coverage.py" = ["T20", "E501", "E701", "E702"]
+"scripts/data/tile_class_presence.py" = ["T20", "E501", "E701", "E702"]
 
 # ----------------------------------------------------------------------------------
 # mypy

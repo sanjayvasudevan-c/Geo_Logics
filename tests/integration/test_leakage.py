@@ -28,6 +28,7 @@ from satquery.data.splits import (
     adjacent_pairs_spanning_folds,
     all_adjacent_pairs,
     assign_folds,
+    assign_folds_stratified,
     block_keys,
     haversine_km,
     load_manifest,
@@ -245,3 +246,66 @@ class TestBlockKeys:
         )
         assert tampered.blocks_spanning_folds(), "tampering must be detectable"
         _ = ContractViolationError
+
+
+class TestStratifiedAllocation:
+    """Block integrity and block ASSIGNMENT are independent degrees of freedom.
+
+    Keeping blocks atomic is non-negotiable and settled. *Which* fold a whole block joins is a
+    free choice, and choosing it by size alone concentrates a region's classes in a few folds
+    as a pure artifact. MEASURED at S6: size-balanced allocation leaves 3 classes absent from
+    a fold for no reason other than packing order (132, 141, 421); rarity-aware stratified
+    allocation removes all 3 and reaches the theoretical floor of 14, which is the count of
+    classes present in fewer than k=5 tiles and therefore unreachable under ANY allocation.
+    """
+
+    def _tile_classes(self) -> dict[str, set[int]]:
+        path = project_root() / "reports/evaluation/tile_class_presence.json"
+        if not path.is_file():
+            pytest.skip("tile class presence not measured")
+        raw = json.loads(path.read_text(encoding="utf-8"))
+        return {t: set(v) for t, v in raw["tile_classes"].items()}
+
+    def test_stratified_keeps_blocks_atomic(self) -> None:
+        """The leakage guarantee must be identical — that is the whole point."""
+        frame = pd.concat([_grid_frame(4, 4, f"T3{i}AAA") for i in range(6)], ignore_index=True)
+        contents = {f"T3{i}AAA": {111, 211 + i} for i in range(6)}
+        manifest = assign_folds_stratified(frame, contents, strategy="s2_tile", k=3)
+        assert manifest.blocks_spanning_folds() == []
+        assert adjacent_pairs_spanning_folds(frame, manifest) == []
+
+    def test_stratified_spreads_a_class_across_folds(self) -> None:
+        """A class in >= k blocks should reach every fold under rarity-aware allocation."""
+        frame = pd.concat([_grid_frame(3, 3, f"T3{i}AAA") for i in range(6)], ignore_index=True)
+        # class 999001 is rare but present in 3 blocks; k=3 so it CAN reach every fold
+        contents = {f"T3{i}AAA": ({111} | ({999001} if i < 3 else set())) for i in range(6)}
+        manifest = assign_folds_stratified(frame, contents, strategy="s2_tile", k=3)
+        per_fold: dict[int, set[int]] = {f: set() for f in range(3)}
+        for block, fold in {
+            b: manifest.fold_of[p]
+            for p, b in manifest.block_of.items()
+        }.items():
+            per_fold[fold] |= contents[block]
+        assert all(999001 in per_fold[f] for f in range(3)), (
+            "a class present in k blocks must be placeable in every fold"
+        )
+
+    def test_stratified_is_deterministic(self) -> None:
+        frame = pd.concat([_grid_frame(3, 3, f"T3{i}AAA") for i in range(6)], ignore_index=True)
+        contents = {f"T3{i}AAA": {111, 211 + i} for i in range(6)}
+        a = assign_folds_stratified(frame, contents, strategy="s2_tile", k=3, seed=1337)
+        b = assign_folds_stratified(frame, contents, strategy="s2_tile", k=3, seed=1337)
+        assert a.fold_of == b.fold_of
+
+    def test_final_split_reaches_the_irreducible_floor(self) -> None:
+        """On the real data: zero allocation artifacts remain."""
+        path = project_root() / "reports/evaluation/allocation_comparison.json"
+        if not path.is_file():
+            pytest.skip("allocation comparison not run")
+        raw = json.loads(path.read_text(encoding="utf-8"))
+        strat = raw["stratified (rarity-aware)"]
+        assert strat["absent_artifact"] == [], (
+            f"stratified allocation left removable absences: {strat['absent_artifact']}"
+        )
+        assert strat["adjacent_pairs_split"] == 0, "leakage guarantee must be unchanged"
+        assert sorted(strat["absent_irreducible"]) == sorted(raw["theoretical_floor"])
