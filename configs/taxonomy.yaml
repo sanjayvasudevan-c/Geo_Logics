@@ -3,10 +3,16 @@
 # segmentation target — it is an auxiliary head only.
 primary: corine_l3
 num_classes: 44
-aggregation_table: configs/taxonomy/corine_hierarchy.yaml
+nomenclature_file: configs/taxonomy/corine_l3.yaml   # the full 44-class nomenclature
 
+# S3 FINDING: questions are asked EXCLUSIVELY in the 19-class vocabulary, so the 19-class head
+# is on the QUERY PATH, not merely auxiliary. Kept in this list because M1 still predicts L3-44
+# and derives 19 by aggregation (GR-1 option A), but it is query-critical, not decorative.
 auxiliary_heads: [corine_l3_19, coarse_7]
-ignore_index: 255
+# MEASURED at S4: the reference maps use 999 for unclassified, NOT 255. The old value was a
+# placeholder set at S1 before any data existed. A loader ignoring 255 would treat 999 as a
+# real class index and either crash or corrupt the loss — a silent-failure bug.
+ignore_index: 999
 
 # The only level at which cross-taxonomy comparison is valid (CORINE-44 vs WorldCover-11).
 # All Indian numbers are reported here and nowhere else.

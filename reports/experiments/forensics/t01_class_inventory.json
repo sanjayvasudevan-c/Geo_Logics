@@ -1,0 +1,807 @@
+{
+  "distinct_values": [
+    111,
+    112,
+    121,
+    122,
+    123,
+    124,
+    131,
+    132,
+    133,
+    141,
+    142,
+    211,
+    212,
+    213,
+    221,
+    222,
+    223,
+    231,
+    241,
+    242,
+    243,
+    244,
+    311,
+    312,
+    313,
+    321,
+    322,
+    323,
+    324,
+    331,
+    332,
+    333,
+    334,
+    411,
+    412,
+    421,
+    422,
+    423,
+    511,
+    512,
+    521,
+    522,
+    523,
+    999
+  ],
+  "l3_to_19_derived": {
+    "111": {
+      "confidence": 1.0,
+      "label": "Urban fabric",
+      "runners_up": [
+        [
+          "Industrial or commercial units",
+          0.477
+        ],
+        [
+          "Arable land",
+          0.409
+        ]
+      ],
+      "support": 44
+    },
+    "112": {
+      "confidence": 1.0,
+      "label": "Urban fabric",
+      "runners_up": [
+        [
+          "Arable land",
+          0.652
+        ],
+        [
+          "Complex cultivation patterns",
+          0.411
+        ]
+      ],
+      "support": 2537
+    },
+    "121": {
+      "confidence": 1.0,
+      "label": "Industrial or commercial units",
+      "runners_up": [
+        [
+          "Urban fabric",
+          0.718
+        ],
+        [
+          "Arable land",
+          0.582
+        ]
+      ],
+      "support": 390
+    },
+    "122": {
+      "confidence": 0.6,
+      "label": "Urban fabric",
+      "runners_up": [
+        [
+          "Pastures",
+          0.578
+        ],
+        [
+          "Arable land",
+          0.5
+        ]
+      ],
+      "support": 90
+    },
+    "123": {
+      "confidence": 0.75,
+      "label": "Urban fabric",
+      "runners_up": [
+        [
+          "Marine waters",
+          0.625
+        ],
+        [
+          "Transitional woodland, shrub",
+          0.5
+        ]
+      ],
+      "support": 8
+    },
+    "124": {
+      "confidence": 0.6,
+      "label": "Arable land",
+      "runners_up": [
+        [
+          "Urban fabric",
+          0.6
+        ],
+        [
+          "Coniferous forest",
+          0.4
+        ]
+      ],
+      "support": 10
+    },
+    "131": {
+      "confidence": 0.593,
+      "label": "Arable land",
+      "runners_up": [
+        [
+          "Urban fabric",
+          0.384
+        ],
+        [
+          "Land principally occupied by agriculture, with significant areas of natural vegetation",
+          0.337
+        ]
+      ],
+      "support": 86
+    },
+    "132": {
+      "confidence": 0.7692,
+      "label": "Arable land",
+      "runners_up": [
+        [
+          "Pastures",
+          0.538
+        ],
+        [
+          "Mixed forest",
+          0.462
+        ]
+      ],
+      "support": 13
+    },
+    "133": {
+      "confidence": 0.7353,
+      "label": "Arable land",
+      "runners_up": [
+        [
+          "Urban fabric",
+          0.441
+        ],
+        [
+          "Complex cultivation patterns",
+          0.324
+        ]
+      ],
+      "support": 34
+    },
+    "141": {
+      "confidence": 0.9474,
+      "label": "Urban fabric",
+      "runners_up": [
+        [
+          "Industrial or commercial units",
+          0.342
+        ],
+        [
+          "Arable land",
+          0.342
+        ]
+      ],
+      "support": 38
+    },
+    "142": {
+      "confidence": 0.5338,
+      "label": "Arable land",
+      "runners_up": [
+        [
+          "Urban fabric",
+          0.459
+        ],
+        [
+          "Pastures",
+          0.421
+        ]
+      ],
+      "support": 133
+    },
+    "211": {
+      "confidence": 1.0,
+      "label": "Arable land",
+      "runners_up": [
+        [
+          "Land principally occupied by agriculture, with significant areas of natural vegetation",
+          0.331
+        ],
+        [
+          "Complex cultivation patterns",
+          0.324
+        ]
+      ],
+      "support": 5629
+    },
+    "212": {
+      "confidence": 1.0,
+      "label": "Arable land",
+      "runners_up": [
+        [
+          "Agro-forestry areas",
+          0.344
+        ],
+        [
+          "Broad-leaved forest",
+          0.344
+        ]
+      ],
+      "support": 125
+    },
+    "213": {
+      "confidence": 1.0,
+      "label": "Arable land",
+      "runners_up": [
+        [
+          "Agro-forestry areas",
+          0.556
+        ],
+        [
+          "Broad-leaved forest",
+          0.556
+        ]
+      ],
+      "support": 36
+    },
+    "221": {
+      "confidence": 1.0,
+      "label": "Permanent crops",
+      "runners_up": [
+        [
+          "Arable land",
+          0.8
+        ],
+        [
+          "Broad-leaved forest",
+          0.479
+        ]
+      ],
+      "support": 411
+    },
+    "222": {
+      "confidence": 1.0,
+      "label": "Permanent crops",
+      "runners_up": [
+        [
+          "Complex cultivation patterns",
+          0.564
+        ],
+        [
+          "Arable land",
+          0.532
+        ]
+      ],
+      "support": 94
+    },
+    "223": {
+      "confidence": 1.0,
+      "label": "Permanent crops",
+      "runners_up": [
+        [
+          "Arable land",
+          0.552
+        ],
+        [
+          "Transitional woodland, shrub",
+          0.388
+        ]
+      ],
+      "support": 116
+    },
+    "231": {
+      "confidence": 1.0,
+      "label": "Pastures",
+      "runners_up": [
+        [
+          "Arable land",
+          0.437
+        ],
+        [
+          "Complex cultivation patterns",
+          0.34
+        ]
+      ],
+      "support": 3238
+    },
+    "241": {
+      "confidence": 1.0,
+      "label": "Permanent crops",
+      "runners_up": [
+        [
+          "Complex cultivation patterns",
+          0.36
+        ],
+        [
+          "Land principally occupied by agriculture, with significant areas of natural vegetation",
+          0.347
+        ]
+      ],
+      "support": 75
+    },
+    "242": {
+      "confidence": 1.0,
+      "label": "Complex cultivation patterns",
+      "runners_up": [
+        [
+          "Arable land",
+          0.594
+        ],
+        [
+          "Broad-leaved forest",
+          0.425
+        ]
+      ],
+      "support": 3111
+    },
+    "243": {
+      "confidence": 1.0,
+      "label": "Land principally occupied by agriculture, with significant areas of natural vegetation",
+      "runners_up": [
+        [
+          "Arable land",
+          0.503
+        ],
+        [
+          "Mixed forest",
+          0.377
+        ]
+      ],
+      "support": 3726
+    },
+    "244": {
+      "confidence": 1.0,
+      "label": "Agro-forestry areas",
+      "runners_up": [
+        [
+          "Arable land",
+          0.565
+        ],
+        [
+          "Broad-leaved forest",
+          0.45
+        ]
+      ],
+      "support": 329
+    },
+    "311": {
+      "confidence": 1.0,
+      "label": "Broad-leaved forest",
+      "runners_up": [
+        [
+          "Arable land",
+          0.471
+        ],
+        [
+          "Land principally occupied by agriculture, with significant areas of natural vegetation",
+          0.373
+        ]
+      ],
+      "support": 3650
+    },
+    "312": {
+      "confidence": 1.0,
+      "label": "Coniferous forest",
+      "runners_up": [
+        [
+          "Mixed forest",
+          0.59
+        ],
+        [
+          "Transitional woodland, shrub",
+          0.412
+        ]
+      ],
+      "support": 5235
+    },
+    "313": {
+      "confidence": 1.0,
+      "label": "Mixed forest",
+      "runners_up": [
+        [
+          "Coniferous forest",
+          0.608
+        ],
+        [
+          "Transitional woodland, shrub",
+          0.346
+        ]
+      ],
+      "support": 5081
+    },
+    "321": {
+      "confidence": 1.0,
+      "label": "Natural grassland and sparsely vegetated areas",
+      "runners_up": [
+        [
+          "Broad-leaved forest",
+          0.59
+        ],
+        [
+          "Transitional woodland, shrub",
+          0.552
+        ]
+      ],
+      "support": 315
+    },
+    "322": {
+      "confidence": 1.0,
+      "label": "Moors, heathland and sclerophyllous vegetation",
+      "runners_up": [
+        [
+          "Coniferous forest",
+          0.515
+        ],
+        [
+          "Pastures",
+          0.422
+        ]
+      ],
+      "support": 206
+    },
+    "323": {
+      "confidence": 1.0,
+      "label": "Moors, heathland and sclerophyllous vegetation",
+      "runners_up": [
+        [
+          "Transitional woodland, shrub",
+          0.626
+        ],
+        [
+          "Land principally occupied by agriculture, with significant areas of natural vegetation",
+          0.407
+        ]
+      ],
+      "support": 123
+    },
+    "324": {
+      "confidence": 1.0,
+      "label": "Transitional woodland, shrub",
+      "runners_up": [
+        [
+          "Coniferous forest",
+          0.569
+        ],
+        [
+          "Mixed forest",
+          0.463
+        ]
+      ],
+      "support": 3793
+    },
+    "331": {
+      "confidence": 1.0,
+      "label": "Beaches, dunes, sands",
+      "runners_up": [
+        [
+          "Marine waters",
+          0.878
+        ],
+        [
+          "Coniferous forest",
+          0.366
+        ]
+      ],
+      "support": 41
+    },
+    "332": {
+      "confidence": 0.5306,
+      "label": "Marine waters",
+      "runners_up": [
+        [
+          "Coniferous forest",
+          0.367
+        ],
+        [
+          "Mixed forest",
+          0.367
+        ]
+      ],
+      "support": 49
+    },
+    "333": {
+      "confidence": 1.0,
+      "label": "Natural grassland and sparsely vegetated areas",
+      "runners_up": [
+        [
+          "Coniferous forest",
+          0.451
+        ],
+        [
+          "Mixed forest",
+          0.333
+        ]
+      ],
+      "support": 51
+    },
+    "334": {
+      "confidence": 0.4286,
+      "label": "Transitional woodland, shrub",
+      "runners_up": [
+        [
+          "Moors, heathland and sclerophyllous vegetation",
+          0.429
+        ],
+        [
+          "Pastures",
+          0.429
+        ]
+      ],
+      "support": 7
+    },
+    "411": {
+      "confidence": 1.0,
+      "label": "Inland wetlands",
+      "runners_up": [
+        [
+          "Arable land",
+          0.5
+        ],
+        [
+          "Inland waters",
+          0.407
+        ]
+      ],
+      "support": 172
+    },
+    "412": {
+      "confidence": 1.0,
+      "label": "Inland wetlands",
+      "runners_up": [
+        [
+          "Coniferous forest",
+          0.748
+        ],
+        [
+          "Transitional woodland, shrub",
+          0.473
+        ]
+      ],
+      "support": 846
+    },
+    "421": {
+      "confidence": 1.0,
+      "label": "Coastal wetlands",
+      "runners_up": [
+        [
+          "Marine waters",
+          0.55
+        ],
+        [
+          "Mixed forest",
+          0.5
+        ]
+      ],
+      "support": 20
+    },
+    "422": {
+      "confidence": 1.0,
+      "label": "Coastal wetlands",
+      "runners_up": [
+        [
+          "Industrial or commercial units",
+          0.5
+        ],
+        [
+          "Pastures",
+          0.5
+        ]
+      ],
+      "support": 4
+    },
+    "423": {
+      "confidence": 0.7,
+      "label": "Marine waters",
+      "runners_up": [
+        [
+          "Pastures",
+          0.433
+        ],
+        [
+          "Beaches, dunes, sands",
+          0.267
+        ]
+      ],
+      "support": 30
+    },
+    "511": {
+      "confidence": 1.0,
+      "label": "Inland waters",
+      "runners_up": [
+        [
+          "Arable land",
+          0.576
+        ],
+        [
+          "Urban fabric",
+          0.405
+        ]
+      ],
+      "support": 264
+    },
+    "512": {
+      "confidence": 1.0,
+      "label": "Inland waters",
+      "runners_up": [
+        [
+          "Coniferous forest",
+          0.66
+        ],
+        [
+          "Mixed forest",
+          0.562
+        ]
+      ],
+      "support": 1499
+    },
+    "521": {
+      "confidence": 1.0,
+      "label": "Marine waters",
+      "runners_up": [
+        [
+          "Coniferous forest",
+          0.159
+        ],
+        [
+          "Urban fabric",
+          0.136
+        ]
+      ],
+      "support": 44
+    },
+    "522": {
+      "confidence": 1.0,
+      "label": "Marine waters",
+      "runners_up": [
+        [
+          "Pastures",
+          0.476
+        ],
+        [
+          "Land principally occupied by agriculture, with significant areas of natural vegetation",
+          0.286
+        ]
+      ],
+      "support": 21
+    },
+    "523": {
+      "confidence": 1.0,
+      "label": "Marine waters",
+      "runners_up": [
+        [
+          "Mixed forest",
+          0.075
+        ],
+        [
+          "Coniferous forest",
+          0.048
+        ]
+      ],
+      "support": 2280
+    },
+    "999": {
+      "confidence": 0.6489,
+      "label": "Coniferous forest",
+      "runners_up": [
+        [
+          "Transitional woodland, shrub",
+          0.521
+        ],
+        [
+          "Mixed forest",
+          0.362
+        ]
+      ],
+      "support": 94
+    }
+  },
+  "patch_counts": {
+    "111": 44,
+    "112": 2679,
+    "121": 426,
+    "122": 92,
+    "123": 10,
+    "124": 14,
+    "131": 98,
+    "132": 14,
+    "133": 37,
+    "141": 42,
+    "142": 146,
+    "211": 5939,
+    "212": 125,
+    "213": 36,
+    "221": 414,
+    "222": 99,
+    "223": 116,
+    "231": 3352,
+    "241": 75,
+    "242": 3234,
+    "243": 4142,
+    "244": 329,
+    "311": 3920,
+    "312": 6755,
+    "313": 6171,
+    "321": 361,
+    "322": 242,
+    "323": 123,
+    "324": 4601,
+    "331": 43,
+    "332": 74,
+    "333": 61,
+    "334": 7,
+    "411": 195,
+    "412": 1213,
+    "421": 29,
+    "422": 4,
+    "423": 31,
+    "511": 290,
+    "512": 2167,
+    "521": 44,
+    "522": 22,
+    "523": 2645,
+    "999": 111
+  },
+  "patches_without_labels": 2231,
+  "per_tile": 320,
+  "pixel_counts": {
+    "111": 123324,
+    "112": 7347177,
+    "121": 812547,
+    "122": 90904,
+    "123": 9149,
+    "124": 16618,
+    "131": 104660,
+    "132": 15706,
+    "133": 42143,
+    "141": 53294,
+    "142": 187512,
+    "211": 39468555,
+    "212": 548862,
+    "213": 122770,
+    "221": 1498909,
+    "222": 274136,
+    "223": 460682,
+    "231": 17447920,
+    "241": 237042,
+    "242": 10101757,
+    "243": 10352151,
+    "244": 1858028,
+    "311": 18349960,
+    "312": 43313141,
+    "313": 27268709,
+    "321": 1114447,
+    "322": 980579,
+    "323": 498710,
+    "324": 13244248,
+    "331": 123904,
+    "332": 96485,
+    "333": 194024,
+    "334": 11317,
+    "411": 551037,
+    "412": 4415805,
+    "421": 92046,
+    "422": 5776,
+    "423": 32814,
+    "511": 635268,
+    "512": 9685354,
+    "521": 508557,
+    "522": 113960,
+    "523": 35438626,
+    "999": 133787
+  },
+  "scanned": 17221,
+  "seed": 1337,
+  "tiles": 54
+}

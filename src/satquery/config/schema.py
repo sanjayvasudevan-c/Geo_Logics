@@ -125,10 +125,11 @@ class TaxonomyConfig(_Base):
     # CLAUDE.md §1: CORINE Level-3, 44 classes. The 19-class scheme is image-level only.
     primary: Literal["corine_l3"] = "corine_l3"
     num_classes: Literal[44] = 44
-    aggregation_table: str = "configs/taxonomy/corine_hierarchy.yaml"
+    nomenclature_file: str = "configs/taxonomy/corine_l3.yaml"
 
     auxiliary_heads: tuple[str, ...] = ("corine_l3_19", "coarse_7")
-    ignore_index: int = Field(default=255, ge=0, le=255)
+    # MEASURED at S4: reference maps use 999, not 255. See configs/taxonomy.yaml.
+    ignore_index: int = Field(default=999, ge=0)
     coarse_7_classes: tuple[str, ...] = (
         "built_up", "cropland", "tree_cover", "grassland_shrub",
         "water", "bare_sparse", "wetland",

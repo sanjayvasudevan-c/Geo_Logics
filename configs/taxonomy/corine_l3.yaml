@@ -1,0 +1,149 @@
+# CORINE Land Cover Level-3 nomenclature — the complete 44-class segmentation target.
+#
+# PROVENANCE, stated per field because it differs:
+#   codes/names/L2/L1  : the official CORINE nomenclature (standard reference data).
+#   index              : assigned here, contiguous 0..43 in ascending code order.
+#   to_19              : DERIVED EMPIRICALLY at S4 from co-occurrence between each reference
+#                        map's L3 codes and that patch's official reBEN 19-class multi-label
+#                        (17,221 maps, stratified across all 54 tiles, seed 1337).
+#                        provenance: derived        = confidence 1.000 in that measurement
+#                        provenance: convention     = measurement ambiguous (rare class, low
+#                                                     support); documented CORINE->BigEarthNet
+#                                                     convention used instead
+#                        provenance: no_equivalent  = the class has NO 19-class counterpart.
+#                                                     A real property of the scheme, not a gap.
+#   to_coarse7         : assigned here for cross-taxonomy comparison with ESA WorldCover.
+#
+# EMPIRICAL NOTE: a stratified scan of 17,221 maps found 43 of these 44 codes, plus 999.
+# Code 335 (Glaciers and perpetual snow) was NOT observed. It is retained as a defined class
+# because CLAUDE.md §1 freezes the 44-class CORINE L3 target, and glacier patches plausibly sit
+# in reBEN's snow-filtered set. Expect it to be a dead output; report it, do not drop it.
+
+unclassified:
+  code: 999            # MEASURED: the value the reference maps actually use.
+  name: Unclassified
+  ignore_in_loss: true
+  ignore_in_metrics: true
+  note: >
+    NOT one of the 44 classes and NOT a training index. GeoTIFF nodata is declared as 0 but 0
+    never occurs; 999 is the real unclassified marker. Any loss or metric that treats 999 as a
+    class is a bug.
+
+classes:
+  # ---- L1 1 - Artificial surfaces ------------------------------------------------
+  - {code: 111, index: 0,  l2: 11, l1: 1, name: Continuous urban fabric,        to_19: Urban fabric,                   provenance: derived,       to_coarse7: built_up}
+  - {code: 112, index: 1,  l2: 11, l1: 1, name: Discontinuous urban fabric,     to_19: Urban fabric,                   provenance: derived,       to_coarse7: built_up}
+  - {code: 121, index: 2,  l2: 12, l1: 1, name: Industrial or commercial units, to_19: Industrial or commercial units, provenance: derived,       to_coarse7: built_up}
+  - {code: 122, index: 3,  l2: 12, l1: 1, name: Road and rail networks and associated land, to_19: null, provenance: no_equivalent, to_coarse7: built_up}
+  - {code: 123, index: 4,  l2: 12, l1: 1, name: Port areas,                     to_19: null, provenance: no_equivalent, to_coarse7: built_up}
+  - {code: 124, index: 5,  l2: 12, l1: 1, name: Airports,                       to_19: null, provenance: no_equivalent, to_coarse7: built_up}
+  - {code: 131, index: 6,  l2: 13, l1: 1, name: Mineral extraction sites,       to_19: null, provenance: no_equivalent, to_coarse7: built_up}
+  - {code: 132, index: 7,  l2: 13, l1: 1, name: Dump sites,                     to_19: null, provenance: no_equivalent, to_coarse7: built_up}
+  - {code: 133, index: 8,  l2: 13, l1: 1, name: Construction sites,             to_19: null, provenance: no_equivalent, to_coarse7: built_up}
+  - {code: 141, index: 9,  l2: 14, l1: 1, name: Green urban areas,              to_19: null, provenance: no_equivalent, to_coarse7: built_up}
+  - {code: 142, index: 10, l2: 14, l1: 1, name: Sport and leisure facilities,   to_19: null, provenance: no_equivalent, to_coarse7: built_up}
+  # ---- L1 2 - Agricultural areas -------------------------------------------------
+  - {code: 211, index: 11, l2: 21, l1: 2, name: Non-irrigated arable land,      to_19: Arable land,     provenance: derived, to_coarse7: cropland}
+  - {code: 212, index: 12, l2: 21, l1: 2, name: Permanently irrigated land,     to_19: Arable land,     provenance: derived, to_coarse7: cropland}
+  - {code: 213, index: 13, l2: 21, l1: 2, name: Rice fields,                    to_19: Arable land,     provenance: derived, to_coarse7: cropland}
+  - {code: 221, index: 14, l2: 22, l1: 2, name: Vineyards,                      to_19: Permanent crops, provenance: derived, to_coarse7: cropland}
+  - {code: 222, index: 15, l2: 22, l1: 2, name: Fruit trees and berry plantations, to_19: Permanent crops, provenance: derived, to_coarse7: cropland}
+  - {code: 223, index: 16, l2: 22, l1: 2, name: Olive groves,                   to_19: Permanent crops, provenance: derived, to_coarse7: cropland}
+  - {code: 231, index: 17, l2: 23, l1: 2, name: Pastures,                       to_19: Pastures,        provenance: derived, to_coarse7: grassland_shrub}
+  - {code: 241, index: 18, l2: 24, l1: 2, name: Annual crops associated with permanent crops, to_19: Permanent crops, provenance: derived, to_coarse7: cropland}
+  - {code: 242, index: 19, l2: 24, l1: 2, name: Complex cultivation patterns,   to_19: Complex cultivation patterns, provenance: derived, to_coarse7: cropland}
+  - {code: 243, index: 20, l2: 24, l1: 2, name: "Land principally occupied by agriculture, with significant areas of natural vegetation", to_19: "Land principally occupied by agriculture, with significant areas of natural vegetation", provenance: derived, to_coarse7: cropland}
+  - {code: 244, index: 21, l2: 24, l1: 2, name: Agro-forestry areas,            to_19: Agro-forestry areas, provenance: derived, to_coarse7: cropland}
+  # ---- L1 3 - Forest and semi-natural areas --------------------------------------
+  - {code: 311, index: 22, l2: 31, l1: 3, name: Broad-leaved forest,            to_19: Broad-leaved forest, provenance: derived, to_coarse7: tree_cover}
+  - {code: 312, index: 23, l2: 31, l1: 3, name: Coniferous forest,              to_19: Coniferous forest,   provenance: derived, to_coarse7: tree_cover}
+  - {code: 313, index: 24, l2: 31, l1: 3, name: Mixed forest,                   to_19: Mixed forest,        provenance: derived, to_coarse7: tree_cover}
+  - {code: 321, index: 25, l2: 32, l1: 3, name: Natural grasslands,             to_19: Natural grassland and sparsely vegetated areas, provenance: derived, to_coarse7: grassland_shrub}
+  - {code: 322, index: 26, l2: 32, l1: 3, name: Moors and heathland,            to_19: "Moors, heathland and sclerophyllous vegetation", provenance: derived, to_coarse7: grassland_shrub}
+  - {code: 323, index: 27, l2: 32, l1: 3, name: Sclerophyllous vegetation,      to_19: "Moors, heathland and sclerophyllous vegetation", provenance: derived, to_coarse7: grassland_shrub}
+  - {code: 324, index: 28, l2: 32, l1: 3, name: Transitional woodland-shrub,    to_19: "Transitional woodland, shrub", provenance: derived, to_coarse7: grassland_shrub}
+  - {code: 331, index: 29, l2: 33, l1: 3, name: "Beaches, dunes, sands",        to_19: "Beaches, dunes, sands", provenance: derived, to_coarse7: bare_sparse}
+  - {code: 332, index: 30, l2: 33, l1: 3, name: Bare rocks,                     to_19: null, provenance: no_equivalent, to_coarse7: bare_sparse}
+  - {code: 333, index: 31, l2: 33, l1: 3, name: Sparsely vegetated areas,       to_19: Natural grassland and sparsely vegetated areas, provenance: derived, to_coarse7: bare_sparse}
+  - {code: 334, index: 32, l2: 33, l1: 3, name: Burnt areas,                    to_19: null, provenance: no_equivalent, to_coarse7: bare_sparse}
+  - {code: 335, index: 33, l2: 33, l1: 3, name: Glaciers and perpetual snow,    to_19: null, provenance: no_equivalent, to_coarse7: bare_sparse}
+  # ---- L1 4 - Wetlands -----------------------------------------------------------
+  - {code: 411, index: 34, l2: 41, l1: 4, name: Inland marshes,   to_19: Inland wetlands,  provenance: derived,    to_coarse7: wetland}
+  - {code: 412, index: 35, l2: 41, l1: 4, name: Peat bogs,        to_19: Inland wetlands,  provenance: derived,    to_coarse7: wetland}
+  - {code: 421, index: 36, l2: 42, l1: 4, name: Salt marshes,     to_19: Coastal wetlands, provenance: derived,    to_coarse7: wetland}
+  - {code: 422, index: 37, l2: 42, l1: 4, name: Salines,          to_19: Coastal wetlands, provenance: derived,    to_coarse7: wetland}
+  - {code: 423, index: 38, l2: 42, l1: 4, name: Intertidal flats, to_19: Coastal wetlands, provenance: convention, to_coarse7: wetland}
+  # ---- L1 5 - Water bodies -------------------------------------------------------
+  - {code: 511, index: 39, l2: 51, l1: 5, name: Water courses,   to_19: Inland waters, provenance: derived, to_coarse7: water}
+  - {code: 512, index: 40, l2: 51, l1: 5, name: Water bodies,    to_19: Inland waters, provenance: derived, to_coarse7: water}
+  - {code: 521, index: 41, l2: 52, l1: 5, name: Coastal lagoons, to_19: Marine waters, provenance: derived, to_coarse7: water}
+  - {code: 522, index: 42, l2: 52, l1: 5, name: Estuaries,       to_19: Marine waters, provenance: derived, to_coarse7: water}
+  - {code: 523, index: 43, l2: 52, l1: 5, name: Sea and ocean,   to_19: Marine waters, provenance: derived, to_coarse7: water}
+
+level_2:
+  11: Urban fabric
+  12: Industrial, commercial and transport units
+  13: Mine, dump and construction sites
+  14: Artificial, non-agricultural vegetated areas
+  21: Arable land
+  22: Permanent crops
+  23: Pastures
+  24: Heterogeneous agricultural areas
+  31: Forests
+  32: Scrub and/or herbaceous vegetation associations
+  33: Open spaces with little or no vegetation
+  41: Inland wetlands
+  42: Maritime wetlands
+  51: Inland waters
+  52: Marine waters
+
+level_1:
+  1: Artificial surfaces
+  2: Agricultural areas
+  3: Forest and semi-natural areas
+  4: Wetlands
+  5: Water bodies
+
+coarse_7:
+  - built_up
+  - cropland
+  - tree_cover
+  - grassland_shrub
+  - water
+  - bare_sparse
+  - wetland
+
+# ESA WorldCover 10 m v200 -> coarse-7. Used ONLY for the India comparison at S23, the single
+# level at which CORINE and WorldCover are comparable (IMPLEMENTATION_MAP §4).
+worldcover_to_coarse7:
+  10:  {name: Tree cover,               coarse7: tree_cover}
+  20:  {name: Shrubland,                coarse7: grassland_shrub}
+  30:  {name: Grassland,                coarse7: grassland_shrub}
+  40:  {name: Cropland,                 coarse7: cropland}
+  50:  {name: Built-up,                 coarse7: built_up}
+  60:  {name: Bare / sparse vegetation, coarse7: bare_sparse}
+  70:  {name: Snow and ice,             coarse7: bare_sparse}
+  80:  {name: Permanent water bodies,   coarse7: water}
+  90:  {name: Herbaceous wetland,       coarse7: wetland}
+  95:  {name: Mangroves,                coarse7: wetland}
+  100: {name: Moss and lichen,          coarse7: bare_sparse}
+
+# SECOND 6-class semantic-change taxonomy for M6 (S17). A SEPARATE taxonomy — never mixed with
+# CORINE in a loss term (IMPLEMENTATION_MAP §4.3: one taxonomy per loss term).
+second_6:
+  0: non-vegetated ground surface
+  1: tree
+  2: low vegetation
+  3: water
+  4: buildings
+  5: playgrounds
+
+# NOTES
+# 11 of the 44 L3 classes have NO 19-class equivalent: 122, 123, 124, 131, 132, 133, 141, 142
+# (artificial-surface classes beyond urban fabric and industrial units), 332 (bare rocks),
+# 334 (burnt areas) and 335 (glaciers). The reBEN 19-class scheme does not represent them.
+# L3->19 aggregation therefore CANNOT be a total function: those pixels go to an explicit
+# `no_19_equivalent` bucket rather than being silently folded into a neighbouring class.
+# S3 showed questions are asked exclusively in the 19-class vocabulary, so these classes are
+# never queried at level 19 — but the bucket must exist for the aggregation to be honest about
+# what it dropped.

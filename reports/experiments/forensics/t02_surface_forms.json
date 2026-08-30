@@ -1,0 +1,88 @@
+{
+  "canonical_19": [
+    "Agro-forestry areas",
+    "Arable land",
+    "Beaches, dunes, sands",
+    "Broad-leaved forest",
+    "Coastal wetlands",
+    "Complex cultivation patterns",
+    "Coniferous forest",
+    "Industrial or commercial units",
+    "Inland waters",
+    "Inland wetlands",
+    "Land principally occupied by agriculture, with significant areas of natural vegetation",
+    "Marine waters",
+    "Mixed forest",
+    "Moors, heathland and sclerophyllous vegetation",
+    "Natural grassland and sparsely vegetated areas",
+    "Pastures",
+    "Permanent crops",
+    "Transitional woodland, shrub",
+    "Urban fabric"
+  ],
+  "surface_forms_by_class": {
+    "Agro-forestry areas": {
+      "agro-forestry areas": 34090
+    },
+    "Arable land": {
+      "arable land": 57435
+    },
+    "Beaches, dunes, sands": {
+      "beaches dunes or sands": 161,
+      "beaches dunes sands": 14060
+    },
+    "Broad-leaved forest": {
+      "broad-leaved forest": 45577
+    },
+    "Coastal wetlands": {
+      "coastal wetlands": 15136
+    },
+    "Complex cultivation patterns": {
+      "complex cultivation patterns": 36424
+    },
+    "Coniferous forest": {
+      "coniferous forest": 56517
+    },
+    "Industrial or commercial units": {
+      "industrial or commercial units": 18377
+    },
+    "Inland waters": {
+      "inland waters": 32847
+    },
+    "Inland wetlands": {
+      "inland wetlands": 19492
+    },
+    "Land principally occupied by agriculture, with significant areas of natural vegetation": {
+      "land principally occupied by agriculture with significant areas of natural vegetation": 40862
+    },
+    "Marine waters": {
+      "marine waters": 25685
+    },
+    "Mixed forest": {
+      "mixed forest": 55825
+    },
+    "Moors, heathland and sclerophyllous vegetation": {
+      "moors heathland or sclerophyllous vegetation": 1496
+    },
+    "Pastures": {
+      "pastures": 41311
+    },
+    "Permanent crops": {
+      "permanent crops": 32455
+    },
+    "Transitional woodland, shrub": {
+      "transitional woodland shrub": 31365
+    },
+    "Urban fabric": {
+      "urban fabric": 24858
+    }
+  },
+  "unresolved": {
+    "moors heathland": 21847,
+    "natural grassland": 21220,
+    "natural grasslands or sparsely vegetated areas": 633,
+    "sclerophyllous vegetation": 21847,
+    "sparsely vegetated areas": 21220,
+    "transitional woodlands or shrubs": 12528
+  }
+}

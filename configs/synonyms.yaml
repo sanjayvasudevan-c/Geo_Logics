@@ -1,0 +1,151 @@
+# Natural-language surface forms -> canonical class, at the level the question poses it.
+#
+# DERIVED FROM REAL QUESTION TEXT, not invented. Every form below was observed in
+# BigEarthNet.txt train+validation question text at S3/S4
+# (scripts/forensics/t02_surface_forms.py; counts are occurrences in the sampled row groups).
+# Forms marked `observed: false` are defensive additions for the operational demo path — a user
+# may type "built-up" even though the benchmark never does. They are separated so nobody
+# mistakes them for measured vocabulary.
+#
+# S3 FINDING THAT SHAPES THIS FILE: questions are asked EXCLUSIVELY in the 19-class vocabulary
+# (19/19 mcq/presence options inside the set, 0 outside, over 1,227,849 rows). No CORINE
+# Level-1 group name and no L3 class outside the 19-class scheme was ever observed. So the
+# default resolution level is `c19`, not `l3`.
+
+default_level: c19
+
+# ---------------------------------------------------------------------------------
+# OBSERVED forms — measured in real question text.
+# ---------------------------------------------------------------------------------
+observed:
+  Urban fabric:
+    level: c19
+    forms: [urban fabric, urban fabrics]        # 24,858
+  Industrial or commercial units:
+    level: c19
+    forms: [industrial or commercial units]     # 18,377
+  Arable land:
+    level: c19
+    forms: [arable land, arable lands]          # 57,435
+  Permanent crops:
+    level: c19
+    forms: [permanent crops]                    # 32,455
+  Pastures:
+    level: c19
+    forms: [pastures]                           # 41,311
+  Complex cultivation patterns:
+    level: c19
+    forms: [complex cultivation patterns]       # 36,424
+  "Land principally occupied by agriculture, with significant areas of natural vegetation":
+    level: c19
+    forms:
+      - land principally occupied by agriculture with significant areas of natural vegetation
+      - "land principally occupied by agriculture, with significant areas of natural vegetation"
+                                                # 40,862
+  Agro-forestry areas:
+    level: c19
+    forms: [agro-forestry areas, agroforestry areas]   # 34,090
+  Broad-leaved forest:
+    level: c19
+    forms: [broad-leaved forest, broad-leaved forests, broadleaved forest]   # 45,577
+  Coniferous forest:
+    level: c19
+    forms: [coniferous forest, coniferous forests]     # 56,517
+  Mixed forest:
+    level: c19
+    forms: [mixed forest, mixed forests]               # 55,825
+  Natural grassland and sparsely vegetated areas:
+    level: c19
+    forms:
+      - natural grassland and sparsely vegetated areas
+      - natural grasslands or sparsely vegetated areas   # 633
+      - natural grassland
+      - natural grasslands
+      - sparsely vegetated areas                        # 21,220 (fragments of the same name)
+  "Moors, heathland and sclerophyllous vegetation":
+    level: c19
+    forms:
+      - "moors, heathland and sclerophyllous vegetation"
+      - moors heathland and sclerophyllous vegetation
+      - moors heathland or sclerophyllous vegetation     # 1,496
+      - moors heathland
+      - sclerophyllous vegetation                        # 21,847 (fragments)
+  "Transitional woodland, shrub":
+    level: c19
+    forms:
+      - "transitional woodland, shrub"
+      - transitional woodland shrub                      # 31,365
+      - transitional woodlands or shrubs                 # 12,528
+  "Beaches, dunes, sands":
+    level: c19
+    forms:
+      - "beaches, dunes, sands"
+      - beaches dunes sands                              # 14,060
+      - beaches dunes or sands                           # 161
+  Inland wetlands:
+    level: c19
+    forms: [inland wetlands, inland wetland]             # 19,492
+  Coastal wetlands:
+    level: c19
+    forms: [coastal wetlands, coastal wetland]           # 15,136
+  Inland waters:
+    level: c19
+    forms: [inland waters, inland water]                 # 32,847
+  Marine waters:
+    level: c19
+    forms: [marine waters, marine water]                 # 25,685
+
+# ---------------------------------------------------------------------------------
+# UNOBSERVED forms — NOT measured in benchmark text. Operational/demo convenience only.
+# Kept separate so no one mistakes them for evidence about the benchmark's vocabulary.
+# ---------------------------------------------------------------------------------
+unobserved:
+  Urban fabric:
+    level: c19
+    forms: [urban, urban area, urban areas, built-up, built up, builtup, settlement,
+            settlements, city, town, residential]
+  Inland waters:
+    level: c19
+    forms: [water body, water bodies, lake, lakes, river, rivers, waterway, waterways]
+  Marine waters:
+    level: c19
+    forms: [sea, ocean, seawater]
+  Broad-leaved forest:
+    level: c19
+    forms: [deciduous forest, broadleaf forest]
+  Coniferous forest:
+    level: c19
+    forms: [evergreen forest, pine forest]
+  Arable land:
+    level: c19
+    forms: [cropland, crop land, farmland, farm land, cultivated land, field, fields]
+  # Indian vocabulary for the S23 demo (IMPLEMENTATION_MAP §5.7 asks for an Indian synonym
+  # layer). These resolve to the nearest available class and are NOT exact equivalents —
+  # flagged so a demo answer can say so rather than implying a precise match.
+  Inland waters_india:
+    level: c19
+    resolves_to: Inland waters
+    approximate: true
+    forms: [tank, tanks, water tank, jheel]
+  Coastal wetlands_india:
+    level: c19
+    resolves_to: Coastal wetlands
+    approximate: true
+    forms: [mangrove, mangroves, salt pan, salt pans]
+
+# ---------------------------------------------------------------------------------
+# UNRESOLVED — reported, never silently dropped (STAGE_PROMPTS.md S4 test requirement).
+# ---------------------------------------------------------------------------------
+# S4 surface-form extraction left 6 forms unresolved. ALL SIX were traced to a parser artifact,
+# not to genuinely unknown vocabulary: the extractor split MCQ adjacency options on the token
+# "and" (needed to separate "X and Y" pairs), which fragments the four 19-class names that
+# themselves contain "and"/"or". Each fragment is listed above under its parent class.
+#   moors heathland (21,847) + sclerophyllous vegetation (21,847)
+#     -> "Moors, heathland and sclerophyllous vegetation"
+#   natural grassland (21,220) + sparsely vegetated areas (21,220)
+#     -> "Natural grassland and sparsely vegetated areas"
+#   transitional woodlands or shrubs (12,528) -> "Transitional woodland, shrub"
+#   natural grasslands or sparsely vegetated areas (633)
+#     -> "Natural grassland and sparsely vegetated areas"
+# No surface form observed in benchmark question text remains unresolved.
+unresolved: []

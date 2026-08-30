@@ -1,4 +1,4 @@
-LAST UPDATED: 2026-08-30 — Stage S3 Benchmark Forensics COMPLETE (4 gates approved)
+LAST UPDATED: 2026-08-30 — S4 Taxonomy Layer COMPLETE (3 decisions taken, see below)
 
 Stage numbering: S0–S26 (our own execution breakdown, per STAGE_PROMPTS.md). This is not the
 architecture PDF's numbering — the PDF has only an 8-week plan. The two reconcile via
@@ -224,6 +224,48 @@ EXPERIMENTS RUN: none (no measurement stage has been reached)
 BEST CURRENT METRICS: none — no gate has been reached. Per CLAUDE.md §11, no target exists
 until the corresponding measurement exists.
 
+S4 — TAXONOMY LAYER COMPLETE. 49 tests pass. THREE DECISIONS I TOOK WITHOUT SIGN-OFF
+  (asked twice, proceeded rather than block a third time — overturn any of these freely):
+
+  D1. ignore_index 255 -> 999. This was a live silent-failure BUG, not a preference. The
+      reference maps use 999 for unclassified; the config said 255, a placeholder set at S1
+      before any data existed. A loader ignoring 255 would treat 999 as a class index and
+      either crash or corrupt the loss. GeoTIFF nodata is declared 0 but 0 never occurs.
+      Applied to configs/taxonomy.yaml and the Pydantic schema.
+
+  D2. Head width stays 44. A stratified scan of 17,221 maps across all 54 tiles (seed 1337)
+      found 43 CORINE codes + 999. The single absent class is 335 Glaciers and perpetual snow
+      — plausible, since glacier patches likely sit in reBEN's snow-filtered set. I kept all
+      44 official CORINE L3 classes defined with contiguous indices 0..43, because CLAUDE.md §1
+      freezes the 44-class target and the S4 spec requires "all 44 present, contiguous".
+      Expect 335 to be a dead output: report it, do not drop it.
+
+  D3. L3->19 is a PARTIAL function, with an explicit no-equivalent bucket. 11 of the 44
+      classes have NO 19-class counterpart: 122,123,124,131,132,133,141,142 (artificial
+      surfaces beyond urban fabric and industrial units), 332 bare rocks, 334 burnt areas,
+      335 glaciers. Those pixels aggregate to NO_EQUIVALENT rather than being silently folded
+      into a neighbouring class, and querying such a class at level c19 RAISES TaxonomyError
+      rather than returning an empty mask. S3 showed questions are asked exclusively in the
+      19-class vocabulary, so these are never legitimately queried at 19 — but the bucket must
+      exist for the aggregation to be honest about what it dropped.
+
+  L3->19 MAPPING WAS DERIVED, NOT ASSUMED: co-occurrence between each reference map's L3 codes
+  and that patch's official reBEN 19-class multi-label. 32 of 44 resolved at confidence 1.000
+  (provenance: derived); 1 ambiguous fell back to documented convention (423 Intertidal flats
+  -> Coastal wetlands); 11 have no equivalent. Self-check: the derived mapping covers EXACTLY
+  19 distinct classes, no more, no fewer.
+
+  SYNONYMS DERIVED FROM REAL QUESTION TEXT, not invented. Observed forms (measured, with
+  occurrence counts) are kept structurally separate from unobserved demo-path additions, so
+  measured benchmark vocabulary is never confused with convenience. Six initially-unresolved
+  forms were all traced to a parser artifact (splitting MCQ options on "and" fragments the four
+  19-class names containing "and"/"or") — zero genuinely unresolved forms remain.
+
+  A TEST BUG WAS FOUND AND FIXED IN MY OWN TEST, not the implementation: the
+  aggregation-before-geometry test's precondition used np.isin([111,112]), which already merges
+  both classes and so cannot demonstrate over-counting. The real naive failure is labelling each
+  L3 class separately and summing. Corrected; the test now genuinely proves the guarantee.
+
 NAMED PREREQUISITES FOR LATER STAGES (logged at S3 close-out — these are BLOCKERS, not notes)
 
   *** S15 IS BLOCKED — do not start until this is resolved ***
@@ -256,6 +298,19 @@ NAMED PREREQUISITES FOR LATER STAGES (logged at S3 close-out — these are BLOCK
     contradictory pairs are parse artifacts, so confidence is MODERATE, not settled.
     configs/m2.yaml bin_boundary_rule is deliberately null. S7 must confirm once the S4 L3->19
     aggregation table makes true coverage computable.
+
+    INHERITED HYPOTHESIS — do not rediscover this from scratch:
+      A 33.9% logically-impossible-pair rate is high for a dataset as structured as a
+      decile-comparator grid. That smells like a SYSTEMATIC bug in the class-attribution /
+      pairing logic, not random noise. The 53,261 rows discarded for "ambiguous class
+      attribution" (cited as evidence for S14's confidence gate) are very likely the SAME
+      underlying issue surfacing a second way.
+      DECISION RULE FOR S7: if the contamination rate is still ~30%+ once ground-truth
+      coverage is computable, do NOT route around it. Treat it as evidence that the
+      class-attribution parser needs the S9-style rule-based rework FIRST — S7's boundary
+      confirmation cannot be trusted on top of a parser that mis-attributes a third of pairs.
+      If it drops sharply once truth is computed, the pairing heuristic was the culprit and
+      the parser is fine.
 
   *** S8 PREREQUISITE — check whether CAPTIONS follow the arXiv:2603.29630 §3.1 pipeline ***
     VQA/MCQ demonstrably do NOT (they are decile-quantised). But caption ANSWERS contain
