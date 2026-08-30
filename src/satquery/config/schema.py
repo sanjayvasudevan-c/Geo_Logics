@@ -170,8 +170,12 @@ class M2Config(_Base):
     opening_kernel_px: int | None = Field(default=None, ge=0)
     adjacency_dilation_px: int | None = Field(default=None, ge=0)
 
-    # VERIFIED from the benchmark's generator; needs no fitting.
-    area_rounding_m2: int = Field(default=1000, gt=0)
+    # GR-2 (S3): area is decile-quantised, not rounded. 11 bins over patch coverage.
+    area_bins: Literal[11] = 11
+    patch_area_m2: int = Field(default=1_440_000, gt=0)
+    # Resolved in DIRECTION at S3 (standard semantics), to be CONFIRMED at S7 against
+    # computed truth. None until then — a guessed rule would silently mis-bin boundary cases.
+    bin_boundary_rule: Literal["inclusive_lower_exclusive_upper", "inclusive_both"] | None = None
 
     tier_primary_min: float = Field(default=0.25, gt=0, lt=1)
     tier_secondary_min: float = Field(default=0.05, gt=0, lt=1)

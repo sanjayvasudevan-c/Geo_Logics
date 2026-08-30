@@ -1,4 +1,4 @@
-LAST UPDATED: 2026-08-30 — Stage S3 Benchmark Forensics — HALTED, 4 GATE REPORTS OPEN
+LAST UPDATED: 2026-08-30 — Stage S3 Benchmark Forensics COMPLETE (4 gates approved)
 
 Stage numbering: S0–S26 (our own execution breakdown, per STAGE_PROMPTS.md). This is not the
 architecture PDF's numbering — the PDF has only an 8-week plan. The two reconcile via
@@ -224,9 +224,51 @@ EXPERIMENTS RUN: none (no measurement stage has been reached)
 BEST CURRENT METRICS: none — no gate has been reached. Per CLAUDE.md §11, no target exists
 until the corresponding measurement exists.
 
-OPEN GATES / DECISIONS AWAITING HUMAN:
+NAMED PREREQUISITES FOR LATER STAGES (logged at S3 close-out — these are BLOCKERS, not notes)
 
-*** S3 IS HALTED — 4 GATE REPORTS OPEN. See reports/experiments/GATE_REPORT_S3.md ***
+  *** S15 IS BLOCKED — do not start until this is resolved ***
+    QUESTION: does the evaluation harness supply country / season / climate_zone / latitude /
+      longitude alongside the image AT INFERENCE TIME?
+    WHY IT BLOCKS: the entire M5 gate-check depends on it. If the harness supplies them, the
+      metadata MCQs are lookups and M5 is discarded; if not, they must be predicted from pixels
+      and M5 is a first-class model. S15 cannot evaluate its own gate without this answer.
+    WHAT WOULD SETTLE IT: the harness/submission specification, or an official baseline's input
+      signature. The parquet CANNOT answer it — this is a property of the eval protocol.
+    STATUS: INCONCLUSIVE as of S3. Owner: human.
+    NOTE: independent of this, the three columns are PERMANENTLY BANNED as model input
+      features — see CLAUDE.md §7. That ban holds whatever S15 decides.
+
+  *** S14 PREREQUISITE — M3 confidence gate (condition (b) on GR-4, binding) ***
+    The deterministic comparator path MUST NOT be binary match/no-match. It must fall through
+    to the learned M3 path whenever the parse is ambiguous, low-confidence, or matches no known
+    comparator form. It must NEVER guess and silently return a comparator result.
+    Required: (1) parser abstains rather than guessing; (2) ambiguity made explicit — multiple
+    comparators matched, no threshold parsed, >1 class name present (53,261 such rows appeared
+    in S3's own analysis, so this is frequent), or a residual form; (3) the chosen path is
+    recorded in the execution trace and the deterministic/learned/abstained split is REPORTED
+    as a measured rate; (4) S8 measures oracle accuracy of the deterministic path PER COMPARATOR
+    FORM — anything below ~100% on ground-truth maps means the parser is wrong, not the model.
+    Condition (a) — the regex re-pass — is DISCHARGED, see below.
+
+  *** S7 PREREQUISITE — confirm the decile boundary rule against computed truth ***
+    S3 resolved the DIRECTION from released answers (standard semantics: >= and <= include the
+    boundary; > and < exclude it) — 158 decisive groups of 147,953 observed. But 33.9% of
+    contradictory pairs are parse artifacts, so confidence is MODERATE, not settled.
+    configs/m2.yaml bin_boundary_rule is deliberately null. S7 must confirm once the S4 L3->19
+    aggregation table makes true coverage computable.
+
+  *** S8 PREREQUISITE — check whether CAPTIONS follow the arXiv:2603.29630 §3.1 pipeline ***
+    VQA/MCQ demonstrably do NOT (they are decile-quantised). But caption ANSWERS contain
+    square_metres (42,036) and thousand_m2 (41,987) patterns, so the caption path may retain the
+    finer 1,000 m2 convention. NOT resolved at S3 — deliberately left to S8's caption oracle,
+    which is the right place to measure it. Do not assume the VQA finding generalises.
+
+  *** S26 PREREQUISITE — adjacency framing ***
+    See IMPLEMENTATION_MAP §1.4 boxed warning. The judge pack must NOT claim "beats a 2T-param
+    model on adjacency" without the majority-baseline number beside it: the adjacency prior is
+    57.1% "no", which already exceeds the 55.86% frontier-model figure.
+
+S3 GATE REPORTS — ALL FOUR APPROVED 2026-08-30. See reports/experiments/GATE_REPORT_S3.md §14
   All four contradict named architectural decisions. Root cause: the architecture's
   answer-grammar assumptions were generalised from the CAPTIONING pipeline described in
   arXiv:2603.29630 §3.1; the VQA/MCQ annotations do not follow it.
@@ -269,9 +311,23 @@ OPEN GATES / DECISIONS AWAITING HUMAN:
         silently flips an answer with no model to absorb it.
         DECISION: WAITING FOR APPROVAL.
 
-  NOT blocked by these gates: S7's connectivity, MMU, opening-kernel and adjacency-dilation
-  sweeps are unaffected by all four findings.
-  Blocked: S4 (aggregation target), configs/m2.yaml area params, M4 metric, M3 structure.
+  APPLIED AT CLOSE-OUT:
+    * configs/m2.yaml — area_rounding_m2 REMOVED; replaced by area_bins=11,
+      patch_area_m2=1440000, bin_boundary_rule=null (confirmed at S7). Schema follows;
+      a test asserts the boundary rule stays null rather than being guessed.
+    * CLAUDE.md §7 — permanent ban on country/season/climate_zone as model input features.
+    * IMPLEMENTATION_MAP §1.4 — boxed adjacency framing warning, binding on S8/S16/S26.
+
+  GR-4 condition (a) DISCHARGED — the unmatched binary forms are PHRASING, not different
+  answer logic. A widened comparator set cut the residual from 27.7%->21.66% (area) and
+  11.6%->7.77% (count), and every high-frequency remainder is comparator-equivalent:
+  complement questions ("Is there some part not covered by X?" == coverage<100%) and
+  singularity/plurality questions ("only a single continuous region?" == count==1;
+  "multiple continuous areas?" == count>=2). So M3's two-path design stands and its
+  deterministic share is a LOWER bound.
+
+  NOT blocked: S7's connectivity, MMU, opening-kernel and adjacency-dilation sweeps are
+  unaffected by all four findings and remain S7's highest-value work.
 
 S3 FINDINGS THAT ARE NOT GATES:
   * M5 IS NOT DISCARDABLE. country/season/climate_zone are 100.00% identical to the correct

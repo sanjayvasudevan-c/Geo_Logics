@@ -1,0 +1,10 @@
+{
+  "ambiguous_discarded": 53261,
+  "decisive": 158,
+  "groups": 147953,
+  "logically_impossible": 81,
+  "verdict_counts": {
+    "DECISIVE: truth == N; '>=' includes N, '>' excludes N": 158,
+    "LOGICALLY IMPOSSIBLE (ge=no, gt=yes) -> parse artifact": 81
+  }
+}

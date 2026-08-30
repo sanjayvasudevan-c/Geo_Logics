@@ -46,6 +46,7 @@ class TestValidConfig:
         assert config.m2.min_mapping_unit_px is None
         assert config.m2.opening_kernel_px is None
         assert config.m2.adjacency_dilation_px is None
+        assert config.m2.bin_boundary_rule is None, "boundary rule is confirmed at S7, not guessed"
         assert config.m2.is_fitted is False
 
     def test_config_is_immutable(self, config: Config) -> None:

@@ -1,0 +1,75 @@
+{
+  "groups_observed": 51879,
+  "inclusivity_verdict": {
+    "UNEXPECTED at_least/more_than polarity": 13,
+    "at_least INCLUSIVE at N (>=), more_than STRICT (>)": 37
+  },
+  "residual": {
+    "area": {
+      "classified": 110980,
+      "residual": 30679,
+      "residual_pct": 21.657,
+      "scanned": 141659,
+      "top_skeletons": {
+        "Are arable lands occupying every part of the image?": 402,
+        "Are coniferous forests occupying every part of the image?": 285,
+        "Are there regions in the image that are not arable lands?": 425,
+        "Are there regions in the image that are not marine waters?": 504,
+        "Do arable lands cover the entire image?": 410,
+        "Do coniferous forests cover the entire image?": 298,
+        "Does the image contain classes other than arable lands?": 476,
+        "Does the image contain classes other than marine waters?": 559,
+        "Does the image show other classes besides arable lands?": 449,
+        "Does the image show other classes besides marine waters?": 575,
+        "Is any region of the image not part of the class arable lands?": 495,
+        "Is any region of the image not part of the class marine waters?": 523,
+        "Is the area of arable lands smaller than <N>%?": 290,
+        "Is the class arable lands the only one in the image?": 408,
+        "Is the class coniferous forests the only one in the image?": 272,
+        "Is the class mixed forests the only one in the image?": 274,
+        "Is the image completely filled with arable lands?": 430,
+        "Is the image completely filled with coniferous forests?": 280,
+        "Is the image fully covered by arable lands?": 385,
+        "Is the whole image occupied by arable lands?": 376,
+        "Is the whole image occupied by coniferous forests?": 279,
+        "Is there anything except arable lands in the image?": 472,
+        "Is there anything except marine waters in the image?": 533,
+        "Is there some part of the image not covered by arable lands?": 447,
+        "Is there some part of the image not covered by marine waters?": 582
+      }
+    },
+    "count": {
+      "classified": 130657,
+      "residual": 11001,
+      "residual_pct": 7.766,
+      "scanned": 141658,
+      "top_skeletons": {
+        "Are arable lands present in multiple distinct continuous areas within the image?": 434,
+        "Are coniferous forests present in multiple distinct continuous areas within the image?": 359,
+        "Are marine waters present in multiple distinct continuous areas within the image?": 253,
+        "Are mixed forests present in multiple distinct continuous areas within the image?": 326,
+        "Are pastures present in multiple distinct continuous areas within the image?": 201,
+        "Are transitional woodlands or shrubs present in multiple distinct continuous areas within the image?": 187,
+        "Can multiple continuous areas of arable lands be detected in this image?": 449,
+        "Can multiple continuous areas of coniferous forests be detected in this image?": 353,
+        "Can multiple continuous areas of marine waters be detected in this image?": 244,
+        "Can multiple continuous areas of mixed forests be detected in this image?": 275,
+        "Can multiple continuous areas of pastures be detected in this image?": 177,
+        "Can multiple continuous areas of transitional woodlands or shrubs be detected in this image?": 199,
+        "Is there only a single continuous region of arable lands visible in the image?": 587,
+        "Is there only a single continuous region of coniferous forests visible in the image?": 357,
+        "Is there only a single continuous region of marine waters visible in the image?": 479,
+        "Is there only a single continuous region of mixed forests visible in the image?": 309,
+        "Is there only a single continuous region of pastures visible in the image?": 225,
+        "Is there only a single continuous region of transitional woodlands or shrubs visible in the image?": 219,
+        "Is there only one continuous patch of arable lands in the image?": 568,
+        "Is there only one continuous patch of broad-leaved forests in the image?": 173,
+        "Is there only one continuous patch of coniferous forests in the image?": 340,
+        "Is there only one continuous patch of marine waters in the image?": 474,
+        "Is there only one continuous patch of mixed forests in the image?": 294,
+        "Is there only one continuous patch of pastures in the image?": 231,
+        "Is there only one continuous patch of transitional woodlands or shrubs in the image?": 207
+      }
+    }
+  }
+}

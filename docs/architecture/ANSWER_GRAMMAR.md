@@ -6,8 +6,9 @@
 > `split ∈ {train, validation}` only. This was verified by an audit
 > (`scripts/forensics/f00_quarantine_audit.py`), not asserted — see §0.
 
-**STATUS: HALTED.** Three findings contradict named architectural decisions. Gate Reports are
-in §12. Nothing here should be built on until those are resolved.
+**STATUS: S3 COMPLETE.** Four findings contradicted named architectural decisions; all four
+gate reports were raised (§12) and **APPROVED on 2026-08-30**. Close-out measurements and the
+conditions attached to approval are in §13. See `GATE_REPORT_S3.md` §14 for the decisions.
 
 ---
 
@@ -444,3 +445,71 @@ Full text: **[`reports/experiments/GATE_REPORT_S3.md`](../../reports/experiments
 
 Outputs in `reports/experiments/forensics/`. Narrative in
 `reports/experiments/benchmark_forensics.md`.
+
+---
+
+## 13. S3 close-out — decisions applied, and two follow-up measurements
+
+All four gate reports were **APPROVED** on 2026-08-30. Recorded here so the document reflects
+resolved state rather than open questions. Full text and conditions: `GATE_REPORT_S3.md` §14.
+
+### 13.1 Boundary inclusivity — resolved FROM THE DATA, not by sweep
+
+Condition on GR-1/GR-2: determine which side of a decile boundary `at least 10%` resolves to,
+from released annotations rather than by picking a convention and testing it.
+
+**Method** (`f10_inclusivity.py`): find `(patch_id, class, threshold)` groups carrying **both** an
+inclusive form (`at least`, `no less than`, `or more`) and a strict form (`more than`, `over`,
+`exceeds`) at the *same* threshold N. Where the two answers disagree, the true value must equal N
+exactly — which reveals each form's convention directly. Class attribution required **exactly one**
+19-class name in the question; 53,261 rows with ambiguous attribution were discarded.
+
+| Result | n |
+|---|---|
+| `(patch, class, threshold)` groups observed | 147,953 |
+| **DECISIVE — `>=` includes N, `>` excludes N** | **158** |
+| Logically impossible (`ge=no, gt=yes`) | 81 |
+
+**VERDICT: standard semantics. Inclusive forms (`at least`, `at most`) INCLUDE the boundary
+value; strict forms (`more than`, `fewer than`) EXCLUDE it.** So `at least 10%` is `coverage ≥ 10`.
+
+**Confidence: MODERATE, not settled.** The 81 contradictory pairs are *logically impossible* under
+any fixed truth value (`more than N` true while `at least N` false cannot occur), which proves they
+are parsing artifacts rather than genuine counterexamples — but a **33.9% artifact rate** means the
+pairing method is noisy. The direction is 2:1 and matches ordinary English, so no sweep over
+conventions is warranted; **S7 should confirm against computed truth** once the S4 L3→19
+aggregation table exists and true coverage can be evaluated directly rather than inferred from
+paired answers.
+
+### 13.2 Residual re-pass — the unmatched forms are phrasing, NOT different logic
+
+Condition on GR-4: establish whether the unmatched binary forms are genuinely non-comparator
+(which would change M3's design) or merely phrasings the regex missed.
+
+**Answer: phrasings the regex missed.** With a widened comparator set (`f09`):
+
+| Task | Old residual | New residual | Scanned |
+|---|---|---|---|
+| `binary`/area | 27.7% | **21.66%** | 141,659 |
+| `binary`/count | 11.6% | **7.77%** | 141,658 |
+
+Inspecting what remains shows every high-frequency residual form is **comparator-equivalent**:
+
+| Residual form (binary/area) | n | Equivalent to |
+|---|---|---|
+| *"Is there some part of the image not covered by marine waters?"* | 582 | `coverage(X) < 100%` |
+| *"Does the image show other classes besides marine waters?"* | 575 | `coverage(X) < 100%` |
+| *"Is there anything except marine waters in the image?"* | 533 | `coverage(X) < 100%` |
+
+| Residual form (binary/count) | n | Equivalent to |
+|---|---|---|
+| *"Is there only a single continuous region of arable lands?"* | 587 | `count == 1` |
+| *"Is there only one continuous patch of arable lands?"* | 568 | `count == 1` |
+| *"Can multiple continuous areas of arable lands be detected?"* | 449 | `count ≥ 2` |
+
+**No residual form implies a different answer logic.** They are complement questions
+(`< 100%`) and singularity/plurality questions (`== 1`, `≥ 2`) expressed without the trigger
+words. The deterministic share reported in §7 is therefore a **lower bound**, and the true share
+after a complete parser is materially higher than 72.3% / 88.4%.
+
+**This strengthens GR-4's case** — but does not remove its condition. See GATE_REPORT_S3.md §14.

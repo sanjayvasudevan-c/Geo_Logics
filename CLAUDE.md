@@ -176,6 +176,16 @@ logged in `reports/experiments/EXPERIMENT_LOG.md`.
 - **Quarantine:** the benchmark evaluation split (1,082 image pairs / 15,029 annotations) is
   sealed. It may be touched **once**, at final evaluation. Enforce this in code — a loader guard
   that raises unless `ALLOW_BENCHMARK_EVAL=1` is set.
+
+- **FORBIDDEN INPUT FEATURES — `country`, `season`, `climate_zone`.** These three BigEarthNet.txt
+  columns are **answer labels, never model inputs, anywhere in the pipeline.** Measured at S3:
+  they are **100.00% identical** to the correct MCQ answer for their own task
+  (country 35,561/35,561; season 35,561/35,561; climate zone 35,562/35,562). Feeding any of them
+  to any model — as a feature, an auxiliary target used at inference, a routing signal, or a
+  prompt field — is target leakage, not inference, and it silently invalidates the M5 gate and
+  every metadata-MCQ number downstream. This holds regardless of what S15 decides about M5's
+  existence. `latitude`/`longitude` are the same hazard by proxy, since country and climate zone
+  are lookups from them. Enforce at the dataloader boundary, not by convention.
 - Any preprocessing that **learns parameters** (normalization statistics, class weights, TF-IDF
   vocabulary, scalers, MMU/dilation/connectivity fits) is fitted on **training data only**.
 - Test for: target leakage, train/test contamination, duplicate leakage, geographic leakage,

@@ -256,11 +256,60 @@ DECISION: WAITING FOR APPROVAL
 
 ---
 
-## STATUS
+## 14. DECISIONS — all four APPROVED, 2026-08-30
 
 ```
-STATUS: HALTED — WAITING FOR YOUR DECISION
+STATUS: RESOLVED — all four approved, with conditions recorded below
 ```
+
+| Gate | Decision | Condition attached |
+|---|---|---|
+| **GR-1** | **APPROVED** — Option A: keep M1 at L3-44, retarget the S4 aggregation table to L3→19, promote the 19-class head onto the query path | — |
+| **GR-2** | **APPROVED** — drop `area_rounding_m2`, replace with a fitted decile-boundary rule | Determine inclusivity **from the data**, not by sweep. **DONE — see §15.1** |
+| **GR-3** | **APPROVED as proposed** — range-containment + decile-index fallback; softmax/fitted-T interface retained so M9 is untouched | — |
+| **GR-4** | **APPROVED** — two-path M3 | **Two conditions, both binding before S14. See §15.2** |
+
+### 15.1 GR-2 condition — DISCHARGED
+
+Boundary inclusivity was resolved **from released answers**, not by sweeping conventions.
+Method and full numbers: `ANSWER_GRAMMAR.md` §13.1.
+
+**Verdict: standard semantics.** `at least N` / `at most N` **include** N; `more than N` /
+`fewer than N` **exclude** it. 158 decisive `(patch, class, threshold)` groups out of 147,953
+observed.
+
+**Confidence MODERATE, not settled.** 81 contradictory pairs (33.9%) are *logically impossible*
+under any fixed truth, proving they are parse artifacts rather than counterexamples — but the
+rate means the pairing method is noisy. Direction is 2:1 and matches ordinary English, so no
+convention sweep is warranted. **S7 must confirm against computed truth** once the S4 L3→19
+table exists.
+
+### 15.2 GR-4 conditions — ONE DISCHARGED, ONE BINDING ON S14
+
+**Condition (a) — re-pass the unmatched forms before locking the split. DISCHARGED.**
+They are **phrasing the regex missed, not different answer logic.** Widening the comparator set
+cut the residual from 27.7% → **21.66%** (area) and 11.6% → **7.77%** (count), and every
+high-frequency remainder is comparator-equivalent: complement questions (*"Is there some part
+not covered by X?"* ⟺ `coverage < 100%`) and singularity/plurality questions (*"only a single
+continuous region?"* ⟺ `count == 1`; *"multiple continuous areas?"* ⟺ `count ≥ 2`).
+Full tables: `ANSWER_GRAMMAR.md` §13.2. **No residual form implies different answer logic**, so
+M3's two-path design stands and its deterministic share is a lower bound.
+
+**Condition (b) — CONFIDENCE GATE. BINDING ON S14. NOT YET IMPLEMENTED.**
+
+> The deterministic comparator path **must not be a binary match/no-match**. It must fall
+> through to the learned M3 path whenever the parse is ambiguous, low-confidence, or matches
+> none of the known comparator forms. **It must never guess and silently return a comparator
+> result.** Requirements for S14:
+>
+> 1. The parser **abstains** rather than guessing. Abstention routes to the learned path.
+> 2. Ambiguity is explicit: multiple comparators matched, no threshold parsed, more than one
+>    19-class name present (53,261 such rows were discarded during S3's own analysis — that
+>    ambiguity is real and frequent), or a residual form.
+> 3. The chosen path is **recorded in the execution trace** per answer, and the
+>    deterministic/learned/abstained split is **reported as a measured rate**, not assumed.
+> 4. S8 measures oracle accuracy of the deterministic path **per comparator form**. If any form
+>    is not ≈100% on ground-truth maps, the parser or the comparison is wrong — not the model.
 
 **Not blocked by these gates** (may proceed once you decide): S7's connectivity, MMU, opening
 kernel and adjacency dilation sweeps are unaffected by all four findings.

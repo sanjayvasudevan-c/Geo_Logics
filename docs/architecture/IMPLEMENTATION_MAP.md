@@ -107,7 +107,26 @@ The architectural consequence: **the task is not perception, it is measurement**
 | Frontier general model (reported ~2T params) | **55.86** |
 | Qwen3-VL-8B | 58.45 |
 
-A model with a reported two trillion parameters reaches 55.86% on a *balanced* yes/no question about whether two land-cover regions touch — under six points above chance. `scipy.ndimage.binary_dilation` computes the same relation exactly, in microseconds, given a correct map [PDF §120].
+A model with a reported two trillion parameters reaches 55.86% on a yes/no question about whether two land-cover regions touch. `scipy.ndimage.binary_dilation` computes the same relation exactly, in microseconds, given a correct map [PDF §120].
+
+> ### ⚠ REQUIRED FRAMING — do not overstate this comparison
+>
+> **Adjacency is NOT balanced.** Measured at S3 on train+validation (n = 108,672): the
+> `binary`/adjacency prior is **57.1% "no" / 42.9% "yes"** — the only one of the four binary
+> sub-tasks that is not 50/50. [REV Appendix A] describes this set as balanced; it is not.
+>
+> **Consequence:** a majority-class baseline that answers "no" to every adjacency question
+> scores **57.1%**, which is *above* the 55.86% frontier-model figure. Any claim of the form
+> "we beat a 2T-parameter model on adjacency" is therefore weak — that model does not beat
+> answering "no" every time.
+>
+> **The honest framing is symbolic-vs-majority-baseline, not symbolic-vs-frontier-model.** The
+> thesis survives — an exact computation should far exceed 57.1% — but it must be stated
+> against the correct reference point.
+>
+> **Binding on:** §8.3 (blind baselines), §8.4 (the A1 falsification table at S16), the S8 gate
+> report, and **S26's judge pack**. Whoever writes S26 must not reproduce the "beats a 2T model"
+> phrasing without the majority-baseline number beside it.
 
 The argument to make on stage is explicitly **not** "our smaller network is smarter" [PDF §120]. It is: *we changed the problem formulation. Once perception is separated from deterministic spatial measurement, some tasks no longer require generative reasoning at all.*
 

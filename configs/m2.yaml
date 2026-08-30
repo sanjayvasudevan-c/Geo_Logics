@@ -10,8 +10,20 @@ min_mapping_unit_px: null
 opening_kernel_px: null
 adjacency_dilation_px: null
 
-# VERIFIED from the benchmark's generator; needs no fitting.
-area_rounding_m2: 1000
+# GR-2 (S3, APPROVED 2026-08-30): area_rounding_m2 is REMOVED. It was 1000, which is 144x
+# finer than the data supports and encoded a convention that does not exist in the VQA/MCQ
+# annotations. Measured at S3: area is quantised to 11 decile bins; the only distinct values
+# are 0,10,...,100 percent == 0,144000,...,1440000 m2. Nothing is rounded — M2 computes exact
+# fractional coverage and answers by RANGE MEMBERSHIP.
+area_bins: 11                 # deciles of patch coverage, 0..100% inclusive
+patch_area_m2: 1440000        # 120 px x 120 px x (10 m)^2; area_m2 = percent x 14400
+
+# Boundary convention at a decile edge. 68.2% of adjacent MCQ area ranges SHARE an endpoint,
+# so behaviour exactly at N matters. S3 resolved the DIRECTION from released answers (not by
+# sweep): inclusive forms include N, strict forms exclude it — 158 decisive groups, standard
+# semantics. Confidence MODERATE (33.9% of contradictory pairs are parse artifacts), so S7
+# must CONFIRM against computed truth once the S4 L3->19 table exists. Left null until then.
+bin_boundary_rule: null       # to be confirmed at S7; expected "inclusive_lower_exclusive_upper"
 
 # Caption coverage tiers (VERIFIED): primary >25%, secondary 5-25%, marginal <5%.
 tier_primary_min: 0.25
