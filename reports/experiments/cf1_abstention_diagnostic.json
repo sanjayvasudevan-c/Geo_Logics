@@ -1,0 +1,105 @@
+{
+  "by_reason": {
+    "area question with no comparator": {
+      "fixed": 7,
+      "n": 25
+    },
+    "area question with no threshold": {
+      "fixed": 0,
+      "n": 27
+    },
+    "count question with no comparator": {
+      "fixed": 0,
+      "n": 3
+    },
+    "no MCQ option yielded two classes": {
+      "fixed": 58,
+      "n": 61
+    }
+  },
+  "caveat": "ESTIMATE ONLY. Q1 supplies the missing field; correctness of the resulting answer was not scored. Gate 1 was NOT re-run.",
+  "estimated_irreducible_points": 2.9765,
+  "estimated_recoverable_points": 3.7935,
+  "gate1_gap_points": 6.77,
+  "per_task": [
+    {
+      "abstained": 0,
+      "fix_rate": 0.0,
+      "n": 300,
+      "q1_fixes": 0,
+      "task": "binary|presence",
+      "unfixable": 0
+    },
+    {
+      "abstained": 52,
+      "fix_rate": 0.1346,
+      "n": 300,
+      "q1_fixes": 7,
+      "task": "binary|area",
+      "unfixable": 0
+    },
+    {
+      "abstained": 3,
+      "fix_rate": 0.0,
+      "n": 300,
+      "q1_fixes": 0,
+      "task": "binary|count",
+      "unfixable": 0
+    },
+    {
+      "abstained": 0,
+      "fix_rate": 0.0,
+      "n": 300,
+      "q1_fixes": 0,
+      "task": "binary|adjacency",
+      "unfixable": 0
+    },
+    {
+      "abstained": 0,
+      "fix_rate": 0.0,
+      "n": 300,
+      "q1_fixes": 0,
+      "task": "mcq|presence",
+      "unfixable": 0
+    },
+    {
+      "abstained": 0,
+      "fix_rate": 0.0,
+      "n": 300,
+      "q1_fixes": 0,
+      "task": "mcq|area",
+      "unfixable": 0
+    },
+    {
+      "abstained": 0,
+      "fix_rate": 0.0,
+      "n": 300,
+      "q1_fixes": 0,
+      "task": "mcq|count",
+      "unfixable": 0
+    },
+    {
+      "abstained": 61,
+      "fix_rate": 0.9508,
+      "n": 300,
+      "q1_fixes": 58,
+      "task": "mcq|adjacency",
+      "unfixable": 0
+    },
+    {
+      "abstained": 0,
+      "fix_rate": 0.0,
+      "n": 300,
+      "q1_fixes": 0,
+      "task": "mcq|relative pos",
+      "unfixable": 0
+    }
+  ],
+  "q1_fix_rate": 0.5603,
+  "totals": {
+    "abstained": 116,
+    "n": 2700,
+    "q1_fixes": 65,
+    "unfixable": 0
+  }
+}

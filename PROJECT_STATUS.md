@@ -1,7 +1,48 @@
-LAST UPDATED: 2026-08-30 — S9 COMPLETE (Q1 parser + M10 fallback). 548 tests pass.
+LAST UPDATED: 2026-08-30 — S9 COMPLETE. 554 pass + 1 DELIBERATELY FAILING (CF-5, see below).
 NEXT: S10 — R1 deterministic router + typed contracts + scene cache.
+OPEN DECISION BLOCKING NOTHING BUT WORTH RESOLVING FIRST: CF-5 (stale gate of record).
 
 === CARRIED FORWARD — KEEP VISIBLE UNTIL CLOSED ===
+
+CF-5  *** GATE 1 OF RECORD IS STALE — DECISION REQUIRED *** NEW at S9-close. OPEN.
+      A shared config moved a GATE number with nobody re-running the gate and nothing failing.
+      configs/synonyms.yaml is used by BOTH routing/parser.py (Q1) and evaluation/oracle.py.
+      S9 added two missing surface forms for the PARSER's benefit — the plural "lands
+      principally occupied by ..." and the singular "agro-forestry area". Those also improved
+      the ORACLE's class resolution.
+
+      MEASURED (validation, n=300/task, identical protocol):
+                            recorded    today     delta
+        oracle_strict         90.15%   92.78%    +2.63
+        oracle_attempted      96.92%   96.93%    +0.01
+        best_blind            49.07%   49.07%     0.00
+        headline gap         +41.07   +43.70     +2.63
+        ABSTENTION GAP          6.77     4.15     -2.62
+
+      Isolated: configs/synonyms.yaml is the ONLY fingerprinted file the S9 commit touched;
+      oracle.py, geometry/ and taxonomy/core.py were untouched. So the whole +2.63 is that
+      one config edit.
+
+      THE RECORDED NUMBER HAS NOT BEEN OVERWRITTEN. reports/evaluation/gate1_oracle.json still
+      holds the 90.15% measurement and is now stamped with the config fingerprint it was
+      ACTUALLY measured under (d36320c50b555676, recovered from git at 8a848ef). The re-run is
+      preserved separately as gate1_oracle_S9_DRIFT.json. GATE1_oracle.md is unchanged.
+
+      DECISION NEEDED — either:
+        A) adopt the new measurement: re-run run_oracle.py + write_gate1_report.py, and Gate 1
+           becomes 92.78% strict / +43.70 gap. Cost: minutes. The number moves UP and the cause
+           is understood and legitimate (better class resolution, no leakage).
+        B) revert the synonym additions — NOT viable, Q1 depends on them.
+      Recommendation: A. It is not a re-litigation of the gate verdict, which was PASS on a
+      number that has since improved.
+
+      STRUCTURAL FIX ALREADY SHIPPED so this cannot recur silently:
+        * src/satquery/evaluation/provenance.py — config_fingerprint() over the three configs
+          that can move a measured number (synonyms, m2, taxonomy).
+        * run_oracle.py now stamps _provenance into every gate artifact.
+        * tests/unit/test_gate_provenance.py — FAILS when a recorded gate no longer matches the
+          working tree. IT IS FAILING RIGHT NOW, AND THAT FAILURE IS THE FINDING, NOT A BUG.
+          Do not edit it to pass. It also carries a can-it-fire guard (CLAUDE.md §5 corollary).
 
 CF-1  PARSER-ABSTENTION GAP — **S9's explicit target.** OPEN.
       Gate 1 strict 87.11% vs attempted 93.89% = a 6.78-point gap that is ENTIRELY parser
@@ -33,6 +74,29 @@ CF-1  PARSER-ABSTENTION GAP — **S9's explicit target.** OPEN.
       >>> Proposed home: S13, where predicted maps are scored end-to-end and the oracle is
       >>> re-run anyway. Flagging now so it is a decision, not a discovery.
 
+      >>> MEASURED AT S9-CLOSE (scripts/diagnose_abstention_gap.py,
+      >>> reports/experiments/cf1_abstention_diagnostic.json). Traceable, not inferred:
+      >>>
+      >>>   original gap (recorded Gate 1)                     6.77 points
+      >>>   ALREADY CLOSED, as a side effect of S9's synonyms.yaml edit   -2.62 points
+      >>>   -> gap measured with today's code                   4.15 points   <-- CURRENT
+      >>>
+      >>> Of the 116 remaining oracle abstentions over 2,700 validation items, Q1 supplies the
+      >>> missing field for 65 of them = 56.0%:
+      >>>     no MCQ option yielded two classes    61 abstentions, Q1 fixes 58  (95.1%)
+      >>>     area question with no comparator     25 abstentions, Q1 fixes  7  (28.0%)
+      >>>     area question with no threshold      27 abstentions, Q1 fixes  0
+      >>>     count question with no comparator     3 abstentions, Q1 fixes  0
+      >>>   'no class name resolved' has DISAPPEARED entirely — that whole category is what the
+      >>>   synonyms.yaml edit already closed.
+      >>>
+      >>>   -> ESTIMATED further recoverable by routing the oracle through Q1: ~2.3 points
+      >>>   -> ESTIMATED irreducible without new parser work:                  ~1.8 points
+      >>>
+      >>> THE ~2.3 IS AN ESTIMATE, NOT A MEASUREMENT. It says Q1 supplies the missing FIELD; it
+      >>> does not say the resulting ANSWER is correct. Gate 1 was NOT re-run to produce it.
+      >>> The dominant single win is mcq|adjacency's option-pair splitting (58 of 65).
+
 CF-2  M8 BUILD AUTHORIZATION — CONFIRMED STILL LIVE, NOT LOST. Queued for its own stage.
       GATE: caption BLEU-4 = 15.35 -> **BUILD M8**, inside the 10-35 band the architecture
       predicted. Measured at S8 (O2 caption oracle, 220 captions); see GATE1_oracle.md §5.
@@ -40,6 +104,10 @@ CF-2  M8 BUILD AUTHORIZATION — CONFIRMED STILL LIVE, NOT LOST. Queued for its 
       higher. M8 = Flan-T5-base (250M) or Qwen2.5-0.5B-Instruct LoRA, per CLAUDE.md §1, and
       it is a template->style REWRITER only: CLAUDE.md §2 forbids it producing any number.
       Do not re-litigate this gate; it is decided. Just build it when its stage arrives.
+
+      >>> S9-CLOSE STATUS: QUEUED, NOT BUILT, NOT DROPPED. No M8 code exists yet and none was
+      >>> expected at S9 — S9's scope was Q1 + M10 only. The authorization stands unchanged and
+      >>> unconsumed. Nothing in S9 touched it. Next relevant stage per the build order.
 
 CF-4  DUPLICATE LEAKAGE IN QUESTION TEXT — NEW at S9, open. See DECISIONS.md D-S9-3.
       MEASURED: 31.53% of sampled validation questions appear VERBATIM in the training sample;
@@ -73,6 +141,22 @@ CF-3  TEST-COVERAGE AUDIT — opened 2026-08-30 at the reviewer's direction afte
       >>> CLUSTERED patches must yield a WIDER interval than independent ones — if that ever
       >>> reverses, the resample has silently gone back to annotation level and every gate CI
       >>> is too tight. The rest of CF-3 remains open for the S24 audit.
+
+CF-6  S10 SUB-TASK — ROUTER MUST TRIGGER/VERIFY M10 REGENERATION, NOT LOAD-OR-CRASH. OPEN.
+      Named explicitly so it is not implicitly assumed done between now and S10.
+      The fitted M10 artifact is GITIGNORED (.gitignore:67 `models/*`), so a clean checkout has
+      models/m10/m10_intent_svm.joblib absent. Correct for model weights, but it means R1's
+      fallback path has nothing to load on a fresh clone, and CLAUDE.md §8 requires
+      `make reproduce` to rebuild the pipeline from a clean environment.
+      REQUIRED at S10, all three:
+        (a) on a missing artifact the router REGENERATES it (or emits an actionable instruction
+            naming the exact command), rather than raising an opaque load error;
+        (b) it VERIFIES the loaded artifact's train_split_hash against the current training
+            split, so a stale model fitted on different data cannot be loaded silently — the
+            manifest already records the hash, nothing reads it back yet;
+        (c) a test that DELETES the artifact and asserts the router still comes up.
+      Note this is the same failure class as CF-5: an artifact whose provenance is recorded but
+      never checked. The provenance module added at S9-close is the natural place to hang (b).
 
 === END CARRIED FORWARD ===
 

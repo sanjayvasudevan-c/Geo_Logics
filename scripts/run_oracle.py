@@ -36,6 +36,7 @@ from satquery.config import load_config
 from satquery.evaluation.forensics import iter_annotations
 from satquery.evaluation.harness import Scored, score_task
 from satquery.evaluation.oracle import OracleAnswer, ParseFailure, answer_question
+from satquery.evaluation.provenance import FINGERPRINTED_CONFIGS, config_fingerprint
 from satquery.geometry import GeometryParams
 from satquery.taxonomy import load_synonyms, load_taxonomy
 from satquery.utils.paths import project_root
@@ -193,6 +194,15 @@ def main(argv: list[str]) -> int:
             print(f"  {t}:")
             for reason, n in results[t]["oracle"]["abstain_reasons"].items():
                 print(f"      {n:>5,}  {reason}")
+
+    # Stamp the configs this measurement depended on. Without it a shared-config edit can move
+    # a gate number with nothing failing — measured at S9, see evaluation/provenance.py.
+    results["_provenance"] = {
+        "config_fingerprint": config_fingerprint(root),
+        "fingerprinted_configs": list(FINGERPRINTED_CONFIGS),
+        "split": "validation",
+        "per_task": args.per_task,
+    }
 
     out = root / "reports/evaluation/gate1_oracle.json"
     out.parent.mkdir(parents=True, exist_ok=True)
