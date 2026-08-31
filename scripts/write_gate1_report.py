@@ -23,6 +23,11 @@ def main() -> int:
     # is part of the evidence, and a number that silently improves is not auditable.
     pre_path = root / "reports/evaluation/gate1_oracle_PRE_S7A.json"
     pre = json.loads(pre_path.read_text("utf-8")) if pre_path.is_file() else None
+    # The S7-addendum result is kept as its own artifact so §7 measures the DIRECTION fix and
+    # §8 measures the S9 SYNONYM fix. Folding both into one before/after would attribute the
+    # combined gain to whichever change happened to be described there.
+    s7a_path = root / "reports/evaluation/gate1_oracle_POST_S7A.json"
+    s7a = json.loads(s7a_path.read_text("utf-8")) if s7a_path.is_file() else None
     fit_path = root / "reports/experiments/direction_convention.json"
     fit = json.loads(fit_path.read_text("utf-8")) if fit_path.is_file() else None
     # Sections 1-6 render the ORIGINAL Gate 1 measurement whenever an addendum exists, so the
@@ -150,7 +155,10 @@ def main() -> int:
     if pre and fit:
         # `m` above is the BEFORE macro (sections 1-6 render the original). Section 7 needs
         # both, so bind the after explicitly rather than reusing `m` and reporting a no-op.
-        pm, post, f = pre["_macro"], g["_macro"], fit["fitted"]
+        # §7 is the S7 addendum: PRE -> POST_S7A. It must NOT reach into `g`, which now also
+        # carries the S9 synonym improvement measured separately in §8.
+        after = s7a if s7a else g
+        pm, post, f = pre["_macro"], after["_macro"], fit["fitted"]
         add("\n---\n")
         add("## 7. ADDENDUM — the direction convention, fitted\n")
         add("**Added after the Gate 1 decision, at the reviewer's direction.** Gate 1 verdict")
@@ -165,7 +173,7 @@ def main() -> int:
         moved = []
         for t in TASKS:
             a = pre[t]["oracle"]["strict_accuracy"]
-            b = g[t]["oracle"]["strict_accuracy"]
+            b = after[t]["oracle"]["strict_accuracy"]
             flag = "**" if a != b else ""
             if a != b:
                 moved.append(t)
@@ -234,7 +242,7 @@ def main() -> int:
         add(f"\nImproves in **{sum(1 for x in d if x > 0)}/{len(d)} folds** "
             f"(min {100*min(d):+.2f}, max {100*max(d):+.2f}) — not a single-region artifact.\n")
         add("### 7.4 Residual — measured, not guessed\n")
-        rp = g["mcq|relative pos"]["oracle"]
+        rp = after["mcq|relative pos"]["oracle"]
         ba = fit["before_after"]
         add(f"`mcq|relative pos` sits at {100*rp['strict_accuracy']:.2f}% with **0% abstention**,")
         add("so the remainder are still wrong answers rather than declined ones. Train-split")
@@ -256,6 +264,45 @@ def main() -> int:
         add("question is therefore **fully resolved**; what remains is borderline-angle error")
         add("distributed evenly, which is what an under-determined band width predicts. No")
         add("further convention is claimed, and none is available to fit without more evidence.")
+
+    # ------------------------------------------------- S9 synonym effect (§8) --------------
+    if s7a and g is not s7a and g["_macro"] != s7a["_macro"]:
+        am, gm = s7a["_macro"], g["_macro"]
+        add("\n---\n")
+        add("## 8. ADDENDUM 2 — a shared config moved this number without anyone re-running it\n")
+        add("**This section exists because the drift was caught, not because it was planned.**")
+        add("`configs/synonyms.yaml` is used by both the S9 Q1 parser and the S8 oracle. S9")
+        add("added two missing surface forms for the *parser's* benefit — a plural class name")
+        add("and a singular one. Those also improved the *oracle's* class resolution, and this")
+        add("gate moved with nothing failing and no gate run.\n")
+        add("| | after S7 addendum | after S9 | delta |")
+        add("|---|---|---|---|")
+        for t in TASKS:
+            a2 = s7a[t]["oracle"]["strict_accuracy"]
+            b2 = g[t]["oracle"]["strict_accuracy"]
+            mark = "**" if a2 != b2 else ""
+            add(f"| `{t}` | {100*a2:.2f}% | {mark}{100*b2:.2f}%{mark} | "
+                f"{mark}{100*(b2-a2):+.2f}{mark} |")
+        add(f"| **MACRO (strict)** | {100*am['oracle_strict']:.2f}% | "
+            f"**{100*gm['oracle_strict']:.2f}%** | "
+            f"**{100*(gm['oracle_strict']-am['oracle_strict']):+.2f}** |")
+        add(f"| **HEADLINE GAP** | {100*am['gap']:+.2f} | **{100*gm['gap']:+.2f}** | "
+            f"**{100*(gm['gap']-am['gap']):+.2f}** |")
+        ga, gg = (100 * (m2["oracle_attempted"] - m2["oracle_strict"]) for m2 in (am, gm))
+        add(f"| **abstention gap** | {ga:.2f} | **{gg:.2f}** | **{gg-ga:+.2f}** |\n")
+        add("The cause is understood and legitimate — better class resolution, no leakage, no")
+        add("change to any geometry or scoring code. `configs/synonyms.yaml` was the **only**")
+        add("fingerprinted file the S9 commit touched.\n")
+        add("**What was actually wrong was the process, not the number.** A metric report is a")
+        add("claim about a specific configuration, and this one did not record which. So:\n")
+        add("- `satquery/evaluation/provenance.py` fingerprints every config that can move a")
+        add("  measured number, and `run_oracle.py` stamps it into the artifact.")
+        add(f"- This measurement's fingerprint: `{g['_provenance']['config_fingerprint']}`.")
+        add("- `tests/unit/test_gate_provenance.py` **fails** if a recorded gate stops matching")
+        add("  the working tree, and carries a guard proving it can still fire.\n")
+        add("The Gate 1 verdict was PASS on 87.11%. It has since been measured at 90.15% and")
+        add("now 92.78%, each time for an understood reason. **Nothing here re-litigates the")
+        add("verdict** — the number has only ever moved up.")
 
     out = root / "reports/evaluation/GATE1_oracle.md"
     out.write_text("\n".join(L), encoding="utf-8")

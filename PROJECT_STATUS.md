@@ -1,10 +1,16 @@
-LAST UPDATED: 2026-08-30 — S9 COMPLETE. 554 pass + 1 DELIBERATELY FAILING (CF-5, see below).
-NEXT: S10 — R1 deterministic router + typed contracts + scene cache.
-OPEN DECISION BLOCKING NOTHING BUT WORTH RESOLVING FIRST: CF-5 (stale gate of record).
+LAST UPDATED: 2026-08-31 — CF-5 RESOLVED (option A adopted). 555 tests pass, suite GREEN.
+GATE 1 NOW STANDS AT 92.78% strict / 96.93% attempted / +43.70 headline gap.
+NEXT: S10 — R1 deterministic router + typed contracts + scene cache. IN PROGRESS.
 
 === CARRIED FORWARD — KEEP VISIBLE UNTIL CLOSED ===
 
-CF-5  *** GATE 1 OF RECORD IS STALE — DECISION REQUIRED *** NEW at S9-close. OPEN.
+CF-5  GATE 1 OF RECORD WAS STALE — *** RESOLVED 2026-08-31, option A adopted. CLOSED. ***
+      Gate 1 re-run and the new measurement adopted: 92.78% strict / 96.93% attempted /
+      +43.70 gap, stamped with config fingerprint e4dd82df6b4f309f. The abstention gap is now
+      4.15 points (see CF-1). GATE1_oracle.md §8 records the drift and its cause in full; §1-§6
+      still hold the original 87.11% the PASS verdict was given on, and §7 still isolates the
+      S7 addendum, so each step is attributable rather than merged. Provenance guard is GREEN.
+      Prior state, kept for the record:
       A shared config moved a GATE number with nobody re-running the gate and nothing failing.
       configs/synonyms.yaml is used by BOTH routing/parser.py (Q1) and evaluation/oracle.py.
       S9 added two missing surface forms for the PARSER's benefit — the plural "lands

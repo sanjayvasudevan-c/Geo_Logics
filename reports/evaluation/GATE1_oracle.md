@@ -234,3 +234,45 @@ family's share of the residual tracks its share of the items. The orientation
 question is therefore **fully resolved**; what remains is borderline-angle error
 distributed evenly, which is what an under-determined band width predicts. No
 further convention is claimed, and none is available to fit without more evidence.
+
+---
+
+## 8. ADDENDUM 2 — a shared config moved this number without anyone re-running it
+
+**This section exists because the drift was caught, not because it was planned.**
+`configs/synonyms.yaml` is used by both the S9 Q1 parser and the S8 oracle. S9
+added two missing surface forms for the *parser's* benefit — a plural class name
+and a singular one. Those also improved the *oracle's* class resolution, and this
+gate moved with nothing failing and no gate run.
+
+| | after S7 addendum | after S9 | delta |
+|---|---|---|---|
+| `binary|presence` | 100.00% | 100.00% | +0.00 |
+| `binary|area` | 74.33% | **78.33%** | **+4.00** |
+| `binary|count` | 91.00% | **97.00%** | **+6.00** |
+| `binary|adjacency` | 95.67% | **98.00%** | **+2.33** |
+| `mcq|presence` | 90.67% | 90.67% | +0.00 |
+| `mcq|area` | 88.67% | **100.00%** | **+11.33** |
+| `mcq|count` | 100.00% | 100.00% | +0.00 |
+| `mcq|adjacency` | 78.33% | 78.33% | +0.00 |
+| `mcq|relative pos` | 92.67% | 92.67% | +0.00 |
+| **MACRO (strict)** | 90.15% | **92.78%** | **+2.63** |
+| **HEADLINE GAP** | +41.07 | **+43.70** | **+2.63** |
+| **abstention gap** | 6.77 | **4.15** | **-2.62** |
+
+The cause is understood and legitimate — better class resolution, no leakage, no
+change to any geometry or scoring code. `configs/synonyms.yaml` was the **only**
+fingerprinted file the S9 commit touched.
+
+**What was actually wrong was the process, not the number.** A metric report is a
+claim about a specific configuration, and this one did not record which. So:
+
+- `satquery/evaluation/provenance.py` fingerprints every config that can move a
+  measured number, and `run_oracle.py` stamps it into the artifact.
+- This measurement's fingerprint: `e4dd82df6b4f309f`.
+- `tests/unit/test_gate_provenance.py` **fails** if a recorded gate stops matching
+  the working tree, and carries a guard proving it can still fire.
+
+The Gate 1 verdict was PASS on 87.11%. It has since been measured at 90.15% and
+now 92.78%, each time for an understood reason. **Nothing here re-litigates the
+verdict** — the number has only ever moved up.
